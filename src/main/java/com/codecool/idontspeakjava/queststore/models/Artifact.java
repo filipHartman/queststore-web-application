@@ -1,12 +1,12 @@
-public class Quest{
+public class Artifact{
 
-    enum QuestCategory{
-        Basic, Extra;
+    enum ArtifactCategory{
+        Basic, Magic;
     }
     
     private int id;
     private String title;
-    private QuestCategory category;
+    private ArtifactCategory category;
     private String description;
-    private int reward;
+    private int price;
 }
