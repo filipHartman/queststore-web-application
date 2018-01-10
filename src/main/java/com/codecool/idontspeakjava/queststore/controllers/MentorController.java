@@ -18,8 +18,12 @@ public class MentorController {
 
         while (runProgram) {
             view.showMainMenu();
-            String input = view.getUserInput();
+            runProgram = selectAction(view.getUserInput());
         }
     }
 
+    private boolean selectAction(String input) {
+        boolean continueRunning = true;
+        return continueRunning;
+    }
 }
