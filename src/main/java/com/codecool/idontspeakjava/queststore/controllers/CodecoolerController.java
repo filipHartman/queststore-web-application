@@ -4,8 +4,11 @@ import com.codecool.idontspeakjava.queststore.views.CodecoolerView;
 import com.codecool.idontspeakjava.queststore.models.Team;
 import com.codecool.idontspeakjava.queststore.models.Artifact;
 import com.codecool.idontspeakjava.queststore.models.Wallet;
+import com.codecool.idontspeakjava.queststore.models.Order;
+import com.codecool.idontspeakjava.queststore.models.ExperienceLevel;
 import com.codecool.idontspeakjava.queststore.database.WalletDAO;
 import com.codecool.idontspeakjava.queststore.database.ArtifactDAO;
+import com.codecool.idontspeakjava.queststore.database.OrderDAO;
 import com.codecool.idontspeakjava.queststore.database.ExperienceLevelDAO;
 
 import java.util.List;
@@ -16,6 +19,7 @@ public class CodecoolerController{
     private ArtifactDAO artifactDAO;
     private WalletDAO walletDAO;
     private ExperienceLevelDAO experienceLevelDAO;
+    private OrderDAO orderDAO;
     private User user;
     private Wallet wallet;
 
@@ -23,6 +27,7 @@ public class CodecoolerController{
         this.artifactDAO = new ArtifactDAO();
         this.experienceLevelDAO = new ExperienceLevelDAO();
         this.walletDAO = new WalletDAO();
+        this.orderDAO = new OrderDAO();
         this.view = new CodecoolerView();
         this.user = user;
         this.wallet = walletDAO.getWalletByUserID(user.getID);
@@ -30,9 +35,9 @@ public class CodecoolerController{
 
     private boolean buyArtifact(){
         Wallet userWallet = walletDAO.getWalletByUserID(user.getID);
-        List<String> namesOfartifacts = new List<String>();
+        List<String> namesOfArtifacts = new List<String>();
         for (Artifact artifact : artifactDAO.getAllArtifacts) {
-            namesOfartifacts.add(artifact.getTitle());
+            namesOfArtifacts.add(artifact.getTitle());
         }
     }
 
@@ -40,17 +45,24 @@ public class CodecoolerController{
         long totalEarnings = wallet.getTotalEarnings();
         List<ExperienceLevel> levels = experienceLevelDAO.getAllLevels();
         ExpirienceLevel level = levels.get(0);
-        for (int i; i < levels.size(); i++) {
-            level = levels.get(i);
-            if (level.getThreshold() > totalEarnings) {
-                
+        for (int i = 0; i < levels.size(); i++) {
+            if (totalEarnings < levels.get(i).getThreshold()) {
+                level = levels.get(i-1);
             }
         }
-        view.showMyLevel(experienceLevelDAO.get);
+        view.showMyLevel(level.getTitle());
     }
 
     private void checkWallet(){
-
+        List<Order> allOrders = orderDAO.getAllOrders();
+        List<String> namesOfArtifacts = new List<String>();
+        for (Order order : allOrders) {
+            if (order.getID() == wallet.getID()){
+                Artifact artifact = artifactDAO.getArtifact(order.getArtifactID());
+                namesOfArtifacts.add(artifact.getTitle());
+            }
+        }
+        view.showWallet(wallet.getCurrentState(), namesOfArtifacts)
     }
 
     private void editProfile(){
