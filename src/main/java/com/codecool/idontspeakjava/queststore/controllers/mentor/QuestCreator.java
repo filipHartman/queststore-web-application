@@ -102,4 +102,15 @@ class QuestCreator {
         }
         return rewardNotSet;
     }
+
+    private boolean setDescription(String input) {
+        boolean descriptionNotSet = true;
+        if (input.matches("[a-zA-Z1-9,.! ]+")) {
+            description = input;
+            descriptionNotSet = false;
+        } else {
+            view.showWrongDescriptionInput();
+        }
+        return descriptionNotSet;
+    }
 }
