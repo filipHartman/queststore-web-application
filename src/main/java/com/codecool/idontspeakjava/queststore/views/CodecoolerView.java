@@ -20,8 +20,11 @@ public class CodecoolerView extends UserView{
         }
     }
 
-    public void showBuyArtifactForTeamMenu(){
-
+    public void showBuyArtifactForTeamMenu(ArrayList<String> namesOfArtifacts){
+        System.out.println("MAGIC ARTIFACTS SHOP\n");
+        for (String artifact : namesOfArtifacts) {
+            System.out.println(namesOfArtifacts.indexOf(artifact) + ". " + artifact);
+        }
     }
 
     public void showMyLevel(){
