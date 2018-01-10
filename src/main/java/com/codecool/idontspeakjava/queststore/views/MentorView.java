@@ -20,4 +20,28 @@ public class MentorView extends UserView {
     public void showWrongInput() {
         System.out.println("Your input is wrong.\n");
     }
+
+    public void showCodecoolerCreated() {
+        System.out.println("You created a new codecooler.\n");
+    }
+
+    public void showCodecoolerCreationFailed() {
+        System.out.println("An error occured. The new codecooler wasn't created.\n");
+    }
+
+    public void showOperationCancelled() {
+        System.out.println("Operation cancelled.\n");
+    }
+
+    public void askForCodecoolerName() {
+        System.out.println("Enter the name of codecooler's or 0 to cancel.\n");
+    }
+
+    public void askForSecondName() {
+        System.out.println("Enter the second name of codecooler's or 0 to cancel.\n");
+    }
+
+    public void askForEmail() {
+        System.out.println("Enter the codecooler's email or 0 to cancel.\n");
+    }
 }
