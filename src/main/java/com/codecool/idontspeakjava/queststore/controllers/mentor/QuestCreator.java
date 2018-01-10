@@ -91,4 +91,15 @@ class QuestCreator {
         }
         return attributeNotSet;
     }
+
+    private boolean setReward(String input) {
+        boolean rewardNotSet = true;
+        if (input.matches("\\d+")) {
+            reward = Integer.valueOf(input);
+            rewardNotSet = false;
+        } else {
+            view.showWrongRewardInput();
+        }
+        return rewardNotSet;
+    }
 }
