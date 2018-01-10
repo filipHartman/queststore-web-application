@@ -39,6 +39,7 @@ public class MentorController {
                 createCodecooler();
                 break;
             case ADD_QUEST:
+                addQuest();
                 break;
             case ADD_ARTIFACT:
                 break;
@@ -61,6 +62,10 @@ public class MentorController {
     }
 
     private void createCodecooler() {
+
+    }
+
+    private void addQuest(){
 
     }
 
