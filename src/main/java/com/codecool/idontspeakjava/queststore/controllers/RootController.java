@@ -11,4 +11,32 @@ public class RootController{
         this.view = new RootView();
         this.user = user;
     }
+
+    private boolean createMentor(){
+
+    }
+
+    private boolean createCodecoolClass(){
+
+    }
+
+    private void assignMentorToClass(){
+
+    }
+
+    private void editMentor(){
+        
+    } 
+
+    private void showMentor(){
+
+    }
+
+    private void showCodecoolClassOfMentor(){
+
+    }
+
+    private boolean createExperienceLevel(){
+
+    }
 }
