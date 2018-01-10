@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class AbstractDAO implements Database {
 
-    private Connection connection = null;
+    private static Connection connection = null;
 
     @Override
     public void connectToDatabase() throws SQLException, ClassNotFoundException {
