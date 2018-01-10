@@ -53,4 +53,21 @@ class QuestCreator {
             view.showOperationCancelled();
         }
     }
+
+    private void selectPromptForCreateQuest(int promptNumber) {
+        switch (promptNumber) {
+            case TITLE:
+                view.askForQuestTitle();
+                break;
+            case CATEGORY:
+                view.askForQuestCategory();
+                break;
+            case DESCRIPTION:
+                view.askForQuestDescription();
+                break;
+            case REWARD:
+                view.askForQuestReward();
+                break;
+        }
+    }
 }
