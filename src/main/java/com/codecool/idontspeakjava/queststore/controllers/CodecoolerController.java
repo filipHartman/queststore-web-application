@@ -1,6 +1,7 @@
 package com.codecool.idontspeakjava.queststore.controllers;
 
 import com.codecool.idontspeakjava.queststore.views.CodecoolerView;
+import com.codecool.idontspeakjava.queststore.models.Team;
 
 public class CodecoolerController{
 
