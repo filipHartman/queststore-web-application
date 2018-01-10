@@ -34,12 +34,12 @@ public class ArtifactsDAO extends AbstractDAO {
     }
 
 
-    public Artifact getArtifact(String title) {
-        String query = String.format("SELECT * FROM artifacts WHERE title = '%s'", title);
+    public Artifact getArtifact(int id) {
+        String query = String.format("SELECT * FROM artifacts WHERE title = %d", id);
         Artifact artifact = null;
 
         try {
-            if (checkIfArtifactExists(title)) {
+            if (checkIfArtifactExists(id)) {
                 ResultSet resultSet = getConnection().createStatement().executeQuery(query);
                 log.info(query);
                 artifact = new Artifact.Builder()
@@ -64,7 +64,7 @@ public class ArtifactsDAO extends AbstractDAO {
         try {
             ResultSet resultSet = getConnection().createStatement().executeQuery(query);
             while (resultSet.next()) {
-                artifacts.add(getArtifact(resultSet.getString("title")));
+                artifacts.add(getArtifact(resultSet.getInt("id")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
