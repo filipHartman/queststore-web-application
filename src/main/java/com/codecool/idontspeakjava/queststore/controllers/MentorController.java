@@ -18,6 +18,10 @@ public class MentorController {
     private static final String CHECK_WALLETS = "8";
     private static final String EXIT = "0";
 
+    private static final int STUDENT_NAME = 0;
+    private static final int STUDENT_SECOND_NAME = 1;
+    private static final int STUDENT_EMAIL = 2;
+
     public MentorController() {
         view = new MentorView();
         mentor = new User("Henryk", "Pryk", "ahbgd", "h.pryk@email.com", Permissions.Mentor);
