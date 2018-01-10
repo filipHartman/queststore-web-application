@@ -17,7 +17,7 @@ public class MentorView extends UserView {
                         "0 - Exit the program\n", userName));
     }
 
-    public void wrongInput() {
+    public void showWrongInput() {
         System.out.println("Your input is wrong.\n");
     }
 }
