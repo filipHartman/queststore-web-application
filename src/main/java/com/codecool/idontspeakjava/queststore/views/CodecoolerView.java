@@ -27,7 +27,7 @@ public class CodecoolerView extends UserView{
         }
     }
 
-    public void showMyLevel(){
-
+    public void showMyLevel(String level){
+        System.out.println("Rank: " + level);
     }
 }
