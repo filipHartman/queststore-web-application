@@ -1,4 +1,4 @@
-package com.codecool.idontspeakjava.queststore.controllers;
+package com.codecool.idontspeakjava.queststore.controllers.mentor;
 
 import com.codecool.idontspeakjava.queststore.database.UserDAO;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
