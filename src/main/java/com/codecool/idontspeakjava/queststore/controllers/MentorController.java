@@ -52,6 +52,7 @@ public class MentorController {
             case CHECK_WALLETS:
                 break;
             case EXIT:
+                continueRunning = false;
                 break;
             default:
         }
