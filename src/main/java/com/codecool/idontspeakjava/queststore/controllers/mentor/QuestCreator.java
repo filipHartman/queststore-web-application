@@ -70,4 +70,25 @@ class QuestCreator {
                 break;
         }
     }
+
+    private boolean setAttribute(int promptNumber, String input) {
+        boolean attributeNotSet;
+        switch (promptNumber) {
+            case TITLE:
+                attributeNotSet = setTitle(input);
+                break;
+            case CATEGORY:
+                attributeNotSet = setCategory(input);
+                break;
+            case DESCRIPTION:
+                attributeNotSet = setDescription(input);
+                break;
+            case REWARD:
+                attributeNotSet = setReward(input);
+                break;
+            default:
+                attributeNotSet = false;
+        }
+        return attributeNotSet;
+    }
 }
