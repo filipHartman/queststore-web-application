@@ -54,6 +54,10 @@ class QuestCreator {
         }
     }
 
+    private void addQuestToDatabase() {
+        Quest quest = new Quest(title, category, description, reward);
+    }
+
     private void selectPromptForCreateQuest(int promptNumber) {
         switch (promptNumber) {
             case TITLE:
