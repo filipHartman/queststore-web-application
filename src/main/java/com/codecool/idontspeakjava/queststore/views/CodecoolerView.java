@@ -7,14 +7,17 @@ public class CodecoolerView extends UserView{
     public void showWallet(int totalMoney, ArrayList<String> namesOfArtifacts){
         System.out.println("WALLET\n");
         System.out.println("Your coolcoins: " + totalMoney);
-        System.out.println("Your artifacts: ")
-        for (String artifact : artifacts) {
+        System.out.println("Your artifacts: ");
+        for (String artifact : namesOfArtifacts) {
             System.out.println("- " + artifact);
         }
     }
 
-    public void showBuyArtifactMenu(){
-
+    public void showBuyArtifactMenu(ArrayList<String> namesOfArtifacts){
+        System.out.println("BASIC ARTIFACTS SHOP\n");
+        for (String artifact : namesOfArtifacts) {
+            System.out.println(namesOfArtifacts.indexOf(artifact) + ". " + artifact);
+        }
     }
 
     public void showBuyArtifactForTeamMenu(){
