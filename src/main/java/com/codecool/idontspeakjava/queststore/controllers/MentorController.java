@@ -36,6 +36,7 @@ public class MentorController {
         boolean continueRunning = true;
         switch (input) {
             case CREATE_CODECOOLER:
+                createCodecooler();
                 break;
             case ADD_QUEST:
                 break;
@@ -58,4 +59,9 @@ public class MentorController {
         }
         return continueRunning;
     }
+
+    private void createCodecooler() {
+
+    }
+
 }
