@@ -27,7 +27,7 @@ public class MentorController {
         boolean runProgram = true;
 
         while (runProgram) {
-            view.showMainMenu();
+            view.showMainMenu(mentor.getFirstName());
             runProgram = selectAction(view.getUserInput());
         }
     }
