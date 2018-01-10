@@ -1,8 +1,12 @@
 package com.codecool.idontspeakjava.queststore.controllers;
 
+import com.codecool.idontspeakjava.queststore.database.UserDAO;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.views.MentorView;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class MentorController {
     private MentorView view;
@@ -87,6 +91,23 @@ public class MentorController {
             case STUDENT_EMAIL:
                 view.askForEmail();
                 break;
+        }
+    }
+
+    private void addCodecoolerToDatabase(ArrayList<String> userData) {
+        User newCodecooler = new User(
+                userData.get(STUDENT_NAME),
+                userData.get(STUDENT_SECOND_NAME),
+                "HASHTOPASS",
+                userData.get(STUDENT_EMAIL),
+                Permissions.Student);
+
+        try {
+            new UserDAO().createUser(newCodecooler);
+            view.showCodecoolerCreated();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            view.showCodecoolerCreationFailed();
         }
     }
 
