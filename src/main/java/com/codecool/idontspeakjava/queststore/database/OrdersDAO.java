@@ -21,18 +21,13 @@ public class OrdersDAO extends AbstractDAO {
         String query = String.format("INSERT INTO orders(artifact_id, wallet_id, is_used) " +
                 "VALUES(%d, %d, %d)", artifactID, walletID, is_used);
 
-        try {
-            if (!checkIfOrderExists(order.getId())) {
-                log.info(query);
-
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
     }
 
+    public void updateOrder(Order order) {
+        String query = String.format("UPDATE orders SET artifact_id = %d, wallet_id = %d, is_used = %d WHERE id = %d",
+                order.getArtifactID(), order.getWalletID(), order.isUsed() ? 1 : 0, order.getId());
+        executeUpdateQuery(query, order);
+    }
     public Order getOrder(int id) {
         String query = String.format("SELECT * FROM orders WHERE id = %d", id);
         Order order = null;
@@ -56,20 +51,12 @@ public class OrdersDAO extends AbstractDAO {
 
     public void removeOrder(Order order) {
         String query = String.format("DELETE FROM orders WHERE id = %d", order.getId());
-
-        try {
-            if (checkIfOrderExists(order.getId())) {
-                log.info(query);
-                getConnection().createStatement().executeUpdate(query);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        executeUpdateQuery(query, order);
     }
 
-    public List<Order> getAllOrders() {
+    public List<Order> getAllOrdersByUserID(int userID) {
         List<Order> orders = new ArrayList<>();
-        String query = "SELECT * FROM orders";
+        String query = String.format("SELECT * FROM orders WHERE user_id = %d", userID);
 
         try {
             log.info(query);
@@ -93,5 +80,17 @@ public class OrdersDAO extends AbstractDAO {
                 .executeQuery(query);
 
         return resultSet.next();
+    }
+
+    private void executeUpdateQuery(String query, Order order) {
+        try {
+            if (!checkIfOrderExists(order.getId())) {
+                log.info(query);
+                getConnection().createStatement().executeUpdate(query);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
