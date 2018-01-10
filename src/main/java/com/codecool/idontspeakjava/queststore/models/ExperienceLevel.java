@@ -24,6 +24,16 @@ public class ExperienceLevel{
     }
 
     public void setThreshold(long threshold) {
+
         this.threshold = threshold;
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
