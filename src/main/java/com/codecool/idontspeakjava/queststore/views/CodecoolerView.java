@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class CodecoolerView extends UserView{
 
-    public void showWallet(int totalMoney, ArrayList<String> namesOfArtifacts){
+    public void showWallet(long totalMoney, ArrayList<String> namesOfArtifacts){
         System.out.println("WALLET\n");
         System.out.println("Your coolcoins: " + totalMoney);
         System.out.println("Your artifacts: ");

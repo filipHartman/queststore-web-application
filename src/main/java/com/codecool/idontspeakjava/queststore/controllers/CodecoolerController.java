@@ -35,6 +35,10 @@ public class CodecoolerController{
         this.wallet = walletDAO.getWalletByUserID(user.getId());
     }
 
+    public void start(){
+
+    }
+
     private boolean buyArtifact(){
         Wallet userWallet = walletDAO.getWalletByUserID(user.getId());
         List<String> namesOfArtifacts = new ArrayList<String>();
@@ -46,23 +50,21 @@ public class CodecoolerController{
     private void checkExperienceLevel(){
         long totalEarnings = wallet.getTotalEarnings();
         List<ExperienceLevel> levels = experienceLevelDAO.getAllLevels();
-        ExpirienceLevel level = levels.get(0);
+        ExperienceLevel level = levels.get(0);
         for (int i = 0; i < levels.size(); i++) {
             if (totalEarnings < levels.get(i).getThreshold()) {
                 level = levels.get(i-1);
             }
         }
-        view.showMyLevel(level.getTitle());
+        view.showMyLevel(level.getName());
     }
 
     private void checkWallet(){
-        List<Order> allOrders = orderDAO.getAllOrders();
-        List<String> namesOfArtifacts = new List<String>();
-        for (Order order : allOrders) {
-            if (order.getId() == wallet.getId()){
-                Artifact artifact = artifactDAO.getArtifact(order.getArtifactID());
-                namesOfArtifacts.add(artifact.getTitle());
-            }
+        List<Order> allUserOrders = orderDAO.getAllOrdersByUserID(user.getId());
+        ArrayList<String> namesOfArtifacts = new ArrayList<String>();
+        for (Order order : allUserOrders) {
+            String artifactName = artifactDAO.getArtifact(order.getArtifactID()).getTitle();
+            namesOfArtifacts.add(artifactName);
         }
         view.showWallet(wallet.getCurrentState(), namesOfArtifacts);
     }
