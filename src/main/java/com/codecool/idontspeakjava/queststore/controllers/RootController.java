@@ -2,13 +2,17 @@ package com.codecool.idontspeakjava.queststore.controllers;
 
 import com.codecool.idontspeakjava.queststore.views.RootView;
 import com.codecool.idontspeakjava.queststore.models.User;
+import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
+import com.codecool.idontspeakjava.queststore.database.CodecoolClassDAO;;
 
 public class RootController{
     private RootView view;
     private User user;
+    private CodecoolClassDAO codecoolClassDAO;
 
     public RootController(User user){
         this.view = new RootView();
+        this.codecoolClassDAO = new CodecoolClassDAO();
         this.user = user;
     }
 
@@ -17,7 +21,12 @@ public class RootController{
     }
 
     private boolean createCodecoolClass(){
-
+        String className = view.getUserInput();
+        for (CodecoolClass codecoolClass : codecoolClassDAO.getAllCodecoolClasses())
+            if(className == codecoolClass.getName())
+                return false;
+        new CodecoolClass(className);
+        return true;
     }
 
     private void assignMentorToClass(){
