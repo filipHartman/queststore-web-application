@@ -54,6 +54,7 @@ public class MentorController {
                 markQuest();
                 break;
             case MARK_ARTIFACT:
+                markArtifact();
                 break;
             case CHECK_WALLETS:
                 break;
@@ -86,6 +87,10 @@ public class MentorController {
     }
 
     private void markQuest() {
+
+    }
+
+    private void markArtifact() {
 
     }
 }
