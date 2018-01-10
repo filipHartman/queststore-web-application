@@ -45,6 +45,7 @@ public class MentorController {
                 addArtifact();
                 break;
             case EDIT_QUEST:
+                editQuest();
                 break;
             case EDIT_ARTIFACT:
                 break;
@@ -71,6 +72,10 @@ public class MentorController {
     }
 
     private void addArtifact() {
+
+    }
+
+    private void editQuest() {
 
     }
 }
