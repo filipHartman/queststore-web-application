@@ -13,6 +13,6 @@ public class MentorView extends UserView {
                 "6 - Mark quest for a codecooler\n" +
                 "7 - Mark artifact for a codecooler\n" +
                 "8 - Check the wallets of codecoolers\n" +
-                "0 - \n");
+                "0 - Exit the program\n");
     }
 }
