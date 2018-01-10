@@ -22,4 +22,35 @@ class QuestCreator {
     QuestCreator(MentorView view) {
         this.view = view;
     }
+
+    void createQuest() {
+        int inputsReceived = 0;
+        boolean continueLoop = true;
+
+        final int PROMPTS = 4;
+
+        for (int i = 0; i < PROMPTS && continueLoop; i++) {
+            boolean continueIteration = true;
+            while (continueIteration) {
+                selectPromptForCreateQuest(i);
+                String input = view.getUserInput();
+
+                if (input.equals(EXIT)) {
+                    continueLoop = false;
+                    continueIteration = false;
+                } else {
+                    continueIteration = setAttribute(i, input);
+                }
+            }
+            if (continueLoop) {
+                inputsReceived++;
+            }
+        }
+
+        if (inputsReceived == PROMPTS) {
+            addQuestToDatabase();
+        } else {
+            view.showOperationCancelled();
+        }
+    }
 }
