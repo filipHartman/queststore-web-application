@@ -14,6 +14,14 @@ public class Artifact{
         this.price = price;
     }
 
+    private Artifact(Builder builder) {
+        setId(builder.id);
+        setTitle(builder.title);
+        setCategory(builder.category);
+        setDescription(builder.description);
+        setPrice(builder.price);
+    }
+
     public String getTitle() {
         return title;
     }
@@ -44,5 +52,54 @@ public class Artifact{
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
+    public static final class Builder {
+        private int id;
+        private String title;
+        private ArtifactCategory category;
+        private String description;
+        private int price;
+
+        public Builder() {
+        }
+
+        public Builder setId(int val) {
+            id = val;
+            return this;
+        }
+
+        public Builder setTitle(String val) {
+            title = val;
+            return this;
+        }
+
+        public Builder setCategory(ArtifactCategory val) {
+            category = val;
+            return this;
+        }
+
+        public Builder setDescription(String val) {
+            description = val;
+            return this;
+        }
+
+        public Builder setPrice(int val) {
+            price = val;
+            return this;
+        }
+
+        public Artifact build() {
+            return new Artifact(this);
+        }
     }
 }
