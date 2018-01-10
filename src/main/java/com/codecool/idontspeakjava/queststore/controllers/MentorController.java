@@ -77,7 +77,30 @@ public class MentorController {
     }
 
     private void createCodecooler() {
+        int inputsReceived = 0;
+        boolean continueLoop = true;
 
+        final int PROMPTS = 3;
+
+        ArrayList<String> userInputs = new ArrayList<>();
+
+        for (int i = 0; i < PROMPTS && continueLoop; i++) {
+            selectPromptForCreateCodecooler(i);
+            String input = view.getUserInput();
+
+            if (input.equals(EXIT)) {
+                continueLoop = false;
+            } else {
+                userInputs.add(input);
+                inputsReceived++;
+            }
+        }
+
+        if (inputsReceived == PROMPTS) {
+            addCodecoolerToDatabase(userInputs);
+        } else {
+            view.showOperationCancelled();
+        }
     }
 
     private void selectPromptForCreateCodecooler(int promptNumber) {
