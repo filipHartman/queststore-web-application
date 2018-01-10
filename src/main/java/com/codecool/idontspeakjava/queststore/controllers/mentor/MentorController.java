@@ -40,7 +40,7 @@ public class MentorController {
                 new CodecoolerCreator(view).createCodecooler();
                 break;
             case ADD_QUEST:
-                addQuest();
+                new QuestCreator(view).createQuest();
                 break;
             case ADD_ARTIFACT:
                 addArtifact();
@@ -67,10 +67,6 @@ public class MentorController {
                 view.showWrongInput();
         }
         return continueRunning;
-    }
-
-    private void addQuest() {
-
     }
 
     private void addArtifact() {
