@@ -16,4 +16,8 @@ public class MentorView extends UserView {
                         "8 - Check the wallets of codecoolers\n" +
                         "0 - Exit the program\n", userName));
     }
+
+    public void wrongInput() {
+        System.out.println("Your input is wrong.\n");
+    }
 }
