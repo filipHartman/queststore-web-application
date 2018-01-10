@@ -133,4 +133,15 @@ class QuestCreator {
         }
         return categoryNotSet;
     }
+
+    private boolean setTitle(String input) {
+        boolean titleNotSet = true;
+        if (input.matches("[a-zA-Z1-9 ]+")) {
+            title = input;
+            titleNotSet = false;
+        } else {
+            view.showWrongTitleInput();
+        }
+        return titleNotSet;
+    }
 }
