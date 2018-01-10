@@ -113,4 +113,24 @@ class QuestCreator {
         }
         return descriptionNotSet;
     }
+
+    private boolean setCategory(String input) {
+        final String BASIC = "1";
+        final String EXTRA = "2";
+
+        boolean categoryNotSet = false;
+
+        switch (input) {
+            case BASIC:
+                category = QuestCategory.Basic;
+                break;
+            case EXTRA:
+                category = QuestCategory.Extra;
+                break;
+            default:
+                categoryNotSet = true;
+                view.showWrongInput();
+        }
+        return categoryNotSet;
+    }
 }
