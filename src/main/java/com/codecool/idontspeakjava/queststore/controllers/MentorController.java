@@ -76,6 +76,20 @@ public class MentorController {
 
     }
 
+    private void selectPromptForCreateCodecooler(int promptNumber) {
+        switch (promptNumber) {
+            case STUDENT_NAME:
+                view.askForCodecoolerName();
+                break;
+            case STUDENT_SECOND_NAME:
+                view.askForSecondName();
+                break;
+            case STUDENT_EMAIL:
+                view.askForEmail();
+                break;
+        }
+    }
+
     private void addQuest() {
 
     }
