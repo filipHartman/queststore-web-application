@@ -13,4 +13,13 @@ public class MentorController {
         mentor = new User("Henryk", "Pryk", "ahbgd", "h.pryk@email.com", Permissions.Mentor);
     }
 
+    public void run() {
+        boolean runProgram = true;
+
+        while (runProgram) {
+            view.showMainMenu();
+            String input = view.getUserInput();
+        }
+    }
+
 }
