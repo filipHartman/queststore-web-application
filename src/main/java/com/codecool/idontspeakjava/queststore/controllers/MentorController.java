@@ -57,6 +57,7 @@ public class MentorController {
                 markArtifact();
                 break;
             case CHECK_WALLETS:
+                checkWallets();
                 break;
             case EXIT:
                 continueRunning = false;
@@ -91,6 +92,10 @@ public class MentorController {
     }
 
     private void markArtifact() {
+
+    }
+
+    private void checkWallets() {
 
     }
 }
