@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ExperienceLevelDAO extends AbstractDAO {
 
@@ -23,6 +25,29 @@ public class ExperienceLevelDAO extends AbstractDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<ExperienceLevel> getAllExperienceLevels() {
+        //language=SQL
+        String query = "SELECT * FROM experience_levels";
+        List<ExperienceLevel> experienceLevels = new ArrayList<>();
+
+        try {
+            ResultSet resultSet = getConnection().createStatement().executeQuery(query);
+            while (resultSet.next()) {
+                ExperienceLevel experienceLevel = new ExperienceLevel.Builder()
+                        .setId(resultSet.getInt("id"))
+                        .setName(resultSet.getString("name"))
+                        .setThreshold(resultSet.getLong("threshold"))
+                        .build();
+                experienceLevels.add(experienceLevel);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        return experienceLevels;
     }
 
     public void updateExperienceLevel(ExperienceLevel experienceLevel) {
