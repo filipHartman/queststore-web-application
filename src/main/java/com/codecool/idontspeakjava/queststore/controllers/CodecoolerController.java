@@ -45,11 +45,12 @@ public class CodecoolerController{
         for (Artifact artifact : artifactDAO.getAllArtifacts()) {
             namesOfArtifacts.add(artifact.getTitle());
         }
+        return false;
     }
 
     private void checkExperienceLevel(){
         long totalEarnings = wallet.getTotalEarnings();
-        List<ExperienceLevel> levels = experienceLevelDAO.getAllLevels();
+        List<ExperienceLevel> levels = experienceLevelDAO.getAllExperienceLevels();
         ExperienceLevel level = levels.get(0);
         for (int i = 0; i < levels.size(); i++) {
             if (totalEarnings < levels.get(i).getThreshold()) {
