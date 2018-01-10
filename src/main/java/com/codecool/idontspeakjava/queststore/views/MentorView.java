@@ -44,4 +44,35 @@ public class MentorView extends UserView {
     public void askForEmail() {
         System.out.println("Enter the codecooler's email or 0 to cancel.\n");
     }
+
+    public void askForQuestTitle() {
+        System.out.println("Enter the quest title or 0 to cancel.\n");
+    }
+
+    public void askForQuestDescription() {
+        System.out.println("Enter the description of the quest or 0 to cancel.\n");
+    }
+
+    public void askForQuestReward() {
+        System.out.println("Enter the reward for the quest or 0 to cancel.\n");
+    }
+
+    public void askForQuestCategory() {
+        System.out.println("Select quest category:\n" +
+                "1 - Basic\n" +
+                "2 - Extra\n" +
+                "0 - Cancel\n");
+    }
+
+    public void showWrongTitleInput() {
+        System.out.println("Wrong input. You can use only letters, digits and whitespaces.\n");
+    }
+
+    public void showWrongDescriptionInput() {
+        System.out.println("Wrong input. You can use only letters, digits, whitespaces, commas, dots and exclamation marks\n");
+    }
+
+    public void showWrongRewardInput() {
+        System.out.println("Wrong input. You can use only digits.\n");
+    }
 }
