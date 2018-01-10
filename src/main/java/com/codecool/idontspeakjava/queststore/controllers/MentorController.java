@@ -63,6 +63,7 @@ public class MentorController {
                 continueRunning = false;
                 break;
             default:
+                view.showWrongInput();
         }
         return continueRunning;
     }
