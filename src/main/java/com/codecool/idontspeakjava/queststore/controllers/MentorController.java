@@ -34,6 +34,27 @@ public class MentorController {
 
     private boolean selectAction(String input) {
         boolean continueRunning = true;
+        switch (input) {
+            case CREATE_CODECOOLER:
+                break;
+            case ADD_QUEST:
+                break;
+            case ADD_ARTIFACT:
+                break;
+            case EDIT_QUEST:
+                break;
+            case EDIT_ARTIFACT:
+                break;
+            case MARK_QUEST:
+                break;
+            case MARK_ARTIFACT:
+                break;
+            case CHECK_WALLETS:
+                break;
+            case EXIT:
+                break;
+            default:
+        }
         return continueRunning;
     }
 }
