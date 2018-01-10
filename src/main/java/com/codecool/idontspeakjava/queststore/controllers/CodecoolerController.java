@@ -15,6 +15,18 @@ public class CodecoolerController{
     }
 
     private void checkWallet(){
+
+    }
+
+    private void editProfile(){
+        
+    }
+
+    private void manageMyTeam(){
+
+    }
+
+    private void manageMyTeam(Team team){
         
     }
 }
