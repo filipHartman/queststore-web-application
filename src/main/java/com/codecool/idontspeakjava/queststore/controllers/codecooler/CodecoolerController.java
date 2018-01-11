@@ -6,6 +6,7 @@ import com.codecool.idontspeakjava.queststore.models.Artifact;
 import com.codecool.idontspeakjava.queststore.models.Wallet;
 import com.codecool.idontspeakjava.queststore.models.Order;
 import com.codecool.idontspeakjava.queststore.models.User;
+import com.codecool.idontspeakjava.queststore.models.Permissions;
 import com.codecool.idontspeakjava.queststore.models.ExperienceLevel;
 import com.codecool.idontspeakjava.queststore.database.WalletsDAO;
 import com.codecool.idontspeakjava.queststore.database.ArtifactsDAO;
@@ -32,7 +33,7 @@ public class CodecoolerController {
     private static final String SEE_QUESTS = "5";
     private static final String EXIT = "0";
 
-    public CodecoolerController(User user){
+    public CodecoolerController(){
         view = new CodecoolerView();
         codecooler = new User("Przemek", "Nachel", "haslo", "cygan@nic.pl", Permissions.Student);
         this.artifactDAO = new ArtifactsDAO();
@@ -40,8 +41,7 @@ public class CodecoolerController {
         this.walletDAO = new WalletsDAO();
         this.orderDAO = new OrdersDAO();
 
-        this.user = user;
-        this.wallet = walletDAO.getWalletByUserID(user.getId());
+        this.wallet = walletDAO.getWalletByUserID(codecooler.getId());
     }
 
     public void run() {
@@ -63,7 +63,7 @@ public class CodecoolerController {
                 buyArtifact();
                 break;
             case BUY_ARTIFACT_FOR_TEAM:
-                buyArtifact()
+                buyArtifact();
                 break;
             case SEE_MY_LEVEL:
                 checkExperienceLevel();
