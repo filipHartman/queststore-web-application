@@ -5,7 +5,6 @@ import com.codecool.idontspeakjava.queststore.controllers.mentor.MentorControlle
 import com.codecool.idontspeakjava.queststore.database.UserDAO;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.views.LoginView;
-import com.codecool.idontspeakjava.queststore.views.UserView;
 
 import java.sql.SQLException;
 import java.util.Optional;
@@ -30,6 +29,7 @@ public class LoginController {
             Optional<User> user = Optional.ofNullable(processCredentialsAndReturnUserInstance(loginView.getUserLogin()));
             if (user.isPresent()) {
                 userNotDecidedToExit = false;
+                loginView.clearScreen();
                 runNextController(user.get());
             } else {
                 loginView.showBadCredentials();
