@@ -96,7 +96,17 @@ public class RootController{
     }
 
     private void showCodecoolClassOfMentor(){
-
+        for(User mentorUser : userDAO.getUsersByPermission(Permissions.Mentor)){
+            System.out.println(mentorUser.getFirstName() +" "+ mentorUser.getLastName() +" "+ mentorUser.getEmail());
+        }
+        view.inputInfoMentorEmail();
+        String mentorEmail = view.getUserInput();
+        User selectedMentor = userDAO.getUserByEmail(mentorEmail);
+        for(CodecoolClass codecoolClass : codecoolClassDAO.getAllCodecoolClasses()){
+            if(codecoolClass.getName() == codecoolClassDAO.getUserCodecoolClass(selectedMentor).getName()){
+                System.out.println("Class " + codecoolClass.getName());
+            }
+        }
     }
 
     private boolean createExperienceLevel(){
