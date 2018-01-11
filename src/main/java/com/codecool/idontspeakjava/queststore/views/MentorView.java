@@ -176,4 +176,30 @@ public class MentorView extends UserView {
     public void showReward(String reward) {
         System.out.println(String.format("The current reward is: %s\n", reward));
     }
+
+    public void showPrice(String price) {
+        System.out.println(String.format("The current price is: %s\n", price));
+    }
+
+    public void showNoArtifacts() {
+        System.out.println("There aren't any artifacts.\n");
+    }
+
+    public void selectArtifacts(ArrayList<String> artifactsTitles) {
+        ListIterator<String> iterator = artifactsTitles.listIterator();
+
+        System.out.println("Select artifact to edit or 0 to cancel.\n");
+        for (; iterator.hasNext(); ) {
+            String title = iterator.next();
+            System.out.println(String.format("%d. %s", iterator.nextIndex(), title));
+        }
+    }
+
+    public void selectAttributeOfArtifactToEdit() {
+        System.out.println("Select what you want to edit, or 0 to cancel.\n" +
+                "1 - Title\n" +
+                "2 - Description\n" +
+                "3 - Category\n" +
+                "4 - Price\n");
+    }
 }
