@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class AbstractDAO implements Database {
+public abstract class AbstractDAO implements Database {
 
     private static Connection connection = null;
 
