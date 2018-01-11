@@ -3,6 +3,7 @@ package com.codecool.idontspeakjava.queststore.controllers.codecooler;
 import com.codecool.idontspeakjava.queststore.views.CodecoolerView;
 import com.codecool.idontspeakjava.queststore.models.Team;
 import com.codecool.idontspeakjava.queststore.models.Artifact;
+import com.codecool.idontspeakjava.queststore.models.ArtifactCategory;
 import com.codecool.idontspeakjava.queststore.models.Wallet;
 import com.codecool.idontspeakjava.queststore.models.Order;
 import com.codecool.idontspeakjava.queststore.models.Quest;
@@ -17,17 +18,17 @@ import com.codecool.idontspeakjava.queststore.database.QuestsDAO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale.Category;
 
 public class CodecoolerController {
     private CodecoolerView view;
     private User codecooler;
-
     private ArtifactsDAO artifactDAO;
     private WalletsDAO walletDAO;
     private ExperienceLevelDAO experienceLevelDAO;
     private OrdersDAO orderDAO;
-    private Wallet wallet;
     private QuestsDAO questsDAO;
+    private Wallet wallet;
 
     private static final String SEE_WALLET = "1";
     private static final String BUY_ARTIFACT = "2";
@@ -36,16 +37,14 @@ public class CodecoolerController {
     private static final String SEE_QUESTS = "5";
     private static final String EXIT = "0";
 
-    public CodecoolerController(){
+    public CodecoolerController(User user){
         view = new CodecoolerView();
-        codecooler = new User("Przemek", "Nachel", "haslo", "cygan@nic.pl", Permissions.Student);
-        codecooler.setId(7);
+        this.codecooler = user;
         this.artifactDAO = new ArtifactsDAO();
         this.experienceLevelDAO = new ExperienceLevelDAO();
         this.walletDAO = new WalletsDAO();
         this.orderDAO = new OrdersDAO();
         this.questsDAO = new QuestsDAO();
-
         this.wallet = walletDAO.getWalletByUserID(codecooler.getId());
     }
 
@@ -86,12 +85,17 @@ public class CodecoolerController {
     }
 
     private int chooseArtifact(int mode){ // 0 for Basic, 1 or else for Magic
+        final int BASIC = 0;
+        ArtifactCategory category = (mode == BASIC) ? ArtifactCategory.Basic : ArtifactCategory.Magic;
+        
         int artifactId = 0;
         ArrayList<String> namesOfArtifacts = new ArrayList<String>();
         ArrayList<Integer> IDs = new ArrayList<>();
         for (Artifact artifact : artifactDAO.getAllArtifacts()) {
-            namesOfArtifacts.add(artifact.getTitle());
-            IDs.add(new Integer(artifact.getId()));
+            if (artifact.getCategory() == category) {
+                namesOfArtifacts.add(artifact.getTitle());
+                IDs.add(new Integer(artifact.getId()));
+            }
         }
         boolean artifactIsChoosen = false;
         while (!artifactIsChoosen){
@@ -160,17 +164,5 @@ public class CodecoolerController {
             questsStrings.add(questInfo);
         }
         view.showQuests(questsStrings);
-    }
-
-    private void editProfile(){
-        
-    }
-
-    private void manageMyTeam(){
-
-    }
-
-    private void manageMyTeam(Team team){
-        
     }
 }
