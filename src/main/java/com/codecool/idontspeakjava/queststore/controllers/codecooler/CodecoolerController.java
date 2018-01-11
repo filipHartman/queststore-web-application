@@ -82,10 +82,11 @@ public class CodecoolerController {
     }
 
     private boolean buyArtifact(){
-        List<String> namesOfArtifacts = new ArrayList<String>();
+        ArrayList<String> namesOfArtifacts = new ArrayList<String>();
         for (Artifact artifact : artifactDAO.getAllArtifacts()) {
             namesOfArtifacts.add(artifact.getTitle());
         }
+        view.showBuyArtifactMenu(namesOfArtifacts);
         return false;
     }
 

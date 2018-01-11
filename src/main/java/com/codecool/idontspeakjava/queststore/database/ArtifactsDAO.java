@@ -35,7 +35,7 @@ public class ArtifactsDAO extends AbstractDAO {
 
 
     public Artifact getArtifact(int id) {
-        String query = String.format("SELECT * FROM artifacts WHERE title = %d", id);
+        String query = String.format("SELECT * FROM artifacts WHERE id = %d", id);
         Artifact artifact = null;
 
         try {

@@ -29,10 +29,13 @@ public class CodecoolerView extends UserView{
     }
 
     public void showBuyArtifactMenu(ArrayList<String> namesOfArtifacts){
+        System.out.println(CLEAR_CONSOLE);
         System.out.println("BASIC ARTIFACTS SHOP\n");
         for (String artifact : namesOfArtifacts) {
-            System.out.println(namesOfArtifacts.indexOf(artifact) + ". " + artifact);
+            System.out.println(namesOfArtifacts.indexOf(artifact + 1) + ". " + artifact);
         }
+        System.out.println("\n0 - Back");
+        getUserInput();
     }
 
     public void showBuyArtifactForTeamMenu(ArrayList<String> namesOfArtifacts){
