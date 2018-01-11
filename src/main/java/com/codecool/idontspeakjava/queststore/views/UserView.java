@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 public abstract class UserView {
 
+    static final String CLEAR_CONSOLE = "\033\143";
+
     private Scanner scanner;
 
     public UserView() {
@@ -17,4 +19,9 @@ public abstract class UserView {
     private void showUser(String user) {
 
     }
+
+    public static void clearScreen() {
+        System.out.println(CLEAR_CONSOLE);
+    }
+
 }
