@@ -49,7 +49,7 @@ public class LoginController {
                 new MentorController(user).run();
                 break;
             case Student:
-                new CodecoolerController();
+                new CodecoolerController(user);
                 break;
             case Root:
                 try {
