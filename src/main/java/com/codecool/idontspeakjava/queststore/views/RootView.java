@@ -10,8 +10,12 @@ public class RootView extends UserView{
         scanner = new Scanner(System.in);
         return scanner.nextLine();
     }
+
+    public void showCreateCodecoolClassMenu(){
+        System.out.println("Enter class name");
+    }
     
-    public void showCreateCodecoolClassMenu(String whichOne){
+    public void showCreateMentorMenu(String whichOne){
         if(whichOne == "firstName")
             System.out.println("Enter mentor first name");
         else if(whichOne == "lastName")

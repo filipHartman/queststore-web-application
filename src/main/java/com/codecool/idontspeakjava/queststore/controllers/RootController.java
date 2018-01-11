@@ -22,13 +22,13 @@ public class RootController{
     }
 
     private boolean createMentor() throws SQLException{
-        view.showCreateCodecoolClassMenu("firstName");
+        view.showCreateMentorMenu("firstName");
         String firstName = view.getUserInput();
-        view.showCreateCodecoolClassMenu("lastName");
+        view.showCreateMentorMenu("lastName");
         String lastName = view.getUserInput();
-        view.showCreateCodecoolClassMenu("password");
+        view.showCreateMentorMenu("password");
         String passwordHash = view.getUserInput();
-        view.showCreateCodecoolClassMenu("email");
+        view.showCreateMentorMenu("email");
         String email = view.getUserInput();
         userDAO.createUser(new User(firstName, lastName, passwordHash, email, permission.Root));
         return true;
