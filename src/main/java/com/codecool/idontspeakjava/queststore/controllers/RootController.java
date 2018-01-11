@@ -9,49 +9,66 @@ import com.codecool.idontspeakjava.queststore.database.UserDAO;
 
 import java.sql.SQLException;
 
-public class RootController{
+class RootController {
     private RootView view;
     private User user;
     private CodecoolClassDAO codecoolClassDAO;
     private UserDAO userDAO;
 
-    public RootController(User user){
+    private static final String CREATE_MENTOR = "1";
+    private static final String CREATE_CODECOOL_CLASS = "2";
+    private static final String ASSIGN_MENTOR_TO_CLASS = "3";
+    private static final String EDIT_MENTOR = "4";
+    private static final String SHOW_MENTOR = "5";
+    private static final String SHOW_CLASS_FOR_MENTOR = "6";
+    private static final String CREATE_EXPERIENCE_LEVEL = "7";
+    private static final String EXIT = "0";
+
+    RootController(User user) {
         this.view = new RootView();
         this.codecoolClassDAO = new CodecoolClassDAO();
         this.user = user;
         this.userDAO = new UserDAO();
     }
 
-    public void start() throws SQLException{
-        boolean startProgram = true;
-    
-        while (startProgram) {
+    void start() throws SQLException {
+        boolean runProgram = true;
+
+        while (runProgram) {
             view.showMainMenu();
             String userInput = view.getUserInput();
-            if(userInput=="1"){
-                createMentor();
-            }else if(userInput=="2"){
-                createCodecoolClass();
-            }else if(userInput=="3"){
-                assignMentorToClass();
-            }else if(userInput=="4"){
-                editMentor();
-            }else if(userInput=="5"){
-                showMentor();
-            }else if(userInput=="6"){
-                showCodecoolClassOfMentor();
-            }else if(userInput=="7"){
-                createExperienceLevel();
-            }else if(userInput=="0"){
-                startProgram = false;
-                break;
-            }else{
-                view.showWrongInput();
+            switch (userInput) {
+                case CREATE_MENTOR:
+                    createMentor();
+                    break;
+                case CREATE_CODECOOL_CLASS:
+                    createCodecoolClass();
+                    break;
+                case ASSIGN_MENTOR_TO_CLASS:
+                    assignMentorToClass();
+                    break;
+                case EDIT_MENTOR:
+                    editMentor();
+                    break;
+                case SHOW_MENTOR:
+                    showMentor();
+                    break;
+                case SHOW_CLASS_FOR_MENTOR:
+                    showCodecoolClassOfMentor();
+                    break;
+                case CREATE_EXPERIENCE_LEVEL:
+                    createExperienceLevel();
+                    break;
+                case EXIT:
+                    runProgram = false;
+                    break;
+                default:
+                    view.showWrongInput();
             }
         }
     }
 
-    private boolean createMentor() throws SQLException{
+    private boolean createMentor() throws SQLException {
         view.inputInfoMentorName();
         String firstName = view.getUserInput();
         view.inputInfoMentorLastName();
@@ -64,21 +81,21 @@ public class RootController{
         return true;
     }
 
-    private boolean createCodecoolClass(){
+    private boolean createCodecoolClass() {
         view.inputInfoClassName();
         String className = view.getUserInput();
         codecoolClassDAO.createCodecoolClass(new CodecoolClass(className));
         return true;
     }
 
-    private void assignMentorToClass(){
-        for(User mentorUser : userDAO.getUsersByPermission(Permissions.Mentor)){
-            System.out.println(mentorUser.getFirstName() +" "+ mentorUser.getLastName() +" "+ mentorUser.getEmail());
+    private void assignMentorToClass() {
+        for (User mentorUser : userDAO.getUsersByPermission(Permissions.Mentor)) {
+            System.out.println(mentorUser.getFirstName() + " " + mentorUser.getLastName() + " " + mentorUser.getEmail());
         }
         view.inputInfoMentorEmail();
         String mentorEmail = view.getUserInput();
         User selectedMentor = userDAO.getUserByEmail(mentorEmail);
-        for(CodecoolClass codecoolClass : codecoolClassDAO.getAllCodecoolClasses()){
+        for (CodecoolClass codecoolClass : codecoolClassDAO.getAllCodecoolClasses()) {
             System.out.println(codecoolClass.getName());
         }
         view.inputInfoClassName();
@@ -88,22 +105,22 @@ public class RootController{
 
     }
 
-    private void editMentor(){
-        for(User mentorUser : userDAO.getUsersByPermission(Permissions.Mentor)){
-            System.out.println(mentorUser.getFirstName() +" "+ mentorUser.getLastName() +" "+ mentorUser.getEmail());
+    private void editMentor() {
+        for (User mentorUser : userDAO.getUsersByPermission(Permissions.Mentor)) {
+            System.out.println(mentorUser.getFirstName() + " " + mentorUser.getLastName() + " " + mentorUser.getEmail());
         }
         view.inputInfoMentorEmail();
         String mentorEmail = view.getUserInput();
         User selectedMentor = userDAO.getUserByEmail(mentorEmail);
-        if(view.editMentorOptionAsk("Email")){
+        if (view.editMentorOptionAsk("Email")) {
             view.inputInfoNewMentorEmail();
             String newEmail = view.getUserInput();
             selectedMentor.setEmail(newEmail);
         }
         System.out.println(codecoolClassDAO.getUserCodecoolClass(selectedMentor).getName());
-        if(view.editMentorOptionAsk("Class")){
+        if (view.editMentorOptionAsk("Class")) {
             codecoolClassDAO.removeUserFromCodecoolClass(selectedMentor);
-            for(CodecoolClass codecoolClass : codecoolClassDAO.getAllCodecoolClasses()){
+            for (CodecoolClass codecoolClass : codecoolClassDAO.getAllCodecoolClasses()) {
                 System.out.println(codecoolClass.getName());
             }
             view.inputInfoClassName();
@@ -113,9 +130,9 @@ public class RootController{
         }
     }
 
-    private void showMentor(){
-        for(User mentorUser : userDAO.getUsersByPermission(Permissions.Mentor)){
-            System.out.println(mentorUser.getFirstName() +" "+ mentorUser.getLastName() +" "+ mentorUser.getEmail());
+    private void showMentor() {
+        for (User mentorUser : userDAO.getUsersByPermission(Permissions.Mentor)) {
+            System.out.println(mentorUser.getFirstName() + " " + mentorUser.getLastName() + " " + mentorUser.getEmail());
         }
         view.inputInfoMentorEmail();
         String mentorEmail = view.getUserInput();
@@ -124,21 +141,21 @@ public class RootController{
         view.showMentorInfo(selectedMentor, mentorClass);
     }
 
-    private void showCodecoolClassOfMentor(){
-        for(User mentorUser : userDAO.getUsersByPermission(Permissions.Mentor)){
-            System.out.println(mentorUser.getFirstName() +" "+ mentorUser.getLastName() +" "+ mentorUser.getEmail());
+    private void showCodecoolClassOfMentor() {
+        for (User mentorUser : userDAO.getUsersByPermission(Permissions.Mentor)) {
+            System.out.println(mentorUser.getFirstName() + " " + mentorUser.getLastName() + " " + mentorUser.getEmail());
         }
         view.inputInfoMentorEmail();
         String mentorEmail = view.getUserInput();
         User selectedMentor = userDAO.getUserByEmail(mentorEmail);
-        for(CodecoolClass codecoolClass : codecoolClassDAO.getAllCodecoolClasses()){
-            if(codecoolClass.getName() == codecoolClassDAO.getUserCodecoolClass(selectedMentor).getName()){
+        for (CodecoolClass codecoolClass : codecoolClassDAO.getAllCodecoolClasses()) {
+            if (codecoolClass.getName().equals(codecoolClassDAO.getUserCodecoolClass(selectedMentor).getName())) {
                 System.out.println("Class " + codecoolClass.getName());
             }
         }
     }
 
-    private boolean createExperienceLevel(){
+    private boolean createExperienceLevel() {
         return true;
     }
 }
