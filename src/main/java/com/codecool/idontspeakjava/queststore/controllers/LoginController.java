@@ -7,6 +7,7 @@ import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.views.LoginView;
 import com.codecool.idontspeakjava.queststore.views.UserView;
 
+import java.sql.SQLException;
 import java.util.Optional;
 
 public class LoginController {
@@ -51,7 +52,11 @@ public class LoginController {
                 new CodecoolerController();
                 break;
             case Root:
-                System.out.println("Root");
+                try {
+                    new RootController(user).start();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 break;
         }
     }
