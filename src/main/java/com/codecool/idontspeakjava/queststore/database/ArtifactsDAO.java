@@ -74,8 +74,8 @@ public class ArtifactsDAO extends AbstractDAO {
     }
 
     public void updateArtifact(Artifact artifact) {
-        String query = String.format("UPDATE artifacts SET title = '%s', category = '%s', artifact_description = '%s', price = %d",
-                artifact.getTitle(), artifact.getCategory(), artifact.getDescription(), artifact.getPrice());
+        String query = String.format("UPDATE artifacts SET title = '%s', category = '%s', artifact_description = '%s', price = %d WHERE id = %d",
+                artifact.getTitle(), artifact.getCategory(), artifact.getDescription(), artifact.getPrice(), artifact.getId());
 
         try {
             if (checkIfArtifactExists(artifact.getTitle())) {
