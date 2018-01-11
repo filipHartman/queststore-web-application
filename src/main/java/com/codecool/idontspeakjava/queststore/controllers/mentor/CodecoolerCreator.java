@@ -163,7 +163,6 @@ class CodecoolerCreator {
 
     private void addCodecoolerToDatabase() {
         User newCodecooler = new User(name, secondName, hash, email, Permissions.Student);
-        newCodecooler = new UserDAO().getUserByEmail(newCodecooler.getEmail());
         try {
             new UserDAO().createUser(newCodecooler);
             new CodecoolClassDAO().addUserToCodecoolClass(newCodecooler, selectedCodecoolClass);

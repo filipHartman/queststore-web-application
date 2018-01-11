@@ -10,11 +10,11 @@ public class MentorView extends UserView {
         System.out.println(String.format(
                 "Hello %s ! Select what you want to do:\n" +
                         "1 - Create new codecooler\n" +
-                        "2 - Add new quest_store.db\n" +
+                        "2 - Add new quest\n" +
                         "3 - Add new artifact\n" +
-                        "4 - Edit existing quest_store.db\n" +
+                        "4 - Edit existing quest\n" +
                         "5 - Edit existing artifact\n" +
-                        "6 - Mark quest_store.db for a codecooler\n" +
+                        "6 - Mark quest for a codecooler\n" +
                         "7 - Mark artifact for a codecooler\n" +
                         "8 - Check the wallets of codecoolers\n" +
                         "0 - Exit the program\n", userName));
@@ -49,15 +49,15 @@ public class MentorView extends UserView {
     }
 
     public void askForQuestTitle() {
-        System.out.println("Enter the quest_store.db title or 0 to cancel.\n");
+        System.out.println("Enter the quest title or 0 to cancel.\n");
     }
 
     public void askForQuestDescription() {
-        System.out.println("Enter the description of the quest_store.db or 0 to cancel.\n");
+        System.out.println("Enter the description of the quest or 0 to cancel.\n");
     }
 
     public void askForQuestReward() {
-        System.out.println("Enter the reward for the quest_store.db or 0 to cancel.\n");
+        System.out.println("Enter the reward for the quest or 0 to cancel.\n");
     }
 
     public void askForQuestCategory() {
@@ -104,4 +104,38 @@ public class MentorView extends UserView {
         System.out.println("There aren't any classes. The student can't be created.\n");
     }
 
+    public void showInputMustBeHigherThanZero() {
+        System.out.println("Wrong input. The value must be higher than zero.\n");
+    }
+
+    public void askForArtifactTitle() {
+        System.out.println("Enter the name of new artifact or 0 to cancel.\n");
+    }
+
+    public void askForArtifactCategory() {
+        System.out.println("Select artifact category:\n" +
+                "1 - Basic\n" +
+                "2 - Magic\n" +
+                "0 - Cancel\n");
+    }
+
+    public void showArtifactCreated() {
+        System.out.println("New artifact have been created.\n");
+    }
+
+    public void askForArtifactDescription() {
+        System.out.println("Enter the description of your artifact or 0 to cancel.\n");
+    }
+
+    public void askForArtifactPrice() {
+        System.out.println("Enter the price of your artifact or 0 to cancel.\n");
+    }
+
+    public void showDuplicateWarning() {
+        System.out.println("You can't add position with this value. It is already in the database.\n");
+    }
+
+    public void showDatabaseError() {
+        System.out.println("An error in the database occurred.\n");
+    }
 }

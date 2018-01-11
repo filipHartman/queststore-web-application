@@ -1,32 +1,32 @@
 package com.codecool.idontspeakjava.queststore.controllers.mentor;
 
-import com.codecool.idontspeakjava.queststore.database.QuestsDAO;
-import com.codecool.idontspeakjava.queststore.models.Quest;
-import com.codecool.idontspeakjava.queststore.models.QuestCategory;
+import com.codecool.idontspeakjava.queststore.database.ArtifactsDAO;
+import com.codecool.idontspeakjava.queststore.models.Artifact;
+import com.codecool.idontspeakjava.queststore.models.ArtifactCategory;
 import com.codecool.idontspeakjava.queststore.views.MentorView;
 
 import java.sql.SQLException;
 
-class QuestCreator {
+class ArtifactCreator {
 
     private static final int TITLE = 0;
     private static final int CATEGORY = 1;
     private static final int DESCRIPTION = 2;
-    private static final int REWARD = 3;
+    private static final int PRICE = 3;
 
     private static final String EXIT = "0";
     private MentorView view;
 
     private String title;
-    private QuestCategory category;
+    private ArtifactCategory category;
     private String description;
-    private int reward;
+    private int price;
 
-    QuestCreator(MentorView view) {
+    ArtifactCreator(MentorView view) {
         this.view = view;
     }
 
-    void createQuest() {
+    void createArtifact() {
         int inputsReceived = 0;
         boolean continueLoop = true;
 
@@ -51,32 +51,31 @@ class QuestCreator {
         }
 
         if (inputsReceived == PROMPTS) {
-            addQuestToDatabase();
+            addArtifactToDatabase();
         } else {
             view.showOperationCancelled();
         }
     }
 
-    private void addQuestToDatabase() {
-        Quest quest = new Quest(title, category, description, reward);
-        QuestsDAO questsDAO = new QuestsDAO();
-        questsDAO.createQuest(quest);
-        view.showQuestCreated();
+    private void addArtifactToDatabase() {
+        Artifact artifact = new Artifact(title, category, description, price);
+        new ArtifactsDAO().createArtifact(artifact);
+        view.showArtifactCreated();
     }
 
     private void selectPromptForCreateQuest(int promptNumber) {
         switch (promptNumber) {
             case TITLE:
-                view.askForQuestTitle();
+                view.askForArtifactTitle();
                 break;
             case CATEGORY:
-                view.askForQuestCategory();
+                view.askForArtifactCategory();
                 break;
             case DESCRIPTION:
-                view.askForQuestDescription();
+                view.askForArtifactDescription();
                 break;
-            case REWARD:
-                view.askForQuestReward();
+            case PRICE:
+                view.askForArtifactPrice();
                 break;
         }
     }
@@ -93,8 +92,8 @@ class QuestCreator {
             case DESCRIPTION:
                 attributeNotSet = setDescription(input);
                 break;
-            case REWARD:
-                attributeNotSet = setReward(input);
+            case PRICE:
+                attributeNotSet = setPrice(input);
                 break;
             default:
                 attributeNotSet = false;
@@ -102,20 +101,20 @@ class QuestCreator {
         return attributeNotSet;
     }
 
-    private boolean setReward(String input) {
-        boolean rewardNotSet = true;
+    private boolean setPrice(String input) {
+        boolean priceNotSet = true;
         if (input.matches("\\d+")) {
             int inputAsInt = Integer.valueOf(input);
             if (inputAsInt > 0) {
-                reward = inputAsInt;
-                rewardNotSet = false;
+                price = inputAsInt;
+                priceNotSet = false;
             } else {
                 view.showInputMustBeHigherThanZero();
             }
         } else {
             view.showWrongDigitInput();
         }
-        return rewardNotSet;
+        return priceNotSet;
     }
 
     private boolean setDescription(String input) {
@@ -131,16 +130,16 @@ class QuestCreator {
 
     private boolean setCategory(String input) {
         final String BASIC = "1";
-        final String EXTRA = "2";
+        final String MAGIC = "2";
 
         boolean categoryNotSet = false;
 
         switch (input) {
             case BASIC:
-                category = QuestCategory.Basic;
+                category = ArtifactCategory.Basic;
                 break;
-            case EXTRA:
-                category = QuestCategory.Extra;
+            case MAGIC:
+                category = ArtifactCategory.Magic;
                 break;
             default:
                 categoryNotSet = true;
@@ -153,7 +152,7 @@ class QuestCreator {
         boolean titleNotSet = true;
         if (input.matches("[a-zA-Z1-9 ]+")) {
             try {
-                if (!new QuestsDAO().checkIfQuestExists(input)) {
+                if (!new ArtifactsDAO().checkIfArtifactExists(input)) {
                     title = input;
                     titleNotSet = false;
                 } else {
@@ -168,4 +167,5 @@ class QuestCreator {
         }
         return titleNotSet;
     }
+
 }
