@@ -12,7 +12,6 @@ public class RootController{
     private User user;
     private CodecoolClassDAO codecoolClassDAO;
     private UserDAO userDAO;
-    private Permissions permission;
 
     public RootController(User user){
         this.view = new RootView();
@@ -22,26 +21,39 @@ public class RootController{
     }
 
     private boolean createMentor() throws SQLException{
-        view.showCreateMentorMenu("firstName");
+        view.inputInfoMentorName();
         String firstName = view.getUserInput();
-        view.showCreateMentorMenu("lastName");
+        view.inputInfoMentorLastName();
         String lastName = view.getUserInput();
-        view.showCreateMentorMenu("password");
+        view.inputInfoMentorPassword();
         String passwordHash = view.getUserInput();
-        view.showCreateMentorMenu("email");
+        view.inputInfoMentorEmail();
         String email = view.getUserInput();
-        userDAO.createUser(new User(firstName, lastName, passwordHash, email, permission.Root));
+        userDAO.createUser(new User(firstName, lastName, passwordHash, email, Permissions.Root));
         return true;
     }
 
     private boolean createCodecoolClass(){
-        view.showCreateCodecoolClassMenu();
+        view.inputInfoClassName();
         String className = view.getUserInput();
         codecoolClassDAO.createCodecoolClass(new CodecoolClass(className));
         return true;
     }
 
     private void assignMentorToClass(){
+        for(User mentorUser : userDAO.getUsersByPermission(Permissions.Mentor)){
+            System.out.println(mentorUser);
+        }
+        view.inputInfoMentorEmail();
+        String mentorEmail = view.getUserInput();
+        User selectedMentor = userDAO.getUserByEmail(mentorEmail);
+        for(CodecoolClass codecoolClass : codecoolClassDAO.getAllCodecoolClasses()){
+            System.out.println(codecoolClass);
+        }
+        view.inputInfoClassName();
+        String className = view.getUserInput();
+        CodecoolClass selectedClass = codecoolClassDAO.getCodecoolClass(className);
+        codecoolClassDAO.addUserToCodecoolClass(selectedMentor, selectedClass);
 
     }
 
