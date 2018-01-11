@@ -55,6 +55,7 @@ public class MentorController {
             case MARK_ARTIFACT:
                 break;
             case CHECK_WALLETS:
+                new WalletsChecker(view).showWallets();
                 break;
             case EXIT:
                 continueRunning = false;
