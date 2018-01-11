@@ -46,11 +46,26 @@ public class CodecoolerView extends UserView{
     }
 
     public void showMyLevel(String level){
+        System.out.println(CLEAR_CONSOLE);
         System.out.println("Rank: " + level);
         getUserInput();
     }
 
     public void showWrongInput() {
         System.out.println("Your input is wrong.\n");
+    }
+
+    public void showQuests(ArrayList<String> quests){
+        System.out.println(CLEAR_CONSOLE);
+        String[] questInfo = new String[3];
+        for (String quest : quests){
+            questInfo = quest.split("@");
+            String title = questInfo[0];
+            String reward = questInfo[1];
+            String description = questInfo[2];
+            System.out.println(title + "     Reward: " + reward + " coolcoins");
+            System.out.println(description + "\n\n");
+        }
+        getUserInput();
     }
 }

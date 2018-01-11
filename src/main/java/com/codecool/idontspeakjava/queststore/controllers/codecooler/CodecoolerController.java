@@ -5,6 +5,7 @@ import com.codecool.idontspeakjava.queststore.models.Team;
 import com.codecool.idontspeakjava.queststore.models.Artifact;
 import com.codecool.idontspeakjava.queststore.models.Wallet;
 import com.codecool.idontspeakjava.queststore.models.Order;
+import com.codecool.idontspeakjava.queststore.models.Quest;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
 import com.codecool.idontspeakjava.queststore.models.ExperienceLevel;
@@ -12,6 +13,7 @@ import com.codecool.idontspeakjava.queststore.database.WalletsDAO;
 import com.codecool.idontspeakjava.queststore.database.ArtifactsDAO;
 import com.codecool.idontspeakjava.queststore.database.OrdersDAO;
 import com.codecool.idontspeakjava.queststore.database.ExperienceLevelDAO;
+import com.codecool.idontspeakjava.queststore.database.QuestsDAO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,7 @@ public class CodecoolerController {
     private ExperienceLevelDAO experienceLevelDAO;
     private OrdersDAO orderDAO;
     private Wallet wallet;
+    private QuestsDAO questsDAO;
 
     private static final String SEE_WALLET = "1";
     private static final String BUY_ARTIFACT = "2";
@@ -41,6 +44,7 @@ public class CodecoolerController {
         this.experienceLevelDAO = new ExperienceLevelDAO();
         this.walletDAO = new WalletsDAO();
         this.orderDAO = new OrdersDAO();
+        this.questsDAO = new QuestsDAO();
 
         this.wallet = walletDAO.getWalletByUserID(codecooler.getId());
     }
@@ -70,7 +74,7 @@ public class CodecoolerController {
                 checkExperienceLevel();
                 break;
             case SEE_QUESTS:
-                buyArtifact();
+                seeQuests();
                 break;
             case EXIT:
                 continueRunning = false;
@@ -110,6 +114,16 @@ public class CodecoolerController {
             namesOfArtifacts.add(artifactName);
         }
         view.showWallet(wallet.getCurrentState(), namesOfArtifacts);
+    }
+
+    private void seeQuests(){
+        List<Quest> quests = questsDAO.getAllQuests();
+        ArrayList<String> questsStrings = new ArrayList<String>();
+        for (Quest quest : quests) {
+            String questInfo = quest.getTitle() + "@" + quest.getReward() + "@" + quest.getDescription();
+            questsStrings.add(questInfo);
+        }
+        view.showQuests(questsStrings);
     }
 
     private void editProfile(){
