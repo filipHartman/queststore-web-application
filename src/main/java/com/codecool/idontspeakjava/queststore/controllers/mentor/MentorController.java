@@ -54,6 +54,7 @@ public class MentorController {
                 new QuestMarker(view).markQuest();
                 break;
             case MARK_ARTIFACT:
+                new ArtifactMarker(view).markArtifact();
                 break;
             case CHECK_WALLETS:
                 new WalletsChecker(view).showWallets();
