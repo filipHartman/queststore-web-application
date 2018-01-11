@@ -1,17 +1,20 @@
 package com.codecool.idontspeakjava.queststore.views;
 
 
+import java.util.ArrayList;
+import java.util.ListIterator;
+
 public class MentorView extends UserView {
 
     public void showMainMenu(String userName) {
         System.out.println(String.format(
                 "Hello %s ! Select what you want to do:\n" +
                         "1 - Create new codecooler\n" +
-                        "2 - Add new quest\n" +
+                        "2 - Add new quest_store.db\n" +
                         "3 - Add new artifact\n" +
-                        "4 - Edit existing quest\n" +
+                        "4 - Edit existing quest_store.db\n" +
                         "5 - Edit existing artifact\n" +
-                        "6 - Mark quest for a codecooler\n" +
+                        "6 - Mark quest_store.db for a codecooler\n" +
                         "7 - Mark artifact for a codecooler\n" +
                         "8 - Check the wallets of codecoolers\n" +
                         "0 - Exit the program\n", userName));
@@ -46,15 +49,15 @@ public class MentorView extends UserView {
     }
 
     public void askForQuestTitle() {
-        System.out.println("Enter the quest title or 0 to cancel.\n");
+        System.out.println("Enter the quest_store.db title or 0 to cancel.\n");
     }
 
     public void askForQuestDescription() {
-        System.out.println("Enter the description of the quest or 0 to cancel.\n");
+        System.out.println("Enter the description of the quest_store.db or 0 to cancel.\n");
     }
 
     public void askForQuestReward() {
-        System.out.println("Enter the reward for the quest or 0 to cancel.\n");
+        System.out.println("Enter the reward for the quest_store.db or 0 to cancel.\n");
     }
 
     public void askForQuestCategory() {
@@ -72,7 +75,7 @@ public class MentorView extends UserView {
         System.out.println("Wrong input. You can use only letters, digits, whitespaces, commas, dots and exclamation marks\n");
     }
 
-    public void showWrongRewardInput() {
+    public void showWrongDigitInput() {
         System.out.println("Wrong input. You can use only digits.\n");
     }
 
@@ -87,4 +90,18 @@ public class MentorView extends UserView {
     public void showWrongEmailInput() {
         System.out.println("Wrong input. This is not a valid email address.\n");
     }
+
+    public void askForCodecoolClass(ArrayList<String> classesTitles) {
+        ListIterator<String> iterator = classesTitles.listIterator();
+        System.out.println("Select to which class you want to add student, or 0 to cancel.\n");
+        for (; iterator.hasNext(); ) {
+            String title = iterator.next();
+            System.out.println(String.format("%d. %s", iterator.nextIndex(), title));
+        }
+    }
+
+    public void showClassesDontExist() {
+        System.out.println("There aren't any classes. The student can't be created.\n");
+    }
+
 }
