@@ -314,4 +314,20 @@ public class MentorView extends UserView {
             System.out.println(String.format("%d. %s", iterator.nextIndex(), quest));
         }
     }
+
+    public void showArtifactsToMark(ArrayList<String> artifactsToPrint) {
+        clearScreen();
+        System.out.println("Select artifact to activate:\n");
+        ListIterator<String> iterator = artifactsToPrint.listIterator();
+        for (; iterator.hasNext(); ) {
+            String artifact = iterator.next();
+            System.out.println(String.format("%d. %s", iterator.nextIndex(), artifact));
+        }
+    }
+
+    public void showArtifactUsed() {
+        clearScreen();
+        System.out.println("This artifact have been marked as used.\n");
+        continuePrompt();
+    }
 }
