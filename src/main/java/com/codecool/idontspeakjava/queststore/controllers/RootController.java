@@ -37,9 +37,6 @@ public class RootController{
     private boolean createCodecoolClass(){
         view.showCreateCodecoolClassMenu();
         String className = view.getUserInput();
-        for (CodecoolClass codecoolClass : codecoolClassDAO.getAllCodecoolClasses())
-            if(className == codecoolClass.getName())
-                return false;
         codecoolClassDAO.createCodecoolClass(new CodecoolClass(className));
         return true;
     }
