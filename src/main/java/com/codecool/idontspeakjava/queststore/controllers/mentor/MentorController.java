@@ -48,16 +48,12 @@ public class MentorController {
                 new QuestEditor(view).editQuest();
                 break;
             case EDIT_ARTIFACT:
-                editArtifact();
                 break;
             case MARK_QUEST:
-                markQuest();
                 break;
             case MARK_ARTIFACT:
-                markArtifact();
                 break;
             case CHECK_WALLETS:
-                checkWallets();
                 break;
             case EXIT:
                 continueRunning = false;
@@ -66,22 +62,5 @@ public class MentorController {
                 view.showWrongInput();
         }
         return continueRunning;
-    }
-
-
-    private void editArtifact() {
-
-    }
-
-    private void markQuest() {
-
-    }
-
-    private void markArtifact() {
-
-    }
-
-    private void checkWallets() {
-
     }
 }
