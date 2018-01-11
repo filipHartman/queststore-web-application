@@ -1,7 +1,6 @@
 package com.codecool.idontspeakjava.queststore.views;
 
 import java.util.Scanner;
-import java.util.Spliterator.OfPrimitive;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
 
