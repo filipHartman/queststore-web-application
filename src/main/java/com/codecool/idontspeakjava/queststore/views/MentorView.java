@@ -75,4 +75,16 @@ public class MentorView extends UserView {
     public void showWrongRewardInput() {
         System.out.println("Wrong input. You can use only digits.\n");
     }
+
+    public void showQuestCreated() {
+        System.out.println("The quest have been successfully created.\n");
+    }
+
+    public void showWrongNameInput() {
+        System.out.println("Wrong input. You can only use letters.\n");
+    }
+
+    public void showWrongEmailInput() {
+        System.out.println("Wrong input. This is not a valid email address.\n");
+    }
 }
