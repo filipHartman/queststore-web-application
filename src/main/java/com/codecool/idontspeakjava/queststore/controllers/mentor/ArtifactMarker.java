@@ -66,20 +66,17 @@ class ArtifactMarker {
     }
 
     private void filterOrders() {
-        ListIterator<Order> iterator = orders.listIterator();
-        for (; iterator.hasNext(); ) {
-            Order order = iterator.next();
-            if (order.isUsed()) {
-                orders.remove(order);
+        List<Order> filteredOrders = new ArrayList<>();
+        for (Order order : orders) {
+            if (!order.isUsed()) {
+                filteredOrders.add(order);
             }
         }
+        orders = filteredOrders;
     }
 
     private void toggleOrderAsUsed() {
-        System.out.println(selectedOrder.isUsed());
         selectedOrder.setUsed(true);
-        System.out.println(selectedOrder.isUsed());
-        view.getUserInput();
         new OrdersDAO().updateOrder(selectedOrder);
         view.showArtifactUsed();
     }
