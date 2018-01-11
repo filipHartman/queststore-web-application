@@ -1,5 +1,6 @@
 package com.codecool.idontspeakjava.queststore.controllers.mentor;
 
+import com.codecool.idontspeakjava.queststore.database.QuestsDAO;
 import com.codecool.idontspeakjava.queststore.models.Quest;
 import com.codecool.idontspeakjava.queststore.models.QuestCategory;
 import com.codecool.idontspeakjava.queststore.views.MentorView;
@@ -56,6 +57,9 @@ class QuestCreator {
 
     private void addQuestToDatabase() {
         Quest quest = new Quest(title, category, description, reward);
+        QuestsDAO questsDAO = new QuestsDAO();
+        questsDAO.createQuest(quest);
+        view.showQuestCreated();
     }
 
     private void selectPromptForCreateQuest(int promptNumber) {
@@ -102,7 +106,7 @@ class QuestCreator {
             reward = Integer.valueOf(input);
             rewardNotSet = false;
         } else {
-            view.showWrongRewardInput();
+            view.showWrongDigitInput();
         }
         return rewardNotSet;
     }
