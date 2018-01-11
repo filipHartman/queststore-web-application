@@ -36,6 +36,7 @@ public class CodecoolerController {
     public CodecoolerController(){
         view = new CodecoolerView();
         codecooler = new User("Przemek", "Nachel", "haslo", "cygan@nic.pl", Permissions.Student);
+        codecooler.setId(7);
         this.artifactDAO = new ArtifactsDAO();
         this.experienceLevelDAO = new ExperienceLevelDAO();
         this.walletDAO = new WalletsDAO();

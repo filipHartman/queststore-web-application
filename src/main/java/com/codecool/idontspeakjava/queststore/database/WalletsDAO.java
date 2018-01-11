@@ -12,7 +12,7 @@ public class WalletsDAO extends AbstractDAO {
     public static final Logger log = LoggerFactory.getLogger(WalletsDAO.class);
 
     public Wallet getWalletByUserID(int id) {
-        String query = String.format("SELECT * FROM wallets WHERE id = %d", id);
+        String query = String.format("SELECT * FROM wallets WHERE user_id = %d", id);
         Wallet wallet = null;
         try {
             if (checkIfWalletExists(id)) {
