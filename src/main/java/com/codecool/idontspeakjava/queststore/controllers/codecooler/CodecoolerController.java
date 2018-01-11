@@ -15,32 +15,73 @@ import com.codecool.idontspeakjava.queststore.database.ExperienceLevelDAO;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CodecoolerController{
-
+public class CodecoolerController {
     private CodecoolerView view;
+    private User codecooler;
+
     private ArtifactsDAO artifactDAO;
     private WalletsDAO walletDAO;
     private ExperienceLevelDAO experienceLevelDAO;
     private OrdersDAO orderDAO;
-    private User user;
     private Wallet wallet;
 
+    private static final String SEE_WALLET = "1";
+    private static final String BUY_ARTIFACT = "2";
+    private static final String BUY_ARTIFACT_FOR_TEAM = "3";
+    private static final String SEE_MY_LEVEL = "4";
+    private static final String SEE_QUESTS = "5";
+    private static final String EXIT = "0";
+
     public CodecoolerController(User user){
+        view = new CodecoolerView();
+        codecooler = new User("Przemek", "Nachel", "haslo", "cygan@nic.pl", Permissions.Student);
         this.artifactDAO = new ArtifactsDAO();
         this.experienceLevelDAO = new ExperienceLevelDAO();
         this.walletDAO = new WalletsDAO();
         this.orderDAO = new OrdersDAO();
-        this.view = new CodecoolerView();
+
         this.user = user;
         this.wallet = walletDAO.getWalletByUserID(user.getId());
     }
 
-    public void start(){
+    public void run() {
+        boolean runProgram = true;
 
+        while (runProgram) {
+            view.showMainMenu(codecooler.getFirstName());
+            runProgram = selectAction(view.getUserInput());
+        }
+    }
+
+    private boolean selectAction(String input) {
+        boolean continueRunning = true;
+        switch (input) {
+            case SEE_WALLET:
+                checkWallet();
+                break;
+            case BUY_ARTIFACT:
+                buyArtifact();
+                break;
+            case BUY_ARTIFACT_FOR_TEAM:
+                buyArtifact()
+                break;
+            case SEE_MY_LEVEL:
+                checkExperienceLevel();
+                break;
+            case SEE_QUESTS:
+                buyArtifact();
+                break;
+            case EXIT:
+                continueRunning = false;
+                break;
+            default:
+                view.showWrongInput();
+        }
+        return continueRunning;
     }
 
     private boolean buyArtifact(){
-        Wallet userWallet = walletDAO.getWalletByUserID(user.getId());
+        Wallet userWallet = walletDAO.getWalletByUserID(codecooler.getId());
         List<String> namesOfArtifacts = new ArrayList<String>();
         for (Artifact artifact : artifactDAO.getAllArtifacts()) {
             namesOfArtifacts.add(artifact.getTitle());
@@ -61,7 +102,7 @@ public class CodecoolerController{
     }
 
     private void checkWallet(){
-        List<Order> allUserOrders = orderDAO.getAllOrdersByUserID(user.getId());
+        List<Order> allUserOrders = orderDAO.getAllOrdersByUserID(codecooler.getId());
         ArrayList<String> namesOfArtifacts = new ArrayList<String>();
         for (Order order : allUserOrders) {
             String artifactName = artifactDAO.getArtifact(order.getArtifactID()).getTitle();
