@@ -202,4 +202,30 @@ public class MentorView extends UserView {
                 "3 - Category\n" +
                 "4 - Price\n");
     }
+
+    public void showNoUsers() {
+        System.out.println("There are no codecoolers\n");
+    }
+
+    public void showUsersAndWallets(ArrayList<String> userFullNames, ArrayList<String> coinsFromWallets) {
+        System.out.println("Select which user details you want to show or 0 to cancel.\n");
+        int iterations = userFullNames.size();
+        for (int i = 0; i < iterations; i++) {
+            System.out.println(String.format("%d. %s %s", i + 1, userFullNames.get(i), coinsFromWallets.get(i)));
+        }
+    }
+
+    public void printUserWallet(String fullName, String currentCoins, String allEarnings, ArrayList<String> ordersToPrint) {
+        System.out.println(String.format("The wallet of %s contains %s coins.\nTotal earnings are equal to : %s.\n" +
+                "History of bought artifacts:\n", fullName, currentCoins, allEarnings));
+        if (!ordersToPrint.isEmpty()) {
+            ListIterator<String> iterator = ordersToPrint.listIterator();
+            for (; iterator.hasNext(); ) {
+                String order = iterator.next();
+                System.out.println(String.format("%d. %s\n", iterator.nextIndex(), order));
+            }
+        } else {
+            System.out.println("This codecooler didn't bought any artifacts.\n");
+        }
+    }
 }
