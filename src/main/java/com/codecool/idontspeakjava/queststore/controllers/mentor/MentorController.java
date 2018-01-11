@@ -1,6 +1,5 @@
 package com.codecool.idontspeakjava.queststore.controllers.mentor;
 
-import com.codecool.idontspeakjava.queststore.models.Permissions;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.views.MentorView;
 
@@ -19,9 +18,9 @@ public class MentorController {
     private static final String EXIT = "0";
 
 
-    public MentorController() {
+    public MentorController(User user) {
         view = new MentorView();
-        mentor = new User("Henryk", "Pryk", "ahbgd", "h.pryk@email.com", Permissions.Mentor);
+        mentor = user;
     }
 
     public void run() {

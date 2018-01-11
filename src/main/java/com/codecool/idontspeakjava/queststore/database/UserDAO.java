@@ -30,6 +30,7 @@ public class UserDAO extends AbstractDAO {
             getConnection()
                     .createStatement()
                     .executeUpdate(query);
+            user.setId(getUserByEmail(user.getEmail()).getId());
         }
     }
 
