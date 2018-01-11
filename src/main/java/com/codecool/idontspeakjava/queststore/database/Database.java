@@ -7,5 +7,5 @@ public interface Database {
 
     void connectToDatabase() throws SQLException, ClassNotFoundException;
 
-    Connection getConnection();
+    Connection getConnection() throws SQLException;
 }

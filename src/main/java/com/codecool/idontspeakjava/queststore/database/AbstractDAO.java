@@ -10,14 +10,14 @@ public class AbstractDAO implements Database {
 
     @Override
     public void connectToDatabase() throws SQLException, ClassNotFoundException {
-        Class.forName("org.sqlite.JDBC");
+
         connection = DriverManager.getConnection("jdbc:sqlite:quest_store.db?foreign_keys=on;");
         connection.setAutoCommit(true);
     }
 
     @Override
-    public Connection getConnection() {
-        if (connection == null) {
+    public Connection getConnection() throws SQLException {
+        if (connection == null || connection.isClosed()) {
             try {
                 connectToDatabase();
             } catch (SQLException | ClassNotFoundException e) {
