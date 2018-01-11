@@ -7,6 +7,8 @@ import com.codecool.idontspeakjava.queststore.models.Permissions;
 import com.codecool.idontspeakjava.queststore.database.CodecoolClassDAO;
 import com.codecool.idontspeakjava.queststore.database.UserDAO;
 
+import java.sql.SQLException;
+
 public class RootController{
     private RootView view;
     private User user;
@@ -86,6 +88,11 @@ public class RootController{
         for(User mentorUser : userDAO.getUsersByPermission(Permissions.Mentor)){
             System.out.println(mentorUser.getFirstName() +" "+ mentorUser.getLastName() +" "+ mentorUser.getEmail());
         }
+        view.inputInfoMentorEmail();
+        String mentorEmail = view.getUserInput();
+        User selectedMentor = userDAO.getUserByEmail(mentorEmail);
+        CodecoolClass mentorClass = codecoolClassDAO.getUserCodecoolClass(selectedMentor);
+        view.showMentorInfo(selectedMentor, mentorClass);
     }
 
     private void showCodecoolClassOfMentor(){
