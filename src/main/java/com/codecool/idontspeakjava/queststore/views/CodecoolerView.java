@@ -51,6 +51,12 @@ public class CodecoolerView extends UserView{
         getUserInput();
     }
 
+    public void notEnoughCoolcoins(){
+        System.out.println(CLEAR_CONSOLE);
+        System.out.println("Not enough coolcoins\nPress enter to continue...");
+        getUserInput();
+    }
+
     public void showWrongInput() {
         System.out.println("Your input is wrong.\n");
     }

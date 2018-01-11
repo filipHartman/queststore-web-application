@@ -65,7 +65,7 @@ public class CodecoolerController {
                 checkWallet();
                 break;
             case BUY_ARTIFACT:
-                buyArtifact();
+                buyArtifact(chooseArtifact());
                 break;
             case BUY_ARTIFACT_FOR_TEAM:
                 buyArtifact();
@@ -85,13 +85,33 @@ public class CodecoolerController {
         return continueRunning;
     }
 
-    private boolean buyArtifact(){
+    private int chooseArtifact(){
+        int artifactId = 0;
         ArrayList<String> namesOfArtifacts = new ArrayList<String>();
+        ArrayList<Integer> IDs = new ArrayList<>();
         for (Artifact artifact : artifactDAO.getAllArtifacts()) {
             namesOfArtifacts.add(artifact.getTitle());
+            IDs.add(new Integer(artifact.getId()));
         }
         view.showBuyArtifactMenu(namesOfArtifacts);
-        return false;
+        String input = view.getUserInput();
+        if (input.matches("\\d+") && !input.equals("0")){
+            int choosenPosition = Integer.parseInt(input);
+            if (choosenPosition <= namesOfArtifacts.size()){
+                artifactId = IDs.get(choosenPosition - 1).intValue();
+            }
+        }
+        return artifactId;    
+    }
+
+    private void buyArtifact(int id){
+        Artifact artifact = artifactDAO.getArtifact(id);
+        if (artifact.getPrice() <= wallet.getCurrentState()){
+            Order order = new Order(id, wallet.getId(), false);
+            orderDAO.createOrder(order);
+        } else {
+            view.notEnoughCoolcoins();
+        }
     }
 
     private void checkExperienceLevel(){
