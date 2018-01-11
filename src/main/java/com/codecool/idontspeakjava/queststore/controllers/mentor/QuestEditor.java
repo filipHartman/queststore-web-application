@@ -46,8 +46,10 @@ class QuestEditor {
             } else {
                 if (userInput.equals(EXIT)) {
                     continueLoop = false;
+                    view.showOperationCancelled();
+                } else {
+                    view.showWrongInput();
                 }
-                view.showWrongInput();
             }
         }
     }
