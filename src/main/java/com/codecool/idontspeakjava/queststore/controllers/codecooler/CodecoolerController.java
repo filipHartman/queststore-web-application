@@ -1,14 +1,12 @@
 package com.codecool.idontspeakjava.queststore.controllers.codecooler;
 
 import com.codecool.idontspeakjava.queststore.views.CodecoolerView;
-import com.codecool.idontspeakjava.queststore.models.Team;
 import com.codecool.idontspeakjava.queststore.models.Artifact;
 import com.codecool.idontspeakjava.queststore.models.ArtifactCategory;
 import com.codecool.idontspeakjava.queststore.models.Wallet;
 import com.codecool.idontspeakjava.queststore.models.Order;
 import com.codecool.idontspeakjava.queststore.models.Quest;
 import com.codecool.idontspeakjava.queststore.models.User;
-import com.codecool.idontspeakjava.queststore.models.Permissions;
 import com.codecool.idontspeakjava.queststore.models.ExperienceLevel;
 import com.codecool.idontspeakjava.queststore.database.WalletsDAO;
 import com.codecool.idontspeakjava.queststore.database.ArtifactsDAO;
@@ -18,7 +16,6 @@ import com.codecool.idontspeakjava.queststore.database.QuestsDAO;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale.Category;
 
 public class CodecoolerController {
     private CodecoolerView view;
