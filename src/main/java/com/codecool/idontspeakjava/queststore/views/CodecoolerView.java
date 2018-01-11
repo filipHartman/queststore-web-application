@@ -35,7 +35,6 @@ public class CodecoolerView extends UserView{
             System.out.println((namesOfArtifacts.indexOf(artifact) + 1) + ". " + artifact);
         }
         System.out.println("\n0 - Back");
-        getUserInput();
     }
 
     public void showBuyArtifactForTeamMenu(ArrayList<String> namesOfArtifacts){
