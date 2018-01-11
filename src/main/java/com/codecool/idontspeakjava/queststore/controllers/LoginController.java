@@ -25,7 +25,7 @@ public class LoginController {
         boolean userNotDecidedToExit = true;
 
         while (userNotDecidedToExit) {
-            UserView.clearScreen();
+            loginView.clearScreen();
             loginView.showGreeting();
             Optional<User> user = Optional.ofNullable(processCredentialsAndReturnUserInstance(loginView.getUserLogin()));
             if (user.isPresent()) {
