@@ -59,6 +59,7 @@ class QuestCreator {
         Quest quest = new Quest(title, category, description, reward);
         QuestsDAO questsDAO = new QuestsDAO();
         questsDAO.createQuest(quest);
+        view.showQuestCreated();
     }
 
     private void selectPromptForCreateQuest(int promptNumber) {
