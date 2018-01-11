@@ -66,7 +66,6 @@ class WalletsChecker {
         ArrayList<String> ordersToPrint = createInfoAboutOrders(orders);
 
         view.printUserWallet(fullName, currentCoins, allEarnings, ordersToPrint);
-        view.getUserInput();
     }
 
     private ArrayList<String> createInfoAboutOrders(List<Order> orders) {
