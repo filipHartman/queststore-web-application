@@ -11,18 +11,23 @@ public class RootView extends UserView{
         return scanner.nextLine();
     }
 
-    public void showCreateCodecoolClassMenu(){
+    public void inputInfoClassName(){
         System.out.println("Enter class name");
     }
     
-    public void showCreateMentorMenu(String whichOne){
-        if(whichOne == "firstName")
-            System.out.println("Enter mentor first name");
-        else if(whichOne == "lastName")
-            System.out.println("Enter mentor last name");
-        else if(whichOne == "password")
-            System.out.println("Enter mentor passwordHash");
-        else
-            System.out.println("Enter mentor email");
+    public void inputInfoMentorName(){
+        System.out.println("Enter mentor first name");
+    }
+
+    public void inputInfoMentorEmail(){
+        System.out.println("Enter mentor email");
+    }
+
+    public void inputInfoMentorLastName(){
+        System.out.println("Enter mentor last name");
+    }
+
+    public void inputInfoMentorPassword(){
+        System.out.println("Enter mentor password");
     }
 }
