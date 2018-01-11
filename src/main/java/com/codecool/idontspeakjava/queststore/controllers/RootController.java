@@ -3,21 +3,35 @@ package com.codecool.idontspeakjava.queststore.controllers;
 import com.codecool.idontspeakjava.queststore.views.RootView;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
-import com.codecool.idontspeakjava.queststore.database.CodecoolClassDAO;;
+import com.codecool.idontspeakjava.queststore.models.Permissions;
+import com.codecool.idontspeakjava.queststore.database.CodecoolClassDAO;
+import com.codecool.idontspeakjava.queststore.database.UserDAO;
 
 public class RootController{
     private RootView view;
     private User user;
     private CodecoolClassDAO codecoolClassDAO;
+    private UserDAO userDAO;
+    private Permissions permission;
 
     public RootController(User user){
         this.view = new RootView();
         this.codecoolClassDAO = new CodecoolClassDAO();
         this.user = user;
+        this.userDAO = new UserDAO();
     }
 
-    private boolean createMentor(){
-
+    private boolean createMentor() throws SQLException{
+        view.showCreateCodecoolClassMenu("firstName");
+        String firstName = view.getUserInput();
+        view.showCreateCodecoolClassMenu("lastName");
+        String lastName = view.getUserInput();
+        view.showCreateCodecoolClassMenu("password");
+        String passwordHash = view.getUserInput();
+        view.showCreateCodecoolClassMenu("email");
+        String email = view.getUserInput();
+        userDAO.createUser(new User(firstName, lastName, passwordHash, email, permission.Root));
+        return true;
     }
 
     private boolean createCodecoolClass(){
