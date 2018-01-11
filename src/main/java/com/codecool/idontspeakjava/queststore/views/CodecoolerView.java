@@ -2,52 +2,47 @@ package com.codecool.idontspeakjava.queststore.views;
 
 import java.util.ArrayList;
 
+import com.codecool.idontspeakjava.queststore.models.ArtifactCategory;
+
 public class CodecoolerView extends UserView{
 
-    public void showMainMenu(String userName) {
+    public void showMainMenu(String userName, String rank) {
     System.out.println(CLEAR_CONSOLE);
     System.out.println(String.format(
-            "Hello %s! Select what you want to do:\n" +
+            "QUESTSTORE\n\nNAME: %s              RANK: %s\n\n" +
                     "1 - See your wallet\n" +
                     "2 - Buy an artifact\n" +
                     "3 - Buy an artifact for team\n" +
-                    "4 - See your level\n" +
-                    "5 - See available quests\n" +
-                    "0 - Exit the program\n", userName));
+                    "4 - See available quests\n\n\n" +
+                    "0 - Exit the program\n", userName, rank));
     }
 
     public void showWallet(long totalMoney, ArrayList<String> namesOfArtifacts){
         System.out.println(CLEAR_CONSOLE);
         System.out.println("WALLET\n");
         System.out.println("Your coolcoins: " + totalMoney);
-        System.out.println("Your artifacts: ");
+        System.out.println("\nYour artifacts: ");
         for (String artifact : namesOfArtifacts) {
             System.out.println("- " + artifact);
         }
-        System.out.println("\nPress enter to continue...");
+        System.out.println("\n\nPress enter to continue...");
         getUserInput();
     }
 
-    public void showBuyArtifactMenu(ArrayList<String> namesOfArtifacts){
+    public void showBuyArtifactMenu(ArrayList<String> namesOfArtifacts, ArrayList<Long> prices, long balance, ArtifactCategory category){
         System.out.println(CLEAR_CONSOLE);
-        System.out.println("BASIC ARTIFACTS SHOP\n");
-        for (String artifact : namesOfArtifacts) {
-            System.out.println((namesOfArtifacts.indexOf(artifact) + 1) + ". " + artifact);
+        if (category == ArtifactCategory.Basic){
+            System.out.print("BASIC ARTIFACTS SHOP");
+        } else {
+            System.out.print("MAGIC ARTIFACTS SHOP");
         }
-        System.out.println("\n0 - Back");
-    }
-
-    public void showBuyArtifactForTeamMenu(ArrayList<String> namesOfArtifacts){
-        System.out.println("MAGIC ARTIFACTS SHOP\n");
+        System.out.println("         YOUR MONEY: " + balance + "cc\n");
         for (String artifact : namesOfArtifacts) {
-            System.out.println(namesOfArtifacts.indexOf(artifact) + ". " + artifact);
+            int index = namesOfArtifacts.indexOf(artifact);
+            System.out.print((index + 1) + ". " + artifact);
+            System.out.println("   " + prices.get(index) + "cc");
         }
-    }
-
-    public void showMyLevel(String level){
-        System.out.println(CLEAR_CONSOLE);
-        System.out.println("Rank: " + level);
-        getUserInput();
+        System.out.println("\n\n0 - Back");
     }
 
     public void notEnoughCoolcoins(){
@@ -69,8 +64,9 @@ public class CodecoolerView extends UserView{
             String reward = questInfo[1];
             String description = questInfo[2];
             System.out.println(title + "     Reward: " + reward + " coolcoins");
-            System.out.println(description + "\n\n");
+            System.out.println(description + "\n");
         }
+        System.out.println("\nPress enter to continue...");
         getUserInput();
     }
 }
