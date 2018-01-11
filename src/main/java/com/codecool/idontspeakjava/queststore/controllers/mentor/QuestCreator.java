@@ -5,6 +5,8 @@ import com.codecool.idontspeakjava.queststore.models.Quest;
 import com.codecool.idontspeakjava.queststore.models.QuestCategory;
 import com.codecool.idontspeakjava.queststore.views.MentorView;
 
+import java.sql.SQLException;
+
 class QuestCreator {
 
     private static final int TITLE = 0;
@@ -103,8 +105,13 @@ class QuestCreator {
     private boolean setReward(String input) {
         boolean rewardNotSet = true;
         if (input.matches("\\d+")) {
-            reward = Integer.valueOf(input);
-            rewardNotSet = false;
+            int inputAsInt = Integer.valueOf(input);
+            if (inputAsInt > 0) {
+                reward = inputAsInt;
+                rewardNotSet = false;
+            } else {
+                view.showInputMustBeHigherThanZero();
+            }
         } else {
             view.showWrongDigitInput();
         }
@@ -145,8 +152,17 @@ class QuestCreator {
     private boolean setTitle(String input) {
         boolean titleNotSet = true;
         if (input.matches("[a-zA-Z1-9 ]+")) {
-            title = input;
-            titleNotSet = false;
+            try {
+                if (!new QuestsDAO().checkIfQuestExists(input)) {
+                    title = input;
+                    titleNotSet = false;
+                } else {
+                    view.showDuplicateWarning();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                view.showDatabaseError();
+            }
         } else {
             view.showWrongTitleInput();
         }
