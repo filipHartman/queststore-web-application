@@ -48,6 +48,7 @@ public class MentorController {
                 new QuestEditor(view).editQuest();
                 break;
             case EDIT_ARTIFACT:
+                new ArtifactEditor(view).editArtifact();
                 break;
             case MARK_QUEST:
                 break;
