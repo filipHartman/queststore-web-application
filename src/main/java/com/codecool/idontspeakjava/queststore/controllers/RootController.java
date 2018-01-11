@@ -42,7 +42,7 @@ public class RootController{
 
     private void assignMentorToClass(){
         for(User mentorUser : userDAO.getUsersByPermission(Permissions.Mentor)){
-            System.out.println(mentorUser);
+            System.out.println(mentorUser.getFirstName() +" "+ mentorUser.getLastName() +" "+ mentorUser.getEmail());
         }
         view.inputInfoMentorEmail();
         String mentorEmail = view.getUserInput();
@@ -59,7 +59,7 @@ public class RootController{
 
     private void editMentor(){
         for(User mentorUser : userDAO.getUsersByPermission(Permissions.Mentor)){
-            System.out.println(mentorUser);
+            System.out.println(mentorUser.getFirstName() +" "+ mentorUser.getLastName() +" "+ mentorUser.getEmail());
         }
         view.inputInfoMentorEmail();
         String mentorEmail = view.getUserInput();
@@ -83,7 +83,9 @@ public class RootController{
     }
 
     private void showMentor(){
-
+        for(User mentorUser : userDAO.getUsersByPermission(Permissions.Mentor)){
+            System.out.println(mentorUser.getFirstName() +" "+ mentorUser.getLastName() +" "+ mentorUser.getEmail());
+        }
     }
 
     private void showCodecoolClassOfMentor(){
