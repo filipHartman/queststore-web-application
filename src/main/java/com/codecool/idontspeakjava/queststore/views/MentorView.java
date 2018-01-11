@@ -222,10 +222,36 @@ public class MentorView extends UserView {
             ListIterator<String> iterator = ordersToPrint.listIterator();
             for (; iterator.hasNext(); ) {
                 String order = iterator.next();
-                System.out.println(String.format("%d. %s\n", iterator.nextIndex(), order));
+                System.out.println(String.format("%d. %s", iterator.nextIndex(), order));
             }
         } else {
             System.out.println("This codecooler didn't bought any artifacts.\n");
+        }
+    }
+
+    public void showMarkingNotPossible() {
+        System.out.println("There are no quests or codecoolers.\n");
+    }
+
+    public void showUsers(ArrayList<String> usersFullNames) {
+        System.out.println("Select user to mark:\n");
+        ListIterator<String> iterator = usersFullNames.listIterator();
+        for (; iterator.hasNext(); ) {
+            String fullName = iterator.next();
+            System.out.println(String.format("%d. %s", iterator.nextIndex(), fullName));
+        }
+    }
+
+    public void showCoinsAdded() {
+        System.out.println("Coins for the completion of the quest added\n");
+    }
+
+    public void showQuests(ArrayList<String> questsToPrint) {
+        System.out.println("Select quest to mark:\n");
+        ListIterator<String> iterator = questsToPrint.listIterator();
+        for (; iterator.hasNext(); ) {
+            String quest = iterator.next();
+            System.out.println(String.format("%d. %s", iterator.nextIndex(), quest));
         }
     }
 }
