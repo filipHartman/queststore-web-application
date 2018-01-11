@@ -30,16 +30,18 @@ public class UserDAO extends AbstractDAO {
             getConnection()
                     .createStatement()
                     .executeUpdate(query);
+            user.setId(getUserByEmail(user.getEmail()).getId());
         }
     }
 
     public User getUserByEmail(String email) {
+        String query = String.format("SELECT * FROM users WHERE email ='%s'", email);
+        User user = null;
         try {
             if (checkIfUsersExists(email)) {
-                String query = String.format("SELECT * FROM users WHERE email ='%s'", email);
                 log.info(query);
                 ResultSet resultSet = getConnection().createStatement().executeQuery(query);
-                return new User.Builder()
+                user = new User.Builder()
                         .setId(resultSet.getInt("id"))
                         .setLastName(resultSet.getString("last_name"))
                         .setFirstName(resultSet.getString("first_name"))
@@ -52,7 +54,7 @@ public class UserDAO extends AbstractDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return user;
     }
 
     public List<User> getUsersByPermission(Permissions permission) {

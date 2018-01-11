@@ -1,6 +1,7 @@
 package com.codecool.idontspeakjava.queststore.database;
 
 import com.codecool.idontspeakjava.queststore.models.Order;
+import com.codecool.idontspeakjava.queststore.models.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +21,11 @@ public class OrdersDAO extends AbstractDAO {
         int is_used = order.isUsed() ? 1 : 0;
         String query = String.format("INSERT INTO orders(artifact_id, wallet_id, is_used) " +
                 "VALUES(%d, %d, %d)", artifactID, walletID, is_used);
+
+        try {
+            getConnection().createStatement().executeUpdate(query);
+        } catch (Exception e) {
+        }
 
     }
 
@@ -54,9 +60,10 @@ public class OrdersDAO extends AbstractDAO {
         executeUpdateQuery(query, order);
     }
 
-    public List<Order> getAllOrdersByUserID(int userID) {
+    public List<Order> getAllOrdersByUser(User user) {
         List<Order> orders = new ArrayList<>();
-        String query = String.format("SELECT * FROM orders WHERE user_id = %d", userID);
+        int walletID = new WalletsDAO().getWalletByUserID(user.getId()).getId();
+        String query = String.format("SELECT * FROM orders WHERE wallet_id = %d", walletID);
 
         try {
             log.info(query);

@@ -57,6 +57,19 @@ public class QuestsDAO extends AbstractDAO {
         return quests;
     }
 
+    public void updateQuest(Quest quest) {
+        String query = String.format("UPDATE quests SET title = '%s', category = '%s', quest_description = '%s', reward = '%d'\n" +
+                "WHERE id = '%d';", quest.getTitle(), quest.getCategory(), quest.getDescription(), quest.getReward(), quest.getId());
+        try {
+            if (checkIfQuestExists(quest.getId())) {
+                log.info(query);
+                getConnection().createStatement().executeUpdate(query);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     public boolean checkIfQuestExists(String title) throws SQLException {
         String query = String.format("SELECT * FROM quests WHERE title='%s';", title);

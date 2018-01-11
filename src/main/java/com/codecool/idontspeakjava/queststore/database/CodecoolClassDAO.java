@@ -81,7 +81,7 @@ public class CodecoolClassDAO extends AbstractDAO {
 
     public void addUserToCodecoolClass(User user, CodecoolClass codecoolClass) {
         String query = String.format("INSERT INTO users_in_classes(class_id, user_id) VALUES(%d, %d)",
-                user.getId(), codecoolClass.getId());
+                getClassIDByName(codecoolClass.getName()), user.getId());
         try {
             if (checkIfClassExists(codecoolClass.getName()) && !checkIfUserIsInClass(user)) {
                 log.info(query);
@@ -149,6 +149,17 @@ public class CodecoolClassDAO extends AbstractDAO {
                 .executeQuery(query);
 
         return resultSet.next();
+    }
+
+    public int getClassIDByName(String name) {
+        Integer result = null;
+        String query = String.format("SELECT id FROM classes WHERE name = '%s'", name);
+        try {
+            result = getConnection().createStatement().executeQuery(query).getInt("id");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
 }
