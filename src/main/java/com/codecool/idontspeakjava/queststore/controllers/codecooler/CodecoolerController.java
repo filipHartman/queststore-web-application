@@ -30,8 +30,7 @@ public class CodecoolerController {
     private static final String SEE_WALLET = "1";
     private static final String BUY_ARTIFACT = "2";
     private static final String BUY_ARTIFACT_FOR_TEAM = "3";
-    private static final String SEE_MY_LEVEL = "4";
-    private static final String SEE_QUESTS = "5";
+    private static final String SEE_QUESTS = "4";
     private static final String EXIT = "0";
 
     public CodecoolerController(User user){
@@ -49,7 +48,7 @@ public class CodecoolerController {
         boolean runProgram = true;
 
         while (runProgram) {
-            view.showMainMenu(codecooler.getFirstName());
+            view.showMainMenu(codecooler.getFirstName(), checkExperienceLevel());
             runProgram = selectAction(view.getUserInput());
         }
     }
@@ -65,9 +64,6 @@ public class CodecoolerController {
                 break;
             case BUY_ARTIFACT_FOR_TEAM:
                 buyArtifact(chooseArtifact(1));
-                break;
-            case SEE_MY_LEVEL:
-                checkExperienceLevel();
                 break;
             case SEE_QUESTS:
                 seeQuests();
@@ -88,29 +84,38 @@ public class CodecoolerController {
         int artifactId = 0;
         ArrayList<String> namesOfArtifacts = new ArrayList<String>();
         ArrayList<Integer> IDs = new ArrayList<>();
+        ArrayList<Long> prices = new ArrayList<>();
+
         for (Artifact artifact : artifactDAO.getAllArtifacts()) {
             if (artifact.getCategory() == category) {
                 namesOfArtifacts.add(artifact.getTitle());
                 IDs.add(new Integer(artifact.getId()));
+                prices.add(new Long(artifact.getPrice()));
             }
         }
-        boolean artifactIsChoosen = false;
-        while (!artifactIsChoosen){
-            view.showBuyArtifactMenu(namesOfArtifacts);
+
+        boolean optionIsChoosen = false;
+        while (!optionIsChoosen){
+
+            view.showBuyArtifactMenu(namesOfArtifacts, prices, wallet.getCurrentState(), category);
             String input = view.getUserInput();
+
             if (input.equals("0")) {
-                artifactIsChoosen = true;
+                optionIsChoosen = true;
+
             } else {
-                if (input.matches("\\d+") && !input.equals("0")){
+
+                if (input.matches("\\d+")){
+
                     int choosenPosition = Integer.parseInt(input);
+
                     if (choosenPosition <= namesOfArtifacts.size()){
+
                         artifactId = IDs.get(choosenPosition - 1).intValue();
-                        artifactIsChoosen = true;
-                        List<Order> orders = orderDAO.getAllOrdersByUser(codecooler);
-                        for (Order order : orders) {
-                            if (order.getArtifactID() == artifactId){
-                                artifactIsChoosen = false;
-                            }
+                        if (!checkIfItemIsBought(artifactId)){
+                            optionIsChoosen = true;
+                        } else {
+                            artifactId = 0;
                         }
                     }
                 }  
@@ -119,19 +124,34 @@ public class CodecoolerController {
         return artifactId;    
     }
 
+    private boolean checkIfItemIsBought(int id){
+
+        List<Order> orders = orderDAO.getAllOrdersByUser(codecooler);
+                        
+        for (Order order : orders) {
+            if (order.getArtifactID() == id){
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void buyArtifact(int id){
         if (!(id == 0)){
             Artifact artifact = artifactDAO.getArtifact(id);
-            if (artifact.getPrice() <= wallet.getCurrentState()){
+            long currentState = wallet.getCurrentState();
+            if (artifact.getPrice() <= currentState){
                 Order order = new Order(id, wallet.getId(), false);
                 orderDAO.createOrder(order);
+                wallet.setCurrentState(currentState - artifact.getPrice());
+                walletDAO.updateWallet(wallet);
             } else {
                 view.notEnoughCoolcoins();
             }
         }
     }
 
-    private void checkExperienceLevel(){
+    private String checkExperienceLevel(){
         long totalEarnings = wallet.getTotalEarnings();
         List<ExperienceLevel> levels = experienceLevelDAO.getAllExperienceLevels();
         ExperienceLevel level = levels.get(0);
@@ -140,7 +160,7 @@ public class CodecoolerController {
                 level = currentLevel;
             }
         }
-        view.showMyLevel(level.getName());
+        return level.getName();
     }
 
     private void checkWallet(){
