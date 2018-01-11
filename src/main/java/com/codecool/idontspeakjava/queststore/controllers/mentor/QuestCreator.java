@@ -106,7 +106,7 @@ class QuestCreator {
             reward = Integer.valueOf(input);
             rewardNotSet = false;
         } else {
-            view.showWrongRewardInput();
+            view.showWrongDigitInput();
         }
         return rewardNotSet;
     }
