@@ -42,7 +42,7 @@ public class MentorController {
                 new QuestCreator(view).createQuest();
                 break;
             case ADD_ARTIFACT:
-                addArtifact();
+                new ArtifactCreator(view).createArtifact();
                 break;
             case EDIT_QUEST:
                 editQuest();
@@ -66,10 +66,6 @@ public class MentorController {
                 view.showWrongInput();
         }
         return continueRunning;
-    }
-
-    private void addArtifact() {
-
     }
 
     private void editQuest() {
