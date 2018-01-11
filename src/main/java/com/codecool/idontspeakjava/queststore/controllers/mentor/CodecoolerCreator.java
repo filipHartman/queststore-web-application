@@ -105,8 +105,17 @@ class CodecoolerCreator {
     private boolean setEmail(String input) {
         boolean emailNotSet = true;
         if (input.matches("[a-zA-Z@.]+")) {
-            email = input;
-            emailNotSet = false;
+            try {
+                if (new UserDAO().checkIfUsersExists(input)) {
+                    view.showDuplicateWarning();
+                } else {
+                    email = input;
+                    emailNotSet = false;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                view.showDatabaseError();
+            }
         } else {
             view.showWrongEmailInput();
         }
