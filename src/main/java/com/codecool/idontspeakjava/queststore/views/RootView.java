@@ -2,6 +2,8 @@ package com.codecool.idontspeakjava.queststore.views;
 
 import java.util.Scanner;
 import java.util.Spliterator.OfPrimitive;
+import com.codecool.idontspeakjava.queststore.models.User;
+import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
 
 public class RootView extends UserView{
 
@@ -43,4 +45,11 @@ public class RootView extends UserView{
             return true;
         return false;
     }
+
+    public void showMentorInfo(User selectedMentor, CodecoolClass mentorClass){
+        System.out.println("Mentor id " + selectedMentor.getId());
+        System.out.println("Mentor first name " + selectedMentor.getFirstName());
+        System.out.println("Mentor last name " + selectedMentor.getLastName());
+        System.out.println("Mentor email " + selectedMentor.getEmail());
+        System.out.println("Mentor class " + mentorClass.getName());
 }
