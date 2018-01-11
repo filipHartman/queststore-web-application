@@ -22,6 +22,35 @@ public class RootController{
         this.userDAO = new UserDAO();
     }
 
+    public void start() throws SQLException{
+        boolean startProgram = true;
+    
+        while (startProgram) {
+            view.showMainMenu();
+            String userInput = view.getUserInput();
+            if(userInput=="1"){
+                createMentor();
+            }else if(userInput=="2"){
+                createCodecoolClass();
+            }else if(userInput=="3"){
+                assignMentorToClass();
+            }else if(userInput=="4"){
+                editMentor();
+            }else if(userInput=="5"){
+                showMentor();
+            }else if(userInput=="6"){
+                showCodecoolClassOfMentor();
+            }else if(userInput=="7"){
+                createExperienceLevel();
+            }else if(userInput=="0"){
+                startProgram = false;
+                break;
+            }else{
+                view.showWrongInput();
+            }
+        }
+    }
+
     private boolean createMentor() throws SQLException{
         view.inputInfoMentorName();
         String firstName = view.getUserInput();
@@ -110,6 +139,6 @@ public class RootController{
     }
 
     private boolean createExperienceLevel(){
-
+        return true;
     }
 }
