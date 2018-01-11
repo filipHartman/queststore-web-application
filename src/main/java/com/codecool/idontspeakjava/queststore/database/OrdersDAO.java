@@ -91,7 +91,7 @@ public class OrdersDAO extends AbstractDAO {
 
     private void executeUpdateQuery(String query, Order order) {
         try {
-            if (!checkIfOrderExists(order.getId())) {
+            if (checkIfOrderExists(order.getId())) {
                 log.info(query);
                 getConnection().createStatement().executeUpdate(query);
             }
