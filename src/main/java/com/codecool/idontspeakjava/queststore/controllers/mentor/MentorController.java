@@ -45,7 +45,7 @@ public class MentorController {
                 new ArtifactCreator(view).createArtifact();
                 break;
             case EDIT_QUEST:
-                editQuest();
+                new QuestEditor(view).editQuest();
                 break;
             case EDIT_ARTIFACT:
                 editArtifact();
@@ -68,9 +68,6 @@ public class MentorController {
         return continueRunning;
     }
 
-    private void editQuest() {
-
-    }
 
     private void editArtifact() {
 

@@ -138,4 +138,42 @@ public class MentorView extends UserView {
     public void showDatabaseError() {
         System.out.println("An error in the database occurred.\n");
     }
+
+    public void showNoQuests() {
+        System.out.println("There are no quests to edit.\n");
+    }
+
+    public void selectQuest(ArrayList<String> questTitles) {
+        ListIterator<String> iterator = questTitles.listIterator();
+
+        System.out.println("Select quest to edit or 0 to cancel.\n");
+        for (; iterator.hasNext(); ) {
+            String title = iterator.next();
+            System.out.println(String.format("%d. %s", iterator.nextIndex(), title));
+        }
+    }
+
+    public void selectAttributeOfQuestToEdit() {
+        System.out.println("Select what you want to edit, or 0 to cancel.\n" +
+                "1 - Title\n" +
+                "2 - Description\n" +
+                "3 - Category\n" +
+                "4 - Reward\n");
+    }
+
+    public void showTitle(String title) {
+        System.out.println(String.format("The current title: %s\n", title));
+    }
+
+    public void showCategory(String category) {
+        System.out.println(String.format("The current category : %s\n", category));
+    }
+
+    public void showDescription(String description) {
+        System.out.println(String.format("The current description: %s\n", description));
+    }
+
+    public void showReward(String reward) {
+        System.out.println(String.format("The current reward is: %s\n", reward));
+    }
 }
