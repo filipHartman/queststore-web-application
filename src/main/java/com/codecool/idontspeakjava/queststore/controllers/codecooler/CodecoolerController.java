@@ -82,7 +82,6 @@ public class CodecoolerController {
     }
 
     private boolean buyArtifact(){
-        Wallet userWallet = walletDAO.getWalletByUserID(codecooler.getId());
         List<String> namesOfArtifacts = new ArrayList<String>();
         for (Artifact artifact : artifactDAO.getAllArtifacts()) {
             namesOfArtifacts.add(artifact.getTitle());
@@ -103,7 +102,7 @@ public class CodecoolerController {
     }
 
     private void checkWallet(){
-        List<Order> allUserOrders = orderDAO.getAllOrdersByUserID(codecooler.getId());
+        List<Order> allUserOrders = orderDAO.getAllOrdersByUser(codecooler);
         ArrayList<String> namesOfArtifacts = new ArrayList<String>();
         for (Order order : allUserOrders) {
             String artifactName = artifactDAO.getArtifact(order.getArtifactID()).getTitle();

@@ -17,12 +17,14 @@ public class CodecoolerView extends UserView{
     }
 
     public void showWallet(long totalMoney, ArrayList<String> namesOfArtifacts){
+        System.out.println(CLEAR_CONSOLE);
         System.out.println("WALLET\n");
         System.out.println("Your coolcoins: " + totalMoney);
         System.out.println("Your artifacts: ");
         for (String artifact : namesOfArtifacts) {
             System.out.println("- " + artifact);
         }
+        System.out.println("\nPress enter to continue...");
         getUserInput();
     }
 
