@@ -52,4 +52,22 @@ public class RootView extends UserView{
         System.out.println("Mentor last name " + selectedMentor.getLastName());
         System.out.println("Mentor email " + selectedMentor.getEmail());
         System.out.println("Mentor class " + mentorClass.getName());
+    }
+
+    public void showMainMenu(){
+        System.out.println("Select what to do:\n" +
+                    "1. Create mentor\n" +
+                    "2. Create Codecool Class\n" +
+                    "3. Assign Mentor To Class\n" +
+                    "4. Edit Mentor\n" +
+                    "5. Show Mentor\n" +
+                    "6. Show Codecool Class Of Mentor\n" +
+                    "7. Create Experience Level\n" +
+                    "0. Exit the program\n");
+
+    }
+
+    public void showWrongInput(){
+        System.out.println("Choose only available numbers.");
+    }
 }
