@@ -1,5 +1,6 @@
 package com.codecool.idontspeakjava.queststore.controllers;
 
+import com.codecool.idontspeakjava.queststore.controllers.codecooler.CodecoolerController;
 import com.codecool.idontspeakjava.queststore.controllers.mentor.MentorController;
 import com.codecool.idontspeakjava.queststore.database.UserDAO;
 import com.codecool.idontspeakjava.queststore.models.User;
@@ -47,7 +48,7 @@ public class LoginController {
                 new MentorController(user).run();
                 break;
             case Student:
-                System.out.println("Student");
+                new CodecoolerController();
                 break;
             case Root:
                 System.out.println("Root");
