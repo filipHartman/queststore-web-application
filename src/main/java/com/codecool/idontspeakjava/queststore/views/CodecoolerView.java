@@ -47,6 +47,7 @@ public class CodecoolerView extends UserView{
 
     public void showMyLevel(String level){
         System.out.println("Rank: " + level);
+        getUserInput();
     }
 
     public void showWrongInput() {

@@ -94,9 +94,9 @@ public class CodecoolerController {
         long totalEarnings = wallet.getTotalEarnings();
         List<ExperienceLevel> levels = experienceLevelDAO.getAllExperienceLevels();
         ExperienceLevel level = levels.get(0);
-        for (int i = 0; i < levels.size(); i++) {
-            if (totalEarnings < levels.get(i).getThreshold()) {
-                level = levels.get(i-1);
+        for (ExperienceLevel currentLevel : levels) {
+            if (totalEarnings > currentLevel.getThreshold()) {
+                level = currentLevel;
             }
         }
         view.showMyLevel(level.getName());
