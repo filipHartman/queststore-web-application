@@ -44,8 +44,7 @@ public class LoginController {
 
         switch (user.getPermission()) {
             case Mentor:
-                new MentorController();
-                System.out.println("Mentor");
+                new MentorController(user).run();
                 break;
             case Student:
                 System.out.println("Student");
