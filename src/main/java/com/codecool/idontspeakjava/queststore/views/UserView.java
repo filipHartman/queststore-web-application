@@ -20,7 +20,12 @@ public abstract class UserView {
 
     }
 
-    public static void clearScreen() {
+    void continuePrompt() {
+        System.out.println("Hit enter to continue.\n");
+        getUserInput();
+    }
+
+    public void clearScreen() {
         System.out.println(CLEAR_CONSOLE);
     }
 
