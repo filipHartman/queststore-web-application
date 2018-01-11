@@ -32,10 +32,9 @@ public class CodecoolerView extends UserView{
         System.out.println(CLEAR_CONSOLE);
         System.out.println("BASIC ARTIFACTS SHOP\n");
         for (String artifact : namesOfArtifacts) {
-            System.out.println(namesOfArtifacts.indexOf(artifact + 1) + ". " + artifact);
+            System.out.println((namesOfArtifacts.indexOf(artifact) + 1) + ". " + artifact);
         }
         System.out.println("\n0 - Back");
-        getUserInput();
     }
 
     public void showBuyArtifactForTeamMenu(ArrayList<String> namesOfArtifacts){
@@ -46,10 +45,32 @@ public class CodecoolerView extends UserView{
     }
 
     public void showMyLevel(String level){
+        System.out.println(CLEAR_CONSOLE);
         System.out.println("Rank: " + level);
+        getUserInput();
+    }
+
+    public void notEnoughCoolcoins(){
+        System.out.println(CLEAR_CONSOLE);
+        System.out.println("Not enough coolcoins\nPress enter to continue...");
+        getUserInput();
     }
 
     public void showWrongInput() {
         System.out.println("Your input is wrong.\n");
+    }
+
+    public void showQuests(ArrayList<String> quests){
+        System.out.println(CLEAR_CONSOLE);
+        String[] questInfo = new String[3];
+        for (String quest : quests){
+            questInfo = quest.split("@");
+            String title = questInfo[0];
+            String reward = questInfo[1];
+            String description = questInfo[2];
+            System.out.println(title + "     Reward: " + reward + " coolcoins");
+            System.out.println(description + "\n\n");
+        }
+        getUserInput();
     }
 }
