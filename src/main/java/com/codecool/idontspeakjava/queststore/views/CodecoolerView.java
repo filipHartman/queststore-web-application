@@ -5,8 +5,9 @@ import java.util.ArrayList;
 public class CodecoolerView extends UserView{
 
     public void showMainMenu(String userName) {
+    System.out.println(CLEAR_CONSOLE);
     System.out.println(String.format(
-            "Hello %s ! Select what you want to do:\n" +
+            "Hello %s! Select what you want to do:\n" +
                     "1 - See your wallet\n" +
                     "2 - Buy an artifact\n" +
                     "3 - Buy an artifact for team\n" +
@@ -22,6 +23,7 @@ public class CodecoolerView extends UserView{
         for (String artifact : namesOfArtifacts) {
             System.out.println("- " + artifact);
         }
+        getUserInput();
     }
 
     public void showBuyArtifactMenu(ArrayList<String> namesOfArtifacts){
