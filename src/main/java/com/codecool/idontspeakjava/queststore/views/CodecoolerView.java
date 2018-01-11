@@ -32,7 +32,7 @@ public class CodecoolerView extends UserView{
         System.out.println(CLEAR_CONSOLE);
         System.out.println("BASIC ARTIFACTS SHOP\n");
         for (String artifact : namesOfArtifacts) {
-            System.out.println(namesOfArtifacts.indexOf(artifact + 1) + ". " + artifact);
+            System.out.println((namesOfArtifacts.indexOf(artifact) + 1) + ". " + artifact);
         }
         System.out.println("\n0 - Back");
         getUserInput();

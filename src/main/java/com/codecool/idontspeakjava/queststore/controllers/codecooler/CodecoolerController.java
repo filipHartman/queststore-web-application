@@ -68,7 +68,7 @@ public class CodecoolerController {
                 buyArtifact(chooseArtifact());
                 break;
             case BUY_ARTIFACT_FOR_TEAM:
-                buyArtifact();
+                buyArtifact(chooseArtifact());
                 break;
             case SEE_MY_LEVEL:
                 checkExperienceLevel();
