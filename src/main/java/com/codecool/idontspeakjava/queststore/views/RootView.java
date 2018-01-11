@@ -1,6 +1,7 @@
 package com.codecool.idontspeakjava.queststore.views;
 
 import java.util.Scanner;
+import java.util.Spliterator.OfPrimitive;
 
 public class RootView extends UserView{
 
@@ -29,5 +30,17 @@ public class RootView extends UserView{
 
     public void inputInfoMentorPassword(){
         System.out.println("Enter mentor password");
+    }
+
+    public void inputInfoNewMentorEmail(){
+        System.out.println("Enter mentor new email");
+    }
+
+    public boolean editMentorOptionAsk(String option){
+        System.out.println("Do you want to change mentor " + option + " [Y/N]");
+        String decision = getUserInput().toUpperCase();
+        if(decision == "Y")
+            return true;
+        return false;
     }
 }
