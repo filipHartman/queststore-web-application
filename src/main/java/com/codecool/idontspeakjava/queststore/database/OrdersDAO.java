@@ -22,6 +22,11 @@ public class OrdersDAO extends AbstractDAO {
         String query = String.format("INSERT INTO orders(artifact_id, wallet_id, is_used) " +
                 "VALUES(%d, %d, %d)", artifactID, walletID, is_used);
 
+        try {
+            getConnection().createStatement().executeUpdate(query);
+        } catch (Exception e) {
+        }
+
     }
 
     public void updateOrder(Order order) {

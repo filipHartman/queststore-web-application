@@ -64,11 +64,11 @@ public class CodecoolerController {
             case SEE_WALLET:
                 checkWallet();
                 break;
-            case BUY_ARTIFACT:
-                buyArtifact(chooseArtifact());
+            case BUY_ARTIFACT:;
+                buyArtifact(chooseArtifact(0));
                 break;
             case BUY_ARTIFACT_FOR_TEAM:
-                buyArtifact(chooseArtifact());
+                buyArtifact(chooseArtifact(1));
                 break;
             case SEE_MY_LEVEL:
                 checkExperienceLevel();
@@ -85,7 +85,7 @@ public class CodecoolerController {
         return continueRunning;
     }
 
-    private int chooseArtifact(){
+    private int chooseArtifact(int mode){ // 0 for Basic, 1 or else for Magic
         int artifactId = 0;
         ArrayList<String> namesOfArtifacts = new ArrayList<String>();
         ArrayList<Integer> IDs = new ArrayList<>();
@@ -93,24 +93,40 @@ public class CodecoolerController {
             namesOfArtifacts.add(artifact.getTitle());
             IDs.add(new Integer(artifact.getId()));
         }
-        view.showBuyArtifactMenu(namesOfArtifacts);
-        String input = view.getUserInput();
-        if (input.matches("\\d+") && !input.equals("0")){
-            int choosenPosition = Integer.parseInt(input);
-            if (choosenPosition <= namesOfArtifacts.size()){
-                artifactId = IDs.get(choosenPosition - 1).intValue();
+        boolean artifactIsChoosen = false;
+        while (!artifactIsChoosen){
+            view.showBuyArtifactMenu(namesOfArtifacts);
+            String input = view.getUserInput();
+            if (input.equals("0")) {
+                artifactIsChoosen = true;
+            } else {
+                if (input.matches("\\d+") && !input.equals("0")){
+                    int choosenPosition = Integer.parseInt(input);
+                    if (choosenPosition <= namesOfArtifacts.size()){
+                        artifactId = IDs.get(choosenPosition - 1).intValue();
+                        artifactIsChoosen = true;
+                        List<Order> orders = orderDAO.getAllOrdersByUser(codecooler);
+                        for (Order order : orders) {
+                            if (order.getArtifactID() == artifactId){
+                                artifactIsChoosen = false;
+                            }
+                        }
+                    }
+                }  
             }
         }
         return artifactId;    
     }
 
     private void buyArtifact(int id){
-        Artifact artifact = artifactDAO.getArtifact(id);
-        if (artifact.getPrice() <= wallet.getCurrentState()){
-            Order order = new Order(id, wallet.getId(), false);
-            orderDAO.createOrder(order);
-        } else {
-            view.notEnoughCoolcoins();
+        if (!(id == 0)){
+            Artifact artifact = artifactDAO.getArtifact(id);
+            if (artifact.getPrice() <= wallet.getCurrentState()){
+                Order order = new Order(id, wallet.getId(), false);
+                orderDAO.createOrder(order);
+            } else {
+                view.notEnoughCoolcoins();
+            }
         }
     }
 
