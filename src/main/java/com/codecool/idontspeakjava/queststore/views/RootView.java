@@ -1,36 +1,27 @@
 package com.codecool.idontspeakjava.queststore.views;
 
-import java.util.Scanner;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
 
 public class RootView extends UserView{
 
-    private Scanner scanner;
-
-    public String getUserInput(){
-        scanner = new Scanner(System.in);
-        return scanner.nextLine();
-    }
-
     public void inputInfoClassName(){
         System.out.println("Enter class name");
     }
     
-    public void inputInfoMentorName(){
-        System.out.println("Enter mentor first name");
+    public void askForMentorName(){
+        clearScreen();
+        System.out.println("Enter mentor first name or type 0 to exit.\n");
     }
 
-    public void inputInfoMentorEmail(){
-        System.out.println("Enter mentor email");
+    public void askForMentorEmail(){
+        clearScreen();
+        System.out.println("Enter mentor email or type 0 to exit.\n");
     }
 
-    public void inputInfoMentorLastName(){
-        System.out.println("Enter mentor last name");
-    }
-
-    public void inputInfoMentorPassword(){
-        System.out.println("Enter mentor password");
+    public void askForMentorLastName(){
+        clearScreen();
+        System.out.println("Enter mentor last name or type 0 to exit.\n");
     }
 
     public void inputInfoNewMentorEmail(){
@@ -68,5 +59,47 @@ public class RootView extends UserView{
 
     public void showWrongInput(){
         System.out.println("Choose only available numbers.");
+    }
+
+    public void showWrongNameInput() {
+        clearScreen();
+        System.out.println("Wrong input. You can only use letters.\n");
+        continuePrompt();
+    }
+
+    public void showExistingValueWarning() {
+        clearScreen();
+        System.out.println("You can't add position with this value. It is already in the database.\n");
+        continuePrompt();
+    }
+
+    public void showWrongEmailInput() {
+        clearScreen();
+        System.out.println("Wrong input. Invalid email address.\n");
+        continuePrompt();
+    }
+
+    public void showDatabaseError() {
+        clearScreen();
+        System.out.println("An error in the database occurred.\n");
+        continuePrompt();
+    }
+
+    public void showMentorCreated() {
+        clearScreen();
+        System.out.println("You created a mentor.\n");
+        continuePrompt();
+    }
+
+    public void showMentorCreationFailed() {
+        clearScreen();
+        System.out.println("An error occured. The new mentor wasn't created.\n");
+        continuePrompt();
+    }
+
+    public void showOperationCancelled() {
+        clearScreen();
+        System.out.println("Operation cancelled.\n");
+        continuePrompt();
     }
 }
