@@ -5,6 +5,7 @@ import com.codecool.idontspeakjava.queststore.models.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,23 +25,32 @@ public class UserDAO extends AbstractDAO {
 
         if (!checkIfUsersExists(email)) {
             String query = "INSERT INTO users(email, first_name, last_name, password_hash, permission)"
-                    + String.format(" VALUES ('%s', '%s', '%s', '%s', '%s')", email, firstName, lastName, passwordHash, permission);
+                    + String.format(" VALUES (?, ?, ?, ?, ?)");
 
-            log.info(query);
-            getConnection()
-                    .createStatement()
-                    .executeUpdate(query);
+            PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, firstName);
+            preparedStatement.setString(3, lastName);
+            preparedStatement.setString(4, passwordHash);
+            preparedStatement.setString(5, permission);
+
+            log.info(preparedStatement.toString());
+            preparedStatement.executeUpdate();
             user.setId(getUserByEmail(user.getEmail()).getId());
         }
     }
 
     public User getUserByEmail(String email) {
-        String query = String.format("SELECT * FROM users WHERE email ='%s'", email);
+        String query = "SELECT * FROM users WHERE email = ?";
         User user = null;
         try {
             if (checkIfUsersExists(email)) {
-                log.info(query);
-                ResultSet resultSet = getConnection().createStatement().executeQuery(query);
+                PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+                preparedStatement.setString(1, email);
+
+                log.info(preparedStatement.toString());
+
+                ResultSet resultSet = preparedStatement.executeQuery(query);
                 user = new User.Builder()
                         .setId(resultSet.getInt("id"))
                         .setLastName(resultSet.getString("last_name"))
@@ -59,10 +69,16 @@ public class UserDAO extends AbstractDAO {
 
     public List<User> getUsersByPermission(Permissions permission) {
         List<User> users = new ArrayList<>();
-        String query = String.format("SELECT * FROM users WHERE permission = '%s'", permission);
+        String query = "SELECT * FROM users WHERE permission = ?";
+        
 
         try {
-            ResultSet resultSet = getConnection().createStatement().executeQuery(query);
+            PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+            preparedStatement.setString(1, String.valueOf(permission));
+
+            log.info(preparedStatement.toString());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 users.add(getUserByEmail(resultSet.getString("email")));
             }
@@ -75,13 +91,22 @@ public class UserDAO extends AbstractDAO {
     }
 
     public void updateUser(User user) {
-        String query = String.format("UPDATE users SET email = '%s', first_name = '%s', last_name = '%s', password_hash = '%s', permission = '%s'\n" +
-                "WHERE id = '%d';", user.getEmail(), user.getFirstName(), user.getLastName(), user.getPasswordHash(), user.getPermission(), user.getId());
+        String query = "UPDATE users SET email = ?, first_name = ?, last_name = ?, password_hash = ?, permission = ?\n" +
+                "WHERE id =?;";
+
         try {
             if (checkIfUsersExists(user.getId())) {
-                log.info(query);
-                getConnection().createStatement().executeUpdate(query);
+                PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+                preparedStatement.setString(1, user.getEmail());
+                preparedStatement.setString(2, user.getFirstName());
+                preparedStatement.setString(3, user.getLastName());
+                preparedStatement.setString(4, user.getPasswordHash());
+                preparedStatement.setString(5, String.valueOf(user.getPermission()));
+                preparedStatement.setInt(6, user.getId());
 
+                log.info(preparedStatement.toString());
+
+                preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -90,12 +115,14 @@ public class UserDAO extends AbstractDAO {
     }
 
     public void deleteUser(User user) {
-        String query = String.format("DELETE FROM users WHERE email = '%s'", user.getEmail());
+        String query = "DELETE FROM users WHERE email = ?";
 
         try {
             if (checkIfUsersExists(user.getEmail())) {
-                log.info(query);
-                getConnection().createStatement().executeUpdate(query);
+                PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+                preparedStatement.setString(1, user.getEmail());
+
+                log.info(preparedStatement.toString());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -103,21 +130,25 @@ public class UserDAO extends AbstractDAO {
     }
 
     public boolean checkIfUsersExists(String email) throws SQLException {
-        String query = String.format("SELECT * FROM users WHERE email='%s';", email);
-        log.info(query);
-        ResultSet resultSet = getConnection()
-                .createStatement()
-                .executeQuery(query);
+        String query = "SELECT * FROM users WHERE email= ?;";
+        PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+        preparedStatement.setString(1, email);
+
+        log.info(preparedStatement.toString());
+
+        ResultSet resultSet = preparedStatement.executeQuery();
 
         return resultSet.next();
     }
 
     public boolean checkIfUsersExists(int id) throws SQLException {
-        String query = String.format("SELECT * FROM users WHERE id=%d;", id);
-        log.info(query);
-        ResultSet resultSet = getConnection()
-                .createStatement()
-                .executeQuery(query);
+        String query = "SELECT * FROM users WHERE id= ?;";
+        PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+        preparedStatement.setInt(1, id);
+
+        log.info(preparedStatement.toString());
+
+        ResultSet resultSet = preparedStatement.executeQuery();
 
         return resultSet.next();
     }
