@@ -28,6 +28,9 @@ public class Order{
         setUsed(builder.isUsed);
     }
 
+    public Order() {
+    }
+
     public int getArtifactID() {
         return artifactID;
     }
