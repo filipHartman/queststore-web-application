@@ -5,6 +5,7 @@ import com.codecool.idontspeakjava.queststore.models.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,12 +16,13 @@ public class TeamsDAO extends AbstractDAO {
     public static final Logger log = LoggerFactory.getLogger(TeamsDAO.class);
 
     public void createTeam(Team team) {
-        String query = String.format("INSERT INTO teams(name) VALUES('%s')", team.getName());
+        String query = "INSERT INTO teams(name) VALUES(?)";
 
         try {
             if (!checkIfTeamExists(team.getName())) {
-                log.info(query);
-                getConnection().createStatement().executeUpdate(query);
+                PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+                preparedStatement.setString(1, team.getName());
+                preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -28,12 +30,13 @@ public class TeamsDAO extends AbstractDAO {
     }
 
     public Team getTeam(String name) {
-        String query = String.format("SELECT * FROM teams WHERE name = '%s'", name);
+        String query = "SELECT * FROM teams WHERE name = ?";
         Team team = null;
         try {
             if (checkIfTeamExists(name)) {
-                log.info(query);
-                ResultSet resultSet = getConnection().createStatement().executeQuery(query);
+                PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+                preparedStatement.setString(1, name);
+                ResultSet resultSet = preparedStatement.executeQuery(query);
                 team = new Team(resultSet.getInt("id"), resultSet.getString("name"));
             }
         } catch (SQLException e) {
@@ -57,12 +60,15 @@ public class TeamsDAO extends AbstractDAO {
     }
 
     public void updateTeam(Team team) {
-        String query = String.format("UPDATE teams SET name = '%s' WHERE id  = %d", team.getName(), team.getId());
+        String query = "UPDATE teams SET name = ? WHERE id  = ?";
 
         try {
             if (checkIfTeamExists(team.getId())) {
-                log.info(query);
-                getConnection().createStatement().executeUpdate(query);
+                PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+                preparedStatement.setString(1, team.getName());
+                preparedStatement.setInt(2, team.getId());
+
+                preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -70,21 +76,26 @@ public class TeamsDAO extends AbstractDAO {
     }
 
     public void deleteTeam(Team team) {
-        String query = String.format("DELETE FROM teams WHERE name = '%s'", team.getName());
+        String query = "DELETE FROM teams WHERE name = ?";
         try {
-            getConnection().createStatement().executeUpdate(query);
+            PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+            preparedStatement.setString(1, team.getName());
+
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public void addUserToTeam(User user, Team team) {
-        String query = String.format("INSERT INTO users_in_teams(team_id, user_id) VALUES(%d, %d)",
-                user.getId(), getTeamIDByName(team.getName()));
+        String query = "INSERT INTO users_in_teams(team_id, user_id) VALUES(?, ?)";
         try {
             if (checkIfTeamExists(team.getName()) && !checkIfUserIsInTeam(user)) {
-                log.info(query);
-                getConnection().createStatement().executeUpdate(query);
+                PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+                preparedStatement.setInt(1, team.getId());
+                preparedStatement.setInt(2, user.getId());
+
+                preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -93,14 +104,16 @@ public class TeamsDAO extends AbstractDAO {
 
     public Team getUserTeam(User user) {
         Team team = null;
-        String query = String.format("SELECT * FROM teams\n" +
+        String query = "SELECT * FROM teams\n" +
                 "INNER JOIN users_in_teams ON teams.id = users_in_teams.team_id\n" +
-                "WHERE users_in_teams.user_id = %d;", user.getId());
+                "WHERE users_in_teams.user_id = ?";
 
         try {
             if (checkIfUserIsInTeam(user)) {
-                log.info(query);
-                ResultSet resultSet = getConnection().createStatement().executeQuery(query);
+                PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+                preparedStatement.setInt(1, user.getId());
+
+                ResultSet resultSet = preparedStatement.executeQuery();
                 team = new Team(resultSet.getInt("id"), resultSet.getString("name"));
             }
         } catch (SQLException e) {
@@ -110,51 +123,64 @@ public class TeamsDAO extends AbstractDAO {
     }
 
     public void removeUserFromTeam(User user) {
-        String query = String.format("DELETE FROM users_in_teams WHERE user_id = %d", user.getId());
-        log.info(query);
+        String query = "DELETE FROM users_in_teams WHERE user_id = ?";
+
         try {
-            getConnection().createStatement().executeUpdate(query);
+            PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+            preparedStatement.setInt(1, user.getId());
+
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public boolean checkIfTeamExists(int id) throws SQLException {
-        String query = String.format("SELECT * FROM teams WHERE id=%d;", id);
-        log.info(query);
-        ResultSet resultSet = getConnection()
-                .createStatement()
-                .executeQuery(query);
+        String query = "SELECT * FROM teams WHERE id=?;";
+
+        PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+        preparedStatement.setInt(1, id);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+
 
         return resultSet.next();
     }
 
 
     public boolean checkIfTeamExists(String name) throws SQLException {
-        String query = String.format("SELECT * FROM teams WHERE name='%s';", name);
-        log.info(query);
-        ResultSet resultSet = getConnection()
-                .createStatement()
-                .executeQuery(query);
+        String query = "SELECT * FROM teams WHERE name=?;";
+
+        PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+        preparedStatement.setString(1, name);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+
 
         return resultSet.next();
     }
 
     public boolean checkIfUserIsInTeam(User user) throws SQLException {
-        String query = String.format("SELECT * FROM users_in_teams WHERE user_id = %d ", user.getId());
-        log.info(query);
-        ResultSet resultSet = getConnection()
-                .createStatement()
-                .executeQuery(query);
+        String query = "SELECT * FROM users_in_teams WHERE user_id = ? ";
+
+        PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+        preparedStatement.setInt(1, user.getId());
+
+        ResultSet resultSet = preparedStatement.executeQuery();
 
         return resultSet.next();
     }
 
     public int getTeamIDByName(String name) {
         Integer result = null;
-        String query = String.format("SELECT id FROM teams WHERE name = '%s'", name);
+        String query = "SELECT id FROM teams WHERE name = ?";
+
         try {
-            result = getConnection().createStatement().executeQuery(query).getInt("id");
+            PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+            preparedStatement.setString(1, name);
+
+            result = preparedStatement.executeQuery().getInt("id");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -25,7 +25,7 @@ public class UserDAO extends AbstractDAO {
 
         if (!checkIfUsersExists(email)) {
             String query = "INSERT INTO users(email, first_name, last_name, password_hash, permission)"
-                    + String.format(" VALUES (?, ?, ?, ?, ?)");
+                    + " VALUES (?, ?, ?, ?, ?)";
 
             PreparedStatement preparedStatement = getConnection().prepareStatement(query);
             preparedStatement.setString(1, email);
@@ -34,7 +34,6 @@ public class UserDAO extends AbstractDAO {
             preparedStatement.setString(4, passwordHash);
             preparedStatement.setString(5, permission);
 
-            log.info(preparedStatement.toString());
             preparedStatement.executeUpdate();
             user.setId(getUserByEmail(user.getEmail()).getId());
         }
@@ -48,9 +47,7 @@ public class UserDAO extends AbstractDAO {
                 PreparedStatement preparedStatement = getConnection().prepareStatement(query);
                 preparedStatement.setString(1, email);
 
-                log.info(preparedStatement.toString());
-
-                ResultSet resultSet = preparedStatement.executeQuery(query);
+                ResultSet resultSet = preparedStatement.executeQuery();
                 user = new User.Builder()
                         .setId(resultSet.getInt("id"))
                         .setLastName(resultSet.getString("last_name"))
@@ -59,6 +56,7 @@ public class UserDAO extends AbstractDAO {
                         .setPasswordHash(resultSet.getString("password_hash"))
                         .setPermission(Permissions.valueOf(resultSet.getString("permission")))
                         .build();
+
             }
 
         } catch (SQLException e) {
@@ -70,7 +68,7 @@ public class UserDAO extends AbstractDAO {
     public List<User> getUsersByPermission(Permissions permission) {
         List<User> users = new ArrayList<>();
         String query = "SELECT * FROM users WHERE permission = ?";
-        
+
 
         try {
             PreparedStatement preparedStatement = getConnection().prepareStatement(query);
@@ -122,7 +120,7 @@ public class UserDAO extends AbstractDAO {
                 PreparedStatement preparedStatement = getConnection().prepareStatement(query);
                 preparedStatement.setString(1, user.getEmail());
 
-                log.info(preparedStatement.toString());
+                preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -134,21 +132,17 @@ public class UserDAO extends AbstractDAO {
         PreparedStatement preparedStatement = getConnection().prepareStatement(query);
         preparedStatement.setString(1, email);
 
-        log.info(preparedStatement.toString());
-
         ResultSet resultSet = preparedStatement.executeQuery();
 
         return resultSet.next();
     }
 
     public boolean checkIfUsersExists(int id) throws SQLException {
-        String query = "SELECT * FROM users WHERE id= ?;";
-        PreparedStatement preparedStatement = getConnection().prepareStatement(query);
-        preparedStatement.setInt(1, id);
-
-        log.info(preparedStatement.toString());
-
-        ResultSet resultSet = preparedStatement.executeQuery();
+        String query = String.format("SELECT * FROM users WHERE id= ?;", id);
+        log.info(query);
+        ResultSet resultSet = getConnection()
+                .createStatement()
+                .executeQuery(query);
 
         return resultSet.next();
     }

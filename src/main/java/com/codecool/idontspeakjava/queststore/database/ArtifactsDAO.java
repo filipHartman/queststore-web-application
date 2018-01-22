@@ -5,6 +5,7 @@ import com.codecool.idontspeakjava.queststore.models.ArtifactCategory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,13 +21,18 @@ public class ArtifactsDAO extends AbstractDAO {
         String artifactDescription = artifact.getDescription();
         int price = artifact.getPrice();
 
-        String query = String.format("INSERT INTO artifacts(title, category, artifact_description, price) " +
-                "VALUES('%s', '%s', '%s', %d)", title, category, artifactDescription, price);
+        String query = "INSERT INTO artifacts(title, category, artifact_description, price) " +
+                "VALUES(?, ?, ?, ?)";
 
         try {
             if (!checkIfArtifactExists(title)) {
-                log.info(query);
-                getConnection().createStatement().executeUpdate(query);
+                PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+                preparedStatement.setString(1, title);
+                preparedStatement.setString(2, category);
+                preparedStatement.setString(3, artifactDescription);
+                preparedStatement.setInt(4, price);
+
+                preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -35,7 +41,7 @@ public class ArtifactsDAO extends AbstractDAO {
 
 
     public Artifact getArtifact(int id) {
-        String query = String.format("SELECT * FROM artifacts WHERE id = %d", id);
+        String query = String.format("SELECT * FROM artifacts WHERE id = ?", id);
         Artifact artifact = null;
 
         try {
@@ -74,14 +80,19 @@ public class ArtifactsDAO extends AbstractDAO {
     }
 
     public void updateArtifact(Artifact artifact) {
-        String query = String.format("UPDATE artifacts SET title = '%s', category = '%s', artifact_description = '%s', price = %d WHERE id = %d",
-                artifact.getTitle(), artifact.getCategory(), artifact.getDescription(), artifact.getPrice(), artifact.getId());
+        String query = "UPDATE artifacts SET title = ?, category = ?, artifact_description = ?, price = ? WHERE id = ?";
+
+
 
         try {
             if (checkIfArtifactExists(artifact.getTitle())) {
-                log.info(query);
-                getConnection().createStatement().executeUpdate(query);
+                PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+                preparedStatement.setString(1, artifact.getTitle());
+                preparedStatement.setString(2, String.valueOf(artifact.getCategory()));
+                preparedStatement.setInt(3, artifact.getPrice());
+                preparedStatement.setInt(4, artifact.getId());
 
+                preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -89,27 +100,31 @@ public class ArtifactsDAO extends AbstractDAO {
     }
 
     public void removeArtifact(Artifact artifact) {
-        String query = String.format("DELETE FROM artifacts WHERE title = '%s'", artifact.getTitle());
-        log.info(query);
+        String query = "DELETE FROM artifacts WHERE title = ?";
+
+
         try {
-            getConnection().createStatement().executeUpdate(query);
+            PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+            preparedStatement.setString(1, artifact.getTitle());
+
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public boolean checkIfArtifactExists(String title) throws SQLException {
-        String query = String.format("SELECT * FROM artifacts WHERE title='%s';", title);
-        log.info(query);
-        ResultSet resultSet = getConnection()
-                .createStatement()
-                .executeQuery(query);
+        String query = "SELECT * FROM artifacts WHERE title=?;";
 
-        return resultSet.next();
+
+        PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+        preparedStatement.setString(1, title);
+
+        return preparedStatement.executeQuery().next();
     }
 
     public boolean checkIfArtifactExists(int id) throws SQLException {
-        String query = String.format("SELECT * FROM artifacts WHERE id=%d;", id);
+        String query = String.format("SELECT * FROM artifacts WHERE id=?;", id);
         log.info(query);
         ResultSet resultSet = getConnection()
                 .createStatement()
