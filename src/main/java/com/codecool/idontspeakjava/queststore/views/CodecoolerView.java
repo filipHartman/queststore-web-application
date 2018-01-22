@@ -9,18 +9,18 @@ public class CodecoolerView extends UserView{
     public void showMainMenu(String userName, String rank) {
     System.out.println(CLEAR_CONSOLE);
     System.out.println(String.format(
-            "QUESTSTORE\n\nNAME: %s              RANK: %s\n\n" +
-                    "1 - See your wallet\n" +
+            "%sQUESTSTORE\n\n%sNAME: %s              RANK: %s\n\n" +
+                    "%s1 - See your wallet\n" +
                     "2 - Buy an artifact\n" +
                     "3 - Buy an artifact for team\n" +
                     "4 - See available quests\n\n\n" +
-                    "0 - Exit the program\n", userName, rank));
+                    "0 - Exit the program\n", Colors.GREEN_BOLD_BRIGHT, Colors.BLACK_BOLD_BRIGHT, userName, rank, Colors.RESET));
     }
 
     public void showWallet(long totalMoney, ArrayList<String> namesOfArtifacts){
         System.out.println(CLEAR_CONSOLE);
-        System.out.println("WALLET\n");
-        System.out.println("Your coolcoins: " + totalMoney);
+        System.out.println(Colors.GREEN_BOLD_BRIGHT + "WALLET\n" + Colors.RESET);
+        System.out.println("Your coolcoins: " + Colors.YELLOW_BOLD_BRIGHT + totalMoney + Colors.RESET);
         System.out.println("\nYour artifacts: ");
         for (String artifact : namesOfArtifacts) {
             System.out.println("- " + artifact);
