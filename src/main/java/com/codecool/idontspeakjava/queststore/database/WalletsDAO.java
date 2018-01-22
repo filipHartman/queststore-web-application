@@ -4,6 +4,7 @@ import com.codecool.idontspeakjava.queststore.models.Wallet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -12,12 +13,17 @@ public class WalletsDAO extends AbstractDAO {
     public static final Logger log = LoggerFactory.getLogger(WalletsDAO.class);
 
     public Wallet getWalletByUserID(int id) {
-        String query = String.format("SELECT * FROM wallets WHERE user_id = %d", id);
+        String query = "SELECT * FROM wallets WHERE user_id = ?";
         Wallet wallet = null;
         try {
             if (checkIfWalletExists(id)) {
-                log.info(query);
-                ResultSet resultSet = getConnection().createStatement().executeQuery(query);
+                PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+                preparedStatement.setInt(1, id);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                log.info(preparedStatement.toString());
+                
                 wallet = new Wallet.Builder()
                         .setId(resultSet.getInt("id"))
                         .setCurrentState(resultSet.getLong("current_state"))
@@ -36,13 +42,19 @@ public class WalletsDAO extends AbstractDAO {
         int userID = wallet.getUserID();
         long currentState = wallet.getCurrentState();
         long totalEarnings = wallet.getTotalEarnings();
-        String query = String.format("UPDATE wallets SET current_state = %d, total_earnings = %d WHERE user_id = %d",
-                currentState, totalEarnings, userID);
+        String query = "UPDATE wallets SET current_state = ?, total_earnings = ? WHERE user_id = ?";
 
         try {
             if (checkIfWalletExists(userID)) {
-                log.info(query);
-                getConnection().createStatement().executeUpdate(query);
+
+                PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+                preparedStatement.setLong(1, currentState);
+                preparedStatement.setLong(2, totalEarnings);
+                preparedStatement.setInt(3, userID);
+
+                log.info(preparedStatement.toString());
+
+                preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -51,9 +63,11 @@ public class WalletsDAO extends AbstractDAO {
 
     public boolean checkIfWalletExists(int userID) throws SQLException {
 
-        String query = String.format("SELECT * FROM wallets WHERE user_id = %d", userID);
-        log.info(query);
-        ResultSet resultSet = getConnection().createStatement().executeQuery(query);
+        String query = "SELECT * FROM wallets WHERE user_id = ?";
+        PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+        preparedStatement.setInt(1, userID);
+        log.info(preparedStatement.toString());
+        ResultSet resultSet = preparedStatement.executeQuery();
         return resultSet.next();
     }
 

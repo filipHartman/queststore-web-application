@@ -5,6 +5,7 @@ import com.codecool.idontspeakjava.queststore.models.QuestCategory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,13 +21,19 @@ public class QuestsDAO extends AbstractDAO {
         String questDescription = quest.getDescription();
         int reward = quest.getReward();
 
-        String query = String.format("INSERT INTO quests(title, category, quest_description, reward) " +
-                "VALUES('%s', '%s', '%s', %d)", title, category, questDescription, reward);
+        String query = "INSERT INTO quests(title, category, quest_description, reward) " +
+                "VALUES(?, ?, ?, ?)";
 
         try {
             if (!checkIfQuestExists(quest.getTitle())) {
-                log.info(query);
-                getConnection().createStatement().executeUpdate(query);
+                PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+
+                preparedStatement.setString(1, title);
+                preparedStatement.setString(2, category);
+                preparedStatement.setString(3, questDescription);
+                preparedStatement.setInt(1, reward);
+
+                preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -36,7 +43,6 @@ public class QuestsDAO extends AbstractDAO {
     public List<Quest> getAllQuests() {
         String query = "SELECT * FROM quests";
         List<Quest> quests = new ArrayList<>();
-        log.info(query);
 
         try {
             ResultSet resultSet = getConnection().createStatement().executeQuery(query);
@@ -58,12 +64,18 @@ public class QuestsDAO extends AbstractDAO {
     }
 
     public void updateQuest(Quest quest) {
-        String query = String.format("UPDATE quests SET title = '%s', category = '%s', quest_description = '%s', reward = '%d'\n" +
-                "WHERE id = '%d';", quest.getTitle(), quest.getCategory(), quest.getDescription(), quest.getReward(), quest.getId());
+        String query = "UPDATE quests SET title = ?, category = ?, quest_description = ?, reward = ?\n" +
+                "WHERE id = ?;";
         try {
             if (checkIfQuestExists(quest.getId())) {
-                log.info(query);
-                getConnection().createStatement().executeUpdate(query);
+                PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+                preparedStatement.setString(1, quest.getTitle());
+                preparedStatement.setString(2, String.valueOf(quest.getCategory()));
+                preparedStatement.setString(3, quest.getDescription());
+                preparedStatement.setInt(4, quest.getReward());
+                preparedStatement.setInt(5, quest.getId());
+
+                preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -72,27 +84,24 @@ public class QuestsDAO extends AbstractDAO {
     }
 
     public boolean checkIfQuestExists(String title) throws SQLException {
-        String query = String.format("SELECT * FROM quests WHERE title='%s';", title);
-        return executeQuery(query).next();
+        String query = "SELECT * FROM quests WHERE title=?;";
+
+        PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+        preparedStatement.setString(1, title);
+
+        return preparedStatement.executeQuery().next();
 
     }
 
     public boolean checkIfQuestExists(int id) throws SQLException {
-        String query = String.format("SELECT * FROM quests WHERE id=%d;", id);
-        return executeQuery(query).next();
-    }
+        String query = "SELECT * FROM quests WHERE id=?;";
 
-    public ResultSet executeQuery(String query) {
-        ResultSet resultSet = null;
-        try {
-            resultSet = getConnection()
-                    .createStatement()
-                    .executeQuery(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
-        return resultSet;
+        PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+        preparedStatement.setInt(1, id);
+
+        return preparedStatement.executeQuery().next();
+
     }
 
 }
