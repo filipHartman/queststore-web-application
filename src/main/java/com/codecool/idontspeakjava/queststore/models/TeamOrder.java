@@ -14,45 +14,14 @@ public class TeamOrder extends Order {
         this.collectedMoney = collectedMoney;
     }
 
-    private TeamOrder(Builder builder) {
-        setId(builder.id);
-        setArtifactID(builder.artifactID);
-        setWalletID(builder.walletID);
-        collectedMoney = builder.collectedMoney;
+
+    public int getCollectedMoney() {
+        return collectedMoney;
+    }
+
+    public void setCollectedMoney(int collectedMoney) {
+        this.collectedMoney = collectedMoney;
     }
 
 
-    public static final class Builder {
-        private int id;
-        private int artifactID;
-        private int walletID;
-        private int collectedMoney;
-
-        public Builder() {
-        }
-
-        public Builder setId(int id) {
-            this.id = id;
-            return this;
-        }
-
-        public Builder setArtifactID(int artifactID) {
-            this.artifactID = artifactID;
-            return this;
-        }
-
-        public Builder setWalletID(int walletID) {
-            this.walletID = walletID;
-            return this;
-        }
-
-        public Builder setCollectedMoney(int collectedMoney) {
-            this.collectedMoney = collectedMoney;
-            return this;
-        }
-
-        public TeamOrder build() {
-            return new TeamOrder(this);
-        }
-    }
 }
