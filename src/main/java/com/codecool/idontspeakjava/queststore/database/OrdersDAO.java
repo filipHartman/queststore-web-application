@@ -87,13 +87,12 @@ public class OrdersDAO extends AbstractDAO {
             if (checkIfTeamOrderExists(id)) {
                 log.info(query);
                 ResultSet resultSet = getConnection().createStatement().executeQuery(query);
-                teamOrder = (TeamOrder) new Order.Builder()
-                        .setId(resultSet.getInt("id"))
-                        .setArtifactID(resultSet.getInt("artifact_id"))
-                        .setWalletID(resultSet.getInt("wallet_id"))
-                        .setIsUsed(resultSet.getBoolean("is_used"))
-                        .build();
+                teamOrder = new TeamOrder();
+                teamOrder.setId(resultSet.getInt("id"));
+                teamOrder.setArtifactID(resultSet.getInt("artifact_id"));
+                teamOrder.setTeamID(resultSet.getInt("team_id"));
                 teamOrder.setCollectedMoney(resultSet.getInt("collected_money"));
+                teamOrder.setUsed(resultSet.getBoolean("is_used"));
             }
 
         } catch (SQLException e) {

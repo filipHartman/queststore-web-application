@@ -203,12 +203,15 @@ public class CodecoolerController {
                 if (orderId > 0) {
                     TeamOrder order = orderDAO.getTeamOrder(orderId);
                     order.setCollectedMoney(order.getCollectedMoney() + contribution);
+                    orderDAO.updateOrder(order);
                 } else {
-                    TeamOrder order = new TeamOrder(id, wallet.getId(), false);
+                    TeamOrder order = new TeamOrder(id, teamsDAO.getUserTeam(codecooler).getId(),false, contribution);
                     orderDAO.createOrder(order);
                     wallet.setCurrentState(currentState - artifact.getPrice());
                     walletDAO.updateWallet(wallet);
                 }
+                wallet.setCurrentState(currentState - contribution);
+                walletDAO.updateWallet(wallet);
             } else {
                 view.notEnoughCoolcoins();
             }
