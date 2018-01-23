@@ -26,14 +26,14 @@ class ClassCreator {
                 loopContinuation = false;
             } else {
                 loopContinuation = setName(input);
-                new codecoolClassDAO.createCodecoolClass(new CodecoolClass(className));
+                new CodecoolClassDAO().createCodecoolClass(new CodecoolClass(className));
             }
         }
     }
 
     private boolean setName(String input){
         boolean nameNotSet = true;
-        if (input.matches("[a-zA-Z1-9,. ]+") {
+        if (input.matches("[a-zA-Z1-9,. ]+")) {
             try{
                 if(new CodecoolClassDAO().checkIfClassExists(input)){
                     view.showExistingValueWarning();
