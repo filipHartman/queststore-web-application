@@ -59,7 +59,7 @@ public class CodecoolerController {
             case SEE_WALLET:
                 checkWallet();
                 break;
-            case BUY_ARTIFACT:;
+            case BUY_ARTIFACT:
                 buyArtifact(chooseArtifact(0));
                 break;
             case BUY_ARTIFACT_FOR_TEAM:
@@ -80,7 +80,7 @@ public class CodecoolerController {
     private int chooseArtifact(int mode){ // 0 for Basic, 1 or else for Magic
         final int BASIC = 0;
         ArtifactCategory category = (mode == BASIC) ? ArtifactCategory.Basic : ArtifactCategory.Magic;
-        
+
         int artifactId = 0;
         ArrayList<String> namesOfArtifacts = new ArrayList<String>();
         ArrayList<Integer> IDs = new ArrayList<>();
