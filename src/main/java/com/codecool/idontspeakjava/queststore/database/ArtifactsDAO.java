@@ -41,7 +41,7 @@ public class ArtifactsDAO extends AbstractDAO {
 
 
     public Artifact getArtifact(int id) {
-        String query = String.format("SELECT * FROM artifacts WHERE id = ?", id);
+        String query = String.format("SELECT * FROM artifacts WHERE id = %d", id);
         Artifact artifact = null;
 
         try {
@@ -81,9 +81,6 @@ public class ArtifactsDAO extends AbstractDAO {
 
     public void updateArtifact(Artifact artifact) {
         String query = "UPDATE artifacts SET title = ?, category = ?, artifact_description = ?, price = ? WHERE id = ?";
-
-
-
         try {
             if (checkIfArtifactExists(artifact.getTitle())) {
                 PreparedStatement preparedStatement = getConnection().prepareStatement(query);
@@ -101,8 +98,6 @@ public class ArtifactsDAO extends AbstractDAO {
 
     public void removeArtifact(Artifact artifact) {
         String query = "DELETE FROM artifacts WHERE title = ?";
-
-
         try {
             PreparedStatement preparedStatement = getConnection().prepareStatement(query);
             preparedStatement.setString(1, artifact.getTitle());
@@ -115,8 +110,6 @@ public class ArtifactsDAO extends AbstractDAO {
 
     public boolean checkIfArtifactExists(String title) throws SQLException {
         String query = "SELECT * FROM artifacts WHERE title=?;";
-
-
         PreparedStatement preparedStatement = getConnection().prepareStatement(query);
         preparedStatement.setString(1, title);
 
@@ -124,7 +117,7 @@ public class ArtifactsDAO extends AbstractDAO {
     }
 
     public boolean checkIfArtifactExists(int id) throws SQLException {
-        String query = String.format("SELECT * FROM artifacts WHERE id=?;", id);
+        String query = String.format("SELECT * FROM artifacts WHERE id=%d;", id);
         log.info(query);
         ResultSet resultSet = getConnection()
                 .createStatement()
