@@ -45,7 +45,7 @@ class RootController {
                     new ClassCreator(view).createClass();
                     break;
                 case ASSIGN_MENTOR_TO_CLASS:
-                    assignMentorToClass();
+                    new AssignMentorToClass(view).assignMentor();
                     break;
                 case EDIT_MENTOR:
                     editMentor();
@@ -69,23 +69,6 @@ class RootController {
     }
 
 
-
-    private void assignMentorToClass() {
-        for (User mentorUser : userDAO.getUsersByPermission(Permissions.Mentor)) {
-            System.out.println(mentorUser.getFirstName() + " " + mentorUser.getLastName() + " " + mentorUser.getEmail());
-        }
-        view.inputInfoMentorEmail();
-        String mentorEmail = view.getUserInput();
-        User selectedMentor = userDAO.getUserByEmail(mentorEmail);
-        for (CodecoolClass codecoolClass : codecoolClassDAO.getAllCodecoolClasses()) {
-            System.out.println(codecoolClass.getName());
-        }
-        view.inputInfoClassName();
-        String className = view.getUserInput();
-        CodecoolClass selectedClass = codecoolClassDAO.getCodecoolClass(className);
-        codecoolClassDAO.addUserToCodecoolClass(selectedMentor, selectedClass);
-
-    }
 
     private void editMentor() {
         for (User mentorUser : userDAO.getUsersByPermission(Permissions.Mentor)) {

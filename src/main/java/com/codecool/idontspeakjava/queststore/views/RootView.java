@@ -3,6 +3,7 @@ package com.codecool.idontspeakjava.queststore.views;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
 
+
 public class RootView extends UserView{
 
     public void askForClassName(){
@@ -107,6 +108,26 @@ public class RootView extends UserView{
     public void showWrongClassNameInput() {
         clearScreen();
         System.out.println("Wrong input. You can only use letters, numbers, commas and dots.\n");
+        continuePrompt();
+    }
+
+    public void askForMentorEmailInput() {
+        System.out.println("Enter select mentor email or type 0 to exit.\n");
+    }
+
+    public void askForClassNameInput(){
+        System.out.println("Enter class name or type 0 to exit.\n");
+    }
+
+    public void showWrongClassName(){
+        clearScreen();
+        System.out.println("Wrong input. Invalid class name.\n");
+        continuePrompt();
+    }
+
+    public void showMentorAssign(){
+        clearScreen();
+        System.out.println("You assign mentor to a class.\n");
         continuePrompt();
     }
 }
