@@ -5,8 +5,9 @@ import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
 
 public class RootView extends UserView{
 
-    public void inputInfoClassName(){
-        System.out.println("Enter class name");
+    public void askForClassName(){
+        clearScreen();
+        System.out.println("Enter class name or type 0 to exit.\n");
     }
     
     public void askForMentorName(){
@@ -100,6 +101,12 @@ public class RootView extends UserView{
     public void showOperationCancelled() {
         clearScreen();
         System.out.println("Operation cancelled.\n");
+        continuePrompt();
+    }
+
+    public void showWrongClassNameInput() {
+        clearScreen();
+        System.out.println("Wrong input. You can only use letters, numbers, commas and dots.\n");
         continuePrompt();
     }
 }

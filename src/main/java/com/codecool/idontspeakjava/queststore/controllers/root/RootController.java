@@ -25,7 +25,7 @@ class RootController {
     private static final String EXIT = "0";
 
     RootController(User user) {
-        this.view = new RootView();
+        view = new RootView();
         this.codecoolClassDAO = new CodecoolClassDAO();
         this.user = user;
         this.userDAO = new UserDAO();
@@ -42,7 +42,7 @@ class RootController {
                     new MentorCreator(view).createMentor();
                     break;
                 case CREATE_CODECOOL_CLASS:
-                    createCodecoolClass();
+                    new ClassCreator(view).createClass();
                     break;
                 case ASSIGN_MENTOR_TO_CLASS:
                     assignMentorToClass();
@@ -69,12 +69,6 @@ class RootController {
     }
 
 
-    private boolean createCodecoolClass() {
-        view.inputInfoClassName();
-        String className = view.getUserInput();
-        codecoolClassDAO.createCodecoolClass(new CodecoolClass(className));
-        return true;
-    }
 
     private void assignMentorToClass() {
         for (User mentorUser : userDAO.getUsersByPermission(Permissions.Mentor)) {
