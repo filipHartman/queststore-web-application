@@ -15,11 +15,12 @@ public class CodecoolerView extends UserView{
                 CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, Colors.BLACK_BOLD_BRIGHT, userName, rank, Colors.RESET));
     }
 
-    public void showWallet(long totalMoney, ArrayList<String> namesOfArtifacts){
+    public void showWallet(long totalMoney, long totalEarnings, ArrayList<String> namesOfArtifacts){
         System.out.println(String.format(
-                    "%s%sWALLET         %sYour coolcoins: %s%s\n%s",
+                    "%s%sWALLET         %sCurrent state: %s%scc         %sTotal earnings: %s%scc\n%s",
                 CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, Colors.BLACK_BOLD_BRIGHT, Colors.YELLOW_BOLD_BRIGHT,
-                totalMoney, Colors.RESET));
+                totalMoney, Colors.BLACK_BOLD_BRIGHT, Colors.YELLOW_BOLD_BRIGHT,
+                totalEarnings, Colors.RESET));
         if (namesOfArtifacts.size() > 0) {
             System.out.println(String.format("%sYour artifacts: %s", Colors.BLACK_BOLD_BRIGHT, Colors.RESET));
             for (String artifact : namesOfArtifacts) {
@@ -33,13 +34,15 @@ public class CodecoolerView extends UserView{
     }
 
     public void showBuyArtifactMenu(ArrayList<String> namesOfArtifacts, ArrayList<Long> prices, long balance){
-        System.out.println(CLEAR_CONSOLE);
-        System.out.print(Colors.GREEN_BOLD_BRIGHT + "BASIC ARTIFACTS SHOP" + Colors.BLACK_BOLD_BRIGHT);
-        System.out.println("         YOUR MONEY: " + Colors.YELLOW_BOLD_BRIGHT + balance + "cc\n" + Colors.RESET);
+        System.out.println(String.format(
+                    "%s%sBASIC ARTIFACTS SHOP         %sYOUR MONEY: %s%scc\n%s",
+                CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, Colors.BLACK_BOLD_BRIGHT, Colors.YELLOW_BOLD_BRIGHT,
+                balance, Colors.RESET));
         for (String artifact : namesOfArtifacts) {
             int index = namesOfArtifacts.indexOf(artifact);
-            System.out.print((index + 1) + ". " + Colors.CYAN_BOLD_BRIGHT + artifact);
-            System.out.println("   " + Colors.YELLOW_BOLD_BRIGHT + prices.get(index) + "cc" + Colors.RESET);
+            System.out.println(String.format(
+                        "%s. %s%s   %s%scc%s",
+                    index, Colors.WHITE_BOLD, artifact, Colors.YELLOW_BOLD_BRIGHT, prices.get(index), Colors.RESET));
         }
         System.out.println("\n\n0 - Back");
     }
@@ -57,8 +60,7 @@ public class CodecoolerView extends UserView{
     }
 
     public void notEnoughCoolcoins(){
-        System.out.println(CLEAR_CONSOLE);
-        System.out.println("Not enough coolcoins\nPress enter to continue...");
+        System.out.println(CLEAR_CONSOLE + "Not enough coolcoins\nPress enter to continue...");
         getUserInput();
     }
 

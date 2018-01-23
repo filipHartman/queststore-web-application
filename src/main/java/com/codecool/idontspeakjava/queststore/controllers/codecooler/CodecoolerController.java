@@ -271,13 +271,13 @@ public class CodecoolerController {
     }
 
     private void checkWallet(){
-        List<Order> allUserOrders = orderDAO.getAllOrdersByUser(codecooler);
-        ArrayList<String> namesOfArtifacts = new ArrayList<String>();
-        for (Order order : allUserOrders) {
-            String artifactName = artifactDAO.getArtifact(order.getArtifactID()).getTitle();
-            namesOfArtifacts.add(artifactName);
+        ArrayList<String> namesOfArtifacts = new ArrayList<>();
+        for (Order order : orderDAO.getAllOrdersByUser(codecooler)) {
+            namesOfArtifacts.add(artifactDAO
+                            .getArtifact(order.getArtifactID())
+                            .getTitle());
         }
-        view.showWallet(wallet.getCurrentState(), namesOfArtifacts);
+        view.showWallet(wallet.getCurrentState(), wallet.getTotalEarnings(), namesOfArtifacts);
     }
 
     private void seeQuests(){
