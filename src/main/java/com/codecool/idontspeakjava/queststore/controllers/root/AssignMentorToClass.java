@@ -16,6 +16,7 @@ class AssignMentorToClass{
 
     private User selectedMentor;
     private CodecoolClass selectedClass;
+    private RootView view;
 
     AssignMentorToClass(RootView view) {
         this.view = view;
@@ -49,7 +50,7 @@ class AssignMentorToClass{
         }
     }
 
-    private void selectInfoForPrompt(int propmtInfo){
+    private void selectInfoForPrompt(int propmtInfo){selectedMentor
         switch(propmtInfo){
             case SELECT_MENTOR:
                 view.showAllMentors();
