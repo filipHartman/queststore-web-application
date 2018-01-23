@@ -2,6 +2,7 @@ package com.codecool.idontspeakjava.queststore.controllers.root;
 
 import com.codecool.idontspeakjava.queststore.views.RootView;
 import com.codecool.idontspeakjava.queststore.database.UserDAO;
+import com.codecool.idontspeakjava.queststore.database.CodecoolClassDAO;;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
 import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
 import com.codecool.idontspeakjava.queststore.models.User;
@@ -26,7 +27,7 @@ class AssignMentorToClass{
         boolean loopContinuation = true;
         int userInputs = 0;
         final int prompts = 2;
-        for (int i = 0; i < prompt && loopContinuation; i++){
+        for (int i = 0; i < prompts && loopContinuation; i++){
             boolean mentorNotAssign = true;
             while(mentorNotAssign){
                 selectInfoForPrompt(i);
@@ -50,7 +51,7 @@ class AssignMentorToClass{
         }
     }
 
-    private void selectInfoForPrompt(int propmtInfo){selectedMentor
+    private void selectInfoForPrompt(int propmtInfo){
         switch(propmtInfo){
             case SELECT_MENTOR:
                 view.showAllMentors();
@@ -66,13 +67,13 @@ class AssignMentorToClass{
     private boolean selectMentor(String input){
         boolean mentorNotSelected = true;
         try{
-            if(new userDAO().checkIfUsersExists(input)) {
-                selectedMentor = new userDAO().getUserByEmail(input);
+            if(new UserDAO().checkIfUsersExists(input)) {
+                selectedMentor = new UserDAO().getUserByEmail(input);
                 mentorNotSelected = false;
             }else{
                 view.showWrongEmailInput();
             }
-        }catch SQLException e) {
+        }catch (SQLException e) {
             e.printStackTrace();
             view.showDatabaseError();
         }
@@ -88,7 +89,7 @@ class AssignMentorToClass{
             }else{
                 view.showWrongClassName();
             }
-        }catch SQLException e) {
+        }catch (SQLException e) {
             e.printStackTrace();
             view.showDatabaseError();
         }
@@ -113,7 +114,7 @@ class AssignMentorToClass{
     private void addMentorToClass(User mentor, CodecoolClass ccClass){
         try {
             new CodecoolClassDAO().addUserToCodecoolClass(mentor, ccClass);
-        }catch SQLException e) {
+        }catch (SQLException e) {
             e.printStackTrace();
             view.showDatabaseError();
         }
