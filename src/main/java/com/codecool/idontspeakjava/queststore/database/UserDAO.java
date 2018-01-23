@@ -102,7 +102,6 @@ public class UserDAO extends AbstractDAO {
                 preparedStatement.setString(5, String.valueOf(user.getPermission()));
                 preparedStatement.setInt(6, user.getId());
 
-                log.info(preparedStatement.toString());
 
                 preparedStatement.executeUpdate();
             }
@@ -133,12 +132,11 @@ public class UserDAO extends AbstractDAO {
         preparedStatement.setString(1, email);
 
         ResultSet resultSet = preparedStatement.executeQuery();
-
         return resultSet.next();
     }
 
     public boolean checkIfUsersExists(int id) throws SQLException {
-        String query = String.format("SELECT * FROM users WHERE id= ?;", id);
+        String query = String.format("SELECT * FROM users WHERE id= %d;", id);
         log.info(query);
         ResultSet resultSet = getConnection()
                 .createStatement()
