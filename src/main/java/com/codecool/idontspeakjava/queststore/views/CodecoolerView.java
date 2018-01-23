@@ -19,7 +19,7 @@ public class CodecoolerView extends UserView{
 
     public void showWallet(long totalMoney, ArrayList<String> namesOfArtifacts){
         System.out.println(CLEAR_CONSOLE);
-        System.out.println(Colors.GREEN_BOLD_BRIGHT + "WALLET\n" + Colors.RESET);
+        System.out.print(Colors.GREEN_BOLD_BRIGHT + "WALLET         ");
         System.out.println(Colors.BLACK_BOLD_BRIGHT + "Your coolcoins: " + Colors.YELLOW_BOLD_BRIGHT + totalMoney + Colors.BLACK_BOLD_BRIGHT);
         System.out.println("\nYour artifacts: " + Colors.CYAN_BOLD_BRIGHT);
         for (String artifact : namesOfArtifacts) {
@@ -29,18 +29,26 @@ public class CodecoolerView extends UserView{
         getUserInput();
     }
 
-    public void showBuyArtifactMenu(ArrayList<String> namesOfArtifacts, ArrayList<Long> prices, long balance, ArtifactCategory category){
+    public void showBuyArtifactMenu(ArrayList<String> namesOfArtifacts, ArrayList<Long> prices, long balance){
         System.out.println(CLEAR_CONSOLE);
-        if (category == ArtifactCategory.Basic){
-            System.out.print(Colors.GREEN_BOLD_BRIGHT + "BASIC ARTIFACTS SHOP" + Colors.BLACK_BOLD_BRIGHT);
-        } else {
-            System.out.print(Colors.GREEN_BOLD_BRIGHT + "MAGIC ARTIFACTS SHOP" + Colors.BLACK_BOLD_BRIGHT);
-        }
+        System.out.print(Colors.GREEN_BOLD_BRIGHT + "BASIC ARTIFACTS SHOP" + Colors.BLACK_BOLD_BRIGHT);
         System.out.println("         YOUR MONEY: " + Colors.YELLOW_BOLD_BRIGHT + balance + "cc\n" + Colors.RESET);
         for (String artifact : namesOfArtifacts) {
             int index = namesOfArtifacts.indexOf(artifact);
             System.out.print((index + 1) + ". " + Colors.CYAN_BOLD_BRIGHT + artifact);
             System.out.println("   " + Colors.YELLOW_BOLD_BRIGHT + prices.get(index) + "cc" + Colors.RESET);
+        }
+        System.out.println("\n\n0 - Back");
+    }
+
+    public void showBuyTeamArtifactMenu(ArrayList<String> namesOfArtifacts, ArrayList<Long> collected, ArrayList<Long> prices, long balance){
+        System.out.println(CLEAR_CONSOLE);
+        System.out.print(Colors.GREEN_BOLD_BRIGHT + "MAGIC ARTIFACTS SHOP" + Colors.BLACK_BOLD_BRIGHT);
+        System.out.println("         YOUR MONEY: " + Colors.YELLOW_BOLD_BRIGHT + balance + "cc\n" + Colors.RESET);
+        for (String artifact : namesOfArtifacts) {
+            int index = namesOfArtifacts.indexOf(artifact);
+            System.out.print((index + 1) + ". " + Colors.CYAN_BOLD_BRIGHT + artifact);
+            System.out.println("   " + Colors.YELLOW_BOLD_BRIGHT + collected.get(index) + Colors.RESET + "/" + Colors.YELLOW_BOLD_BRIGHT + prices.get(index) + "cc" + Colors.RESET);
         }
         System.out.println("\n\n0 - Back");
     }

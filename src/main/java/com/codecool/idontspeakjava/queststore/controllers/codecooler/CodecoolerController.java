@@ -99,7 +99,7 @@ public class CodecoolerController {
         boolean optionIsChoosen = false;
         while (!optionIsChoosen){
 
-            view.showBuyArtifactMenu(namesOfArtifacts, prices, wallet.getCurrentState(), category);
+            view.showBuyArtifactMenu(namesOfArtifacts, prices, wallet.getCurrentState());
             String input = view.getUserInput();
 
             if (input.equals("0")) {
@@ -139,19 +139,26 @@ public class CodecoolerController {
                 namesOfArtifacts.add(artifact.getTitle());
                 IDs.add(new Integer(artifact.getId()));
                 prices.add(new Long(artifact.getPrice()));
+                boolean artifactInTeamOrders = false;
+                TeamOrder currentTeamOrder = null;
                 for (TeamOrder teamOrder : teamOrders) {
                     if (teamOrder.getArtifactID() == artifact.getId()) {
-                        collected.add(new Long(teamOrder.getCollectedMoney()));
-                    } else {
-                        collected.add(new Long(0));
+                        artifactInTeamOrders = true;
+                        currentTeamOrder = teamOrder;
                     }
                 }
+                if (artifactInTeamOrders) {
+                        collected.add(new Long(currentTeamOrder.getCollectedMoney()));
+                } else {
+                        collected.add(new Long(0));
+                }
+            }
         }
 
         boolean optionIsChoosen = false;
         while (!optionIsChoosen){
 
-            view.showBuyArtifactMenu(namesOfArtifacts, prices, wallet.getCurrentState(), category);
+            view.showBuyTeamArtifactMenu(namesOfArtifacts, collected, prices, wallet.getCurrentState());
             String input = view.getUserInput();
 
             if (input.equals("0")) {
