@@ -52,11 +52,11 @@ class AssignMentorToClass{
     private void selectInfoForPrompt(int propmtInfo){
         switch(propmtInfo){
             case SELECT_MENTOR:
-                allMentors();
+                view.showAllMentors();
                 view.askForMentorEmailInput();
                 break;
             case SELECT_CLASS:
-                allClasses();
+                view.showAllClasses();
                 view.askForClassNameInput();
                 break;
         }
@@ -115,19 +115,6 @@ class AssignMentorToClass{
         }catch SQLException e) {
             e.printStackTrace();
             view.showDatabaseError();
-        }
-    }
-
-
-    private void allMentors(){
-        for (User mentorUser : new userDAO().getUsersByPermission(Permissions.Mentor)) {
-            System.out.println(mentorUser.getFirstName() + " " + mentorUser.getLastName() + " " + mentorUser.getEmail()+"\n");
-        }
-    }
-
-    private void allClasses(){
-        for (CodecoolClass codecoolClass : new codecoolClassDAO().getAllCodecoolClasses()) {
-            System.out.println(codecoolClass.getName());
         }
     }
 }
