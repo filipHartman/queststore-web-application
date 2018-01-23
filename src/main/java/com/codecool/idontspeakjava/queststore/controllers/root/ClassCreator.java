@@ -17,8 +17,6 @@ class ClassCreator {
     }
 
     void createClass() {
-        int userInputs = 0;
-        final int prompts = 1;
         boolean loopContinuation = true;
         while (loopContinuation) {
             view.askForClassName();
