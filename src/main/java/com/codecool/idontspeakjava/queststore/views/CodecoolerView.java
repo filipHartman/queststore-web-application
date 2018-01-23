@@ -59,6 +59,16 @@ public class CodecoolerView extends UserView{
         getUserInput();
     }
 
+    public int askForContribution(){
+        System.out.println(CLEAR_CONSOLE);
+        System.out.println("How may you want to pay?");
+        String input = getUserInput();
+        if (input.matches("\\d+")) {
+            return Integer.parseInt(input);
+        }
+        return 0;
+    }
+
     public void showWrongInput() {
         System.out.println("Your input is wrong.\n");
     }

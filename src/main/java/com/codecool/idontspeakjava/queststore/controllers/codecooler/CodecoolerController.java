@@ -68,7 +68,7 @@ public class CodecoolerController {
                 buyArtifact(chooseArtifact());
                 break;
             case BUY_ARTIFACT_FOR_TEAM:
-                buyArtifact(chooseTeamArtifact());
+                addContributionToArtifact(chooseTeamArtifact());
                 break;
             case SEE_QUESTS:
                 seeQuests();
@@ -126,8 +126,9 @@ public class CodecoolerController {
         return artifactId;    
     }
 
-    private int chooseTeamArtifact(){
+    private ArrayList<Integer> chooseTeamArtifact(){
         int artifactId = 0;
+        Integer idOfCurrentTeamOrder = new Integer(0);
         List<TeamOrder> teamOrders = orderDAO.getAllOrdersByTeam(teamsDAO.getUserTeam(codecooler));
         ArrayList<String> namesOfArtifacts = new ArrayList<String>();
         ArrayList<Integer> IDs = new ArrayList<>();
@@ -145,6 +146,7 @@ public class CodecoolerController {
                     if (teamOrder.getArtifactID() == artifact.getId()) {
                         artifactInTeamOrders = true;
                         currentTeamOrder = teamOrder;
+                        idOfCurrentTeamOrder = new Integer(currentTeamOrder.getId());
                     }
                 }
                 if (artifactInTeamOrders) {
@@ -173,7 +175,7 @@ public class CodecoolerController {
                     if (choosenPosition <= namesOfArtifacts.size()){
 
                         artifactId = IDs.get(choosenPosition - 1).intValue();
-                        if (!checkIfItemIsBought(artifactId)){
+                        if (!checkIfTeamItemIsBought(artifactId)){
                             optionIsChoosen = true;
                         } else {
                             artifactId = 0;
@@ -182,7 +184,35 @@ public class CodecoolerController {
                 }
             }
         }
-        return artifactId;
+        ArrayList<Integer> result = new ArrayList<>();
+        result.add(new Integer(artifactId));
+        result.add(idOfCurrentTeamOrder);
+
+        return result;
+    }
+
+    private void addContributionToArtifact(ArrayList<Integer> artifactAndIdOfOrder){
+        int id = Integer.parseInt(artifactAndIdOfOrder.get(0).toString());
+        int orderId = Integer.parseInt(artifactAndIdOfOrder.get(1).toString());
+
+        if (!(id == 0)){
+            Artifact artifact = artifactDAO.getArtifact(id);
+            long currentState = wallet.getCurrentState();
+            if (currentState > 0) {
+                int contribution = view.askForContribution();
+                if (orderId > 0) {
+                    TeamOrder order = orderDAO.getTeamOrder(orderId);
+                    order.setCollectedMoney(order.getCollectedMoney() + contribution);
+                } else {
+                    TeamOrder order = new TeamOrder(id, wallet.getId(), false);
+                    orderDAO.createOrder(order);
+                    wallet.setCurrentState(currentState - artifact.getPrice());
+                    walletDAO.updateWallet(wallet);
+                }
+            } else {
+                view.notEnoughCoolcoins();
+            }
+        }
     }
 
     private boolean checkIfItemIsBought(int id){
@@ -191,6 +221,19 @@ public class CodecoolerController {
                         
         for (Order order : orders) {
             if (order.getArtifactID() == id){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkIfTeamItemIsBought(int id){
+
+        List<TeamOrder> orders = orderDAO.getAllOrdersByTeam(teamsDAO.getUserTeam(codecooler));
+
+        for (TeamOrder order : orders) {
+            int artifactId = order.getArtifactID();
+            if (artifactId == id && order.getCollectedMoney() == artifactDAO.getArtifact(artifactId).getPrice()){
                 return true;
             }
         }
