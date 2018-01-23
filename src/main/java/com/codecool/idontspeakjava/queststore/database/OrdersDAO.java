@@ -34,11 +34,11 @@ public class OrdersDAO extends AbstractDAO {
 
     public void createOrder(TeamOrder teamOrder) {
         int artifactID = teamOrder.getArtifactID();
-        int walletID = teamOrder.getWalletID();
+        int teamID = teamOrder.getTeamID();
         int is_used = teamOrder.isUsed() ? 1 : 0;
         int collected_money = teamOrder.getCollectedMoney();
-        String query = String.format("INSERT INTO orders(artifact_id, wallet_id, is_used, collected_money) " +
-                "VALUES(%d, %d, %d, %d)", artifactID, walletID, is_used, collected_money);
+        String query = String.format("INSERT INTO team_orders(artifact_id, team_id, is_used, collected_money) " +
+                "VALUES(%d, %d, %d, %d)", artifactID, teamID, is_used, collected_money);
 
         try {
             getConnection().createStatement().executeUpdate(query);
@@ -54,8 +54,8 @@ public class OrdersDAO extends AbstractDAO {
     }
 
     public void updateOrder(TeamOrder teamOrder) {
-        String query = String.format("UPDATE orders SET artifact_id = %d, wallet_id = %d, is_used = %d, collected_money = %d WHERE id = %d",
-                teamOrder.getArtifactID(), teamOrder.getWalletID(), teamOrder.isUsed() ? 1 : 0, teamOrder.getCollectedMoney(), teamOrder.getId());
+        String query = String.format("UPDATE team_orders SET artifact_id = %d, team_id = %d, is_used = %d, collected_money = %d WHERE id = %d",
+                teamOrder.getArtifactID(), teamOrder.getTeamID(), teamOrder.isUsed() ? 1 : 0, teamOrder.getCollectedMoney(), teamOrder.getId());
         executeUpdateQuery(query, teamOrder);
     }
 
