@@ -2,30 +2,33 @@ package com.codecool.idontspeakjava.queststore.views;
 
 import java.util.ArrayList;
 
-import com.codecool.idontspeakjava.queststore.models.ArtifactCategory;
-
 public class CodecoolerView extends UserView{
 
     public void showMainMenu(String userName, String rank) {
-    System.out.println(CLEAR_CONSOLE);
-    System.out.println(String.format(
-            "%sQUESTSTORE\n\n%sNAME: %s              RANK: %s\n\n" +
-                    "%s1 - See your wallet\n" +
+        System.out.println(String.format(
+                    "%s%sQUESTSTORE\n\n%sNAME: %s              RANK: %s%s\n\n" +
+                    "1 - See your wallet\n" +
                     "2 - Buy an artifact\n" +
                     "3 - Buy an artifact for team\n" +
                     "4 - See available quests\n\n\n" +
-                    "0 - Exit the program\n", Colors.GREEN_BOLD_BRIGHT, Colors.BLACK_BOLD_BRIGHT, userName, rank, Colors.RESET));
+                    "0 - Exit the program\n",
+                CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, Colors.BLACK_BOLD_BRIGHT, userName, rank, Colors.RESET));
     }
 
     public void showWallet(long totalMoney, ArrayList<String> namesOfArtifacts){
-        System.out.println(CLEAR_CONSOLE);
-        System.out.print(Colors.GREEN_BOLD_BRIGHT + "WALLET         ");
-        System.out.println(Colors.BLACK_BOLD_BRIGHT + "Your coolcoins: " + Colors.YELLOW_BOLD_BRIGHT + totalMoney + Colors.BLACK_BOLD_BRIGHT);
-        System.out.println("\nYour artifacts: " + Colors.CYAN_BOLD_BRIGHT);
-        for (String artifact : namesOfArtifacts) {
-            System.out.println("- " + artifact);
+        System.out.println(String.format(
+                    "%s%sWALLET         %sYour coolcoins: %s%s\n%s",
+                CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, Colors.BLACK_BOLD_BRIGHT, Colors.YELLOW_BOLD_BRIGHT,
+                totalMoney, Colors.RESET));
+        if (namesOfArtifacts.size() > 0) {
+            System.out.println(String.format("%sYour artifacts: %s", Colors.BLACK_BOLD_BRIGHT, Colors.RESET));
+            for (String artifact : namesOfArtifacts) {
+                System.out.println(String.format("- %s%s%s", Colors.WHITE_BOLD, artifact, Colors.RESET));
+            }
+        } else {
+            System.out.println("No artifacts");
         }
-        System.out.println(Colors.RESET + "\n\nPress enter to continue...");
+        System.out.println("\n\nPress enter to continue...");
         getUserInput();
     }
 
