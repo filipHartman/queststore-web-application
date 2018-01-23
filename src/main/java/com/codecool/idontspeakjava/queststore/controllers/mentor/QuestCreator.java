@@ -1,13 +1,15 @@
 package com.codecool.idontspeakjava.queststore.controllers.mentor;
 
 import com.codecool.idontspeakjava.queststore.database.QuestsDAO;
+import com.codecool.idontspeakjava.queststore.models.DummyItem;
 import com.codecool.idontspeakjava.queststore.models.Quest;
 import com.codecool.idontspeakjava.queststore.models.QuestCategory;
 import com.codecool.idontspeakjava.queststore.views.MentorView;
 
-import java.sql.SQLException;
+import java.util.List;
+import java.util.stream.Collectors;
 
-class QuestCreator {
+class QuestCreator extends Creator {
 
     private static final int TITLE = 0;
     private static final int CATEGORY = 1;
@@ -17,13 +19,11 @@ class QuestCreator {
     private static final String EXIT = "0";
     private MentorView view;
 
-    private String title;
-    private QuestCategory category;
-    private String description;
-    private int reward;
+    private DummyItem temporaryQuest;
 
     QuestCreator(MentorView view) {
         this.view = view;
+        temporaryQuest = new DummyItem();
     }
 
     void createQuest() {
@@ -42,7 +42,7 @@ class QuestCreator {
                     continueLoop = false;
                     continueIteration = false;
                 } else {
-                    continueIteration = setAttribute(i, input);
+                    continueIteration = !setAttribute(i, input);
                 }
             }
             if (continueLoop) {
@@ -58,7 +58,11 @@ class QuestCreator {
     }
 
     private void addQuestToDatabase() {
-        Quest quest = new Quest(title, category, description, reward);
+        Quest quest = new Quest(
+                temporaryQuest.getTitle(),
+                temporaryQuest.getCategory().equals(BASIC_CATEGORY) ? QuestCategory.Basic : QuestCategory.Extra,
+                temporaryQuest.getDescription(),
+                temporaryQuest.getRewardOrPrice());
         QuestsDAO questsDAO = new QuestsDAO();
         questsDAO.createQuest(quest);
         view.showQuestCreated();
@@ -85,16 +89,16 @@ class QuestCreator {
         boolean attributeNotSet;
         switch (promptNumber) {
             case TITLE:
-                attributeNotSet = setTitle(input);
+                attributeNotSet = setTitle(temporaryQuest, input, getQuestsTitles(), view);
                 break;
             case CATEGORY:
-                attributeNotSet = setCategory(input);
+                attributeNotSet = setCategory(temporaryQuest, input, view);
                 break;
             case DESCRIPTION:
-                attributeNotSet = setDescription(input);
+                attributeNotSet = setDescription(temporaryQuest, input, view);
                 break;
             case REWARD:
-                attributeNotSet = setReward(input);
+                attributeNotSet = setPriceOrReward(temporaryQuest, input, view);
                 break;
             default:
                 attributeNotSet = false;
@@ -102,70 +106,8 @@ class QuestCreator {
         return attributeNotSet;
     }
 
-    private boolean setReward(String input) {
-        boolean rewardNotSet = true;
-        if (input.matches("\\d+")) {
-            int inputAsInt = Integer.valueOf(input);
-            if (inputAsInt > 0) {
-                reward = inputAsInt;
-                rewardNotSet = false;
-            } else {
-                view.showInputMustBeHigherThanZero();
-            }
-        } else {
-            view.showWrongDigitInput();
-        }
-        return rewardNotSet;
-    }
-
-    private boolean setDescription(String input) {
-        boolean descriptionNotSet = true;
-        if (input.matches("[a-zA-Z1-9,.! ]+")) {
-            description = input;
-            descriptionNotSet = false;
-        } else {
-            view.showWrongDescriptionInput();
-        }
-        return descriptionNotSet;
-    }
-
-    private boolean setCategory(String input) {
-        final String BASIC = "1";
-        final String EXTRA = "2";
-
-        boolean categoryNotSet = false;
-
-        switch (input) {
-            case BASIC:
-                category = QuestCategory.Basic;
-                break;
-            case EXTRA:
-                category = QuestCategory.Extra;
-                break;
-            default:
-                categoryNotSet = true;
-                view.showWrongInput();
-        }
-        return categoryNotSet;
-    }
-
-    private boolean setTitle(String input) {
-        boolean titleNotSet = true;
-        if (input.matches("[a-zA-Z1-9 ]+")) {
-            try {
-                if (!new QuestsDAO().checkIfQuestExists(input)) {
-                    title = input;
-                    titleNotSet = false;
-                } else {
-                    view.showDuplicateWarning();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                view.showDatabaseError();
-            }
-        } else {
-            view.showWrongTitleInput();
-        }
-        return titleNotSet;
+    private List<String> getQuestsTitles() {
+        List<Quest> quests = new QuestsDAO().getAllQuests();
+        return quests.stream().map(Quest::getTitle).collect(Collectors.toList());
     }
 }
