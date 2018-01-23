@@ -31,7 +31,7 @@ public class QuestsDAO extends AbstractDAO {
                 preparedStatement.setString(1, title);
                 preparedStatement.setString(2, category);
                 preparedStatement.setString(3, questDescription);
-                preparedStatement.setInt(1, reward);
+                preparedStatement.setInt(4, reward);
 
                 preparedStatement.executeUpdate();
             }
