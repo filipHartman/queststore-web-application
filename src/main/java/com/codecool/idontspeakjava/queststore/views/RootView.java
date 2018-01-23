@@ -2,7 +2,9 @@ package com.codecool.idontspeakjava.queststore.views;
 
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
-
+import com.codecool.idontspeakjava.queststore.models.Permissions;
+import com.codecool.idontspeakjava.queststore.database.UserDAO;
+import com.codecool.idontspeakjava.queststore.database.CodecoolClassDAO;
 
 public class RootView extends UserView{
 
@@ -28,14 +30,6 @@ public class RootView extends UserView{
 
     public void inputInfoNewMentorEmail(){
         System.out.println("Enter mentor new email");
-    }
-
-    public boolean editMentorOptionAsk(String option){
-        System.out.println("Do you want to change mentor " + option + " [Y/N]");
-        String decision = getUserInput().toUpperCase();
-        if(decision == "Y")
-            return true;
-        return false;
     }
 
     public void showMentorInfo(User selectedMentor, CodecoolClass mentorClass){
@@ -129,5 +123,52 @@ public class RootView extends UserView{
         clearScreen();
         System.out.println("You assign mentor to a class.\n");
         continuePrompt();
+    }
+
+    public void showAllMentors(){
+        clearScreen();
+        for (User mentorUser : new UserDAO().getUsersByPermission(Permissions.Mentor)) {
+            System.out.println(mentorUser.getFirstName() + " " + mentorUser.getLastName() + " " + mentorUser.getEmail()+"\n");
+        }
+    }
+
+    public void showAllClasses(){
+        clearScreen();
+        for (CodecoolClass codecoolClass : new CodecoolClassDAO().getAllCodecoolClasses()) {
+            System.out.println(codecoolClass.getName());
+        }
+    }
+    public void askForMentorEmailToEdit(){
+        clearScreen();
+        System.out.println("Do you want to change mentor email[Y/N]? or type 0 to exit\n");
+    }
+
+    public void askForMentorNewEmail(){
+        clearScreen();
+        System.out.println("Enter mentor new email.\n");
+    }
+
+    public void showWrongAnswer(){
+        clearScreen();
+        System.out.println("Please answer only Y or N");
+    }
+
+    public void askForMentorClassToEdit(){
+        clearScreen();
+        System.out.println("Do you want to change mentor class[Y/N]? or type 0 to exit\n");
+    }
+
+    public void askForMentorNewClass(){
+        System.out.println("Enter mentor new class name.\n");
+    }
+
+    public void showMentorInClassInfo(){
+        clearScreen();
+        System.out.println("Selected mentor is already in this class.\n");
+    }
+
+    public void showMentorUpdate(){
+        clearScreen();
+        System.out.println("You update mentor data.\n");
     }
 }
