@@ -5,6 +5,8 @@ import com.codecool.idontspeakjava.queststore.models.Artifact;
 import com.codecool.idontspeakjava.queststore.models.ArtifactCategory;
 import com.codecool.idontspeakjava.queststore.models.Wallet;
 import com.codecool.idontspeakjava.queststore.models.Order;
+import com.codecool.idontspeakjava.queststore.models.TeamOrder;
+import com.codecool.idontspeakjava.queststore.models.Team;
 import com.codecool.idontspeakjava.queststore.models.Quest;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.models.ExperienceLevel;
@@ -13,6 +15,7 @@ import com.codecool.idontspeakjava.queststore.database.ArtifactsDAO;
 import com.codecool.idontspeakjava.queststore.database.OrdersDAO;
 import com.codecool.idontspeakjava.queststore.database.ExperienceLevelDAO;
 import com.codecool.idontspeakjava.queststore.database.QuestsDAO;
+import com.codecool.idontspeakjava.queststore.database.TeamsDAO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +27,7 @@ public class CodecoolerController {
     private WalletsDAO walletDAO;
     private ExperienceLevelDAO experienceLevelDAO;
     private OrdersDAO orderDAO;
+    private TeamsDAO teamsDAO;
     private QuestsDAO questsDAO;
     private Wallet wallet;
 
@@ -40,6 +44,7 @@ public class CodecoolerController {
         this.experienceLevelDAO = new ExperienceLevelDAO();
         this.walletDAO = new WalletsDAO();
         this.orderDAO = new OrdersDAO();
+        this.teamsDAO = new TeamsDAO();
         this.questsDAO = new QuestsDAO();
         this.wallet = walletDAO.getWalletByUserID(codecooler.getId());
     }
@@ -60,10 +65,10 @@ public class CodecoolerController {
                 checkWallet();
                 break;
             case BUY_ARTIFACT:
-                buyArtifact(chooseArtifact(0));
+                buyArtifact(chooseArtifact());
                 break;
             case BUY_ARTIFACT_FOR_TEAM:
-                buyArtifact(chooseArtifact(1));
+                buyArtifact(chooseTeamArtifact());
                 break;
             case SEE_QUESTS:
                 seeQuests();
@@ -77,17 +82,14 @@ public class CodecoolerController {
         return continueRunning;
     }
 
-    private int chooseArtifact(int mode){ // 0 for Basic, 1 or else for Magic
-        final int BASIC = 0;
-        ArtifactCategory category = (mode == BASIC) ? ArtifactCategory.Basic : ArtifactCategory.Magic;
-
+    private int chooseArtifact(){
         int artifactId = 0;
         ArrayList<String> namesOfArtifacts = new ArrayList<String>();
         ArrayList<Integer> IDs = new ArrayList<>();
         ArrayList<Long> prices = new ArrayList<>();
 
         for (Artifact artifact : artifactDAO.getAllArtifacts()) {
-            if (artifact.getCategory() == category) {
+            if (artifact.getCategory() == ArtifactCategory.Basic) {
                 namesOfArtifacts.add(artifact.getTitle());
                 IDs.add(new Integer(artifact.getId()));
                 prices.add(new Long(artifact.getPrice()));
@@ -122,6 +124,58 @@ public class CodecoolerController {
             }
         }
         return artifactId;    
+    }
+
+    private int chooseTeamArtifact(){
+        int artifactId = 0;
+        List<TeamOrder> teamOrders = orderDAO.getAllOrdersByTeam(teamsDAO.getUserTeam(codecooler));
+        ArrayList<String> namesOfArtifacts = new ArrayList<String>();
+        ArrayList<Integer> IDs = new ArrayList<>();
+        ArrayList<Long> prices = new ArrayList<>();
+        ArrayList<Long> collected = new ArrayList<>();
+
+        for (Artifact artifact : artifactDAO.getAllArtifacts()) {
+            if (artifact.getCategory() == ArtifactCategory.Magic) {
+                namesOfArtifacts.add(artifact.getTitle());
+                IDs.add(new Integer(artifact.getId()));
+                prices.add(new Long(artifact.getPrice()));
+                for (TeamOrder teamOrder : teamOrders) {
+                    if (teamOrder.getArtifactID() == artifact.getId()) {
+                        collected.add(new Long(teamOrder.getCollectedMoney()));
+                    } else {
+                        collected.add(new Long(0));
+                    }
+                }
+        }
+
+        boolean optionIsChoosen = false;
+        while (!optionIsChoosen){
+
+            view.showBuyArtifactMenu(namesOfArtifacts, prices, wallet.getCurrentState(), category);
+            String input = view.getUserInput();
+
+            if (input.equals("0")) {
+                optionIsChoosen = true;
+
+            } else {
+
+                if (input.matches("\\d+")){
+
+                    int choosenPosition = Integer.parseInt(input);
+
+                    if (choosenPosition <= namesOfArtifacts.size()){
+
+                        artifactId = IDs.get(choosenPosition - 1).intValue();
+                        if (!checkIfItemIsBought(artifactId)){
+                            optionIsChoosen = true;
+                        } else {
+                            artifactId = 0;
+                        }
+                    }
+                }
+            }
+        }
+        return artifactId;
     }
 
     private boolean checkIfItemIsBought(int id){

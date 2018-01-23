@@ -41,7 +41,7 @@ public class ArtifactsDAO extends AbstractDAO {
 
 
     public Artifact getArtifact(int id) {
-        String query = String.format("SELECT * FROM artifacts WHERE id = ?", id);
+        String query = String.format("SELECT * FROM artifacts WHERE id = %d", id);
         Artifact artifact = null;
 
         try {
@@ -124,7 +124,7 @@ public class ArtifactsDAO extends AbstractDAO {
     }
 
     public boolean checkIfArtifactExists(int id) throws SQLException {
-        String query = String.format("SELECT * FROM artifacts WHERE id=?;", id);
+        String query = String.format("SELECT * FROM artifacts WHERE id=%d;", id);
         log.info(query);
         ResultSet resultSet = getConnection()
                 .createStatement()
