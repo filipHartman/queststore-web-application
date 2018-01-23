@@ -8,7 +8,7 @@ public abstract class UserView {
 
     private Scanner scanner;
 
-    public UserView() {
+    UserView() {
         scanner = new Scanner(System.in);
     }
 
@@ -16,17 +16,12 @@ public abstract class UserView {
         return scanner.nextLine();
     }
 
-    private void showUser(String user) {
-
-    }
-
     void continuePrompt() {
-        System.out.println("Hit enter to continue.\n");
+        System.out.println(String.format("%sHit enter to continue.\n", Colors.PURPLE_BOLD));
         getUserInput();
     }
 
     public void clearScreen() {
-        System.out.println(CLEAR_CONSOLE);
+        System.out.print(CLEAR_CONSOLE);
     }
-
 }

@@ -92,11 +92,7 @@ public class QuestMarker {
             if (inputAsInt > 0 && inputAsInt <= length) {
                 inputIsInvalid = false;
                 temporaryIndex = inputAsInt - 1;
-            } else {
-                view.showWrongInput();
             }
-        } else {
-            view.showWrongInput();
         }
         return inputIsInvalid;
     }
