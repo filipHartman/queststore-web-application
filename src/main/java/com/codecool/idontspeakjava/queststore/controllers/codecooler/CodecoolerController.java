@@ -82,6 +82,16 @@ public class CodecoolerController {
         return continueRunning;
     }
 
+    private void checkWallet(){
+        ArrayList<String> namesOfArtifacts = new ArrayList<>();
+        for (Order order : orderDAO.getAllOrdersByUser(codecooler)) {
+            namesOfArtifacts.add(artifactDAO
+                    .getArtifact(order.getArtifactID())
+                    .getTitle());
+        }
+        view.showWallet(wallet.getCurrentState(), wallet.getTotalEarnings(), namesOfArtifacts);
+    }
+
     private int chooseArtifact(){
         int artifactId = 0;
         ArrayList<String> namesOfArtifacts = new ArrayList<String>();
@@ -268,16 +278,6 @@ public class CodecoolerController {
             }
         }
         return level.getName();
-    }
-
-    private void checkWallet(){
-        ArrayList<String> namesOfArtifacts = new ArrayList<>();
-        for (Order order : orderDAO.getAllOrdersByUser(codecooler)) {
-            namesOfArtifacts.add(artifactDAO
-                            .getArtifact(order.getArtifactID())
-                            .getTitle());
-        }
-        view.showWallet(wallet.getCurrentState(), wallet.getTotalEarnings(), namesOfArtifacts);
     }
 
     private void seeQuests(){

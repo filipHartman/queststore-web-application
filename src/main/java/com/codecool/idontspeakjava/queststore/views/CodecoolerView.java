@@ -83,8 +83,7 @@ public class CodecoolerView extends UserView{
     }
 
     public int askForContribution(){
-        System.out.println(CLEAR_CONSOLE);
-        System.out.println("How may you want to pay?");
+        System.out.println(CLEAR_CONSOLE + "How many do you want to pay?");
         String input = getUserInput();
         if (input.matches("\\d+")) {
             return Integer.parseInt(input);
