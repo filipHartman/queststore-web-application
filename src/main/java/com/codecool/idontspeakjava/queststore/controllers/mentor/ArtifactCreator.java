@@ -16,47 +16,15 @@ class ArtifactCreator extends Creator {
     private static final int DESCRIPTION = 2;
     private static final int PRICE = 3;
 
-    private static final String EXIT = "0";
-    private MentorView view;
     private DummyItem temporaryArtifact;
 
     ArtifactCreator(MentorView view) {
-        this.view = view;
+        super(view);
         temporaryArtifact = new DummyItem();
     }
 
-    @SuppressWarnings("Duplicates")
-    void createArtifact() {
-        int inputsReceived = 0;
-        boolean continueLoop = true;
-
-        final int PROMPTS = 4;
-
-        for (int i = 0; i < PROMPTS && continueLoop; i++) {
-            boolean continueIteration = true;
-            while (continueIteration) {
-                selectPromptForCreateQuest(i);
-                String input = view.getUserInput();
-
-                if (input.equals(EXIT)) {
-                    continueLoop = false;
-                    continueIteration = false;
-                } else {
-                    continueIteration = !setAttribute(i, input);
-                }
-            }
-            if (continueLoop) {
-                inputsReceived++;
-            }
-        }
-        if (inputsReceived == PROMPTS) {
-            addArtifactToDatabase();
-        } else {
-            view.showOperationCancelled();
-        }
-    }
-
-    private void addArtifactToDatabase() {
+    @Override
+    void addToDatabase() {
         Artifact artifact = new Artifact(
                 temporaryArtifact.getTitle(),
                 temporaryArtifact.getCategory().equals(BASIC_CATEGORY) ? ArtifactCategory.Basic : ArtifactCategory.Magic,
@@ -67,7 +35,8 @@ class ArtifactCreator extends Creator {
         view.showArtifactCreated();
     }
 
-    private void selectPromptForCreateQuest(int promptNumber) {
+    @Override
+    void selectPrompt(int promptNumber) {
         switch (promptNumber) {
             case TITLE:
                 view.askForArtifactTitle();
@@ -84,7 +53,8 @@ class ArtifactCreator extends Creator {
         }
     }
 
-    private boolean setAttribute(int promptNumber, String input) {
+    @Override
+    boolean setAttribute(int promptNumber, String input) {
         boolean attributeSet;
         switch (promptNumber) {
             case TITLE:

@@ -16,48 +16,15 @@ class QuestCreator extends Creator {
     private static final int DESCRIPTION = 2;
     private static final int REWARD = 3;
 
-    private static final String EXIT = "0";
-    private MentorView view;
-
     private DummyItem temporaryQuest;
 
     QuestCreator(MentorView view) {
-        this.view = view;
+        super(view);
         temporaryQuest = new DummyItem();
     }
 
-    void createQuest() {
-        int inputsReceived = 0;
-        boolean continueLoop = true;
-
-        final int PROMPTS = 4;
-
-        for (int i = 0; i < PROMPTS && continueLoop; i++) {
-            boolean continueIteration = true;
-            while (continueIteration) {
-                selectPromptForCreateQuest(i);
-                String input = view.getUserInput();
-
-                if (input.equals(EXIT)) {
-                    continueLoop = false;
-                    continueIteration = false;
-                } else {
-                    continueIteration = !setAttribute(i, input);
-                }
-            }
-            if (continueLoop) {
-                inputsReceived++;
-            }
-        }
-
-        if (inputsReceived == PROMPTS) {
-            addQuestToDatabase();
-        } else {
-            view.showOperationCancelled();
-        }
-    }
-
-    private void addQuestToDatabase() {
+    @Override
+    void addToDatabase() {
         Quest quest = new Quest(
                 temporaryQuest.getTitle(),
                 temporaryQuest.getCategory().equals(BASIC_CATEGORY) ? QuestCategory.Basic : QuestCategory.Extra,
@@ -68,7 +35,8 @@ class QuestCreator extends Creator {
         view.showQuestCreated();
     }
 
-    private void selectPromptForCreateQuest(int promptNumber) {
+    @Override
+    void selectPrompt(int promptNumber) {
         switch (promptNumber) {
             case TITLE:
                 view.askForQuestTitle();
@@ -85,7 +53,8 @@ class QuestCreator extends Creator {
         }
     }
 
-    private boolean setAttribute(int promptNumber, String input) {
+    @Override
+    boolean setAttribute(int promptNumber, String input) {
         boolean attributeNotSet;
         switch (promptNumber) {
             case TITLE:
