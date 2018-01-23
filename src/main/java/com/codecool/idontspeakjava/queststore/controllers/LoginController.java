@@ -51,9 +51,8 @@ public class LoginController {
     private boolean checkIfUserProvideCorrectPassword(User user) {
         String userPassword = user.getPasswordHash();
         if (userPassword.isEmpty()) {
-            boolean isPasswordCreated = runPasswordGenerator(user);
 
-            return isPasswordCreated;
+            return runPasswordGenerator(user);
         } else {
             String candidatePassword = loginView.getUserPassword();
             return passwordService.checkPassword(candidatePassword, userPassword);
