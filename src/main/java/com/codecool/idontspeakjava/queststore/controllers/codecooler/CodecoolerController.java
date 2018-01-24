@@ -1,21 +1,8 @@
 package com.codecool.idontspeakjava.queststore.controllers.codecooler;
 
+import com.codecool.idontspeakjava.queststore.database.*;
+import com.codecool.idontspeakjava.queststore.models.*;
 import com.codecool.idontspeakjava.queststore.views.CodecoolerView;
-import com.codecool.idontspeakjava.queststore.models.Artifact;
-import com.codecool.idontspeakjava.queststore.models.ArtifactCategory;
-import com.codecool.idontspeakjava.queststore.models.Wallet;
-import com.codecool.idontspeakjava.queststore.models.Order;
-import com.codecool.idontspeakjava.queststore.models.TeamOrder;
-import com.codecool.idontspeakjava.queststore.models.Team;
-import com.codecool.idontspeakjava.queststore.models.Quest;
-import com.codecool.idontspeakjava.queststore.models.User;
-import com.codecool.idontspeakjava.queststore.models.ExperienceLevel;
-import com.codecool.idontspeakjava.queststore.database.WalletsDAO;
-import com.codecool.idontspeakjava.queststore.database.ArtifactsDAO;
-import com.codecool.idontspeakjava.queststore.database.OrdersDAO;
-import com.codecool.idontspeakjava.queststore.database.ExperienceLevelDAO;
-import com.codecool.idontspeakjava.queststore.database.QuestsDAO;
-import com.codecool.idontspeakjava.queststore.database.TeamsDAO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +22,7 @@ public class CodecoolerController {
     private static final String BUY_ARTIFACT = "2";
     private static final String BUY_ARTIFACT_FOR_TEAM = "3";
     private static final String SEE_QUESTS = "4";
+    private static final String MANAGE_TEAMS = "5";
     private static final String EXIT = "0";
 
     public CodecoolerController(User user) {
@@ -72,6 +60,9 @@ public class CodecoolerController {
                 break;
             case SEE_QUESTS:
                 seeQuests();
+                break;
+            case MANAGE_TEAMS:
+                new ManageTeamsController(codecooler, teamsDAO, view).start();
                 break;
             case EXIT:
                 continueRunning = false;
