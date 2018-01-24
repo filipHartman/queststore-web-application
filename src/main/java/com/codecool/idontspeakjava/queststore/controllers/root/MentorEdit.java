@@ -16,11 +16,9 @@ class MentorEdit {
     private User selectedMentor;
     private RootView view;
     private CodecoolClass selectedClass;
-    private CodecoolClassDAO classDAO;
 
     MentorEdit(RootView view) {
         this.view = view;
-        CodecoolClassDAO classDAO = new CodecoolClassDAO();
     }
 
     void editMentor() {
@@ -45,7 +43,7 @@ class MentorEdit {
                 userInputs++;
             }
         }if(userInputs==prompts){
-            updateMentorEmail();
+            new UserDAO().updateUser(selectedMentor);
             view.showMentorUpdate();
         }else{
             view.showOperationCancelled();
@@ -68,7 +66,7 @@ class MentorEdit {
     }
 
     private boolean selectPrompt(int prompt, String input){
-        boolean promptNotSet;
+        boolean promptNotSet = true;
         switch(prompt){
             case SELECT_MENTOR:
                 promptNotSet = selectMentor(input);
@@ -78,8 +76,6 @@ class MentorEdit {
                 break;
             case SELECT_CLASS:
                 promptNotSet = editClass(input);
-            default:
-                promptNotSet = false;
         }
         return promptNotSet;
     }
@@ -103,32 +99,29 @@ class MentorEdit {
 
     private boolean editEmail(String input){
         boolean emailNotChanged = true;
-        while(input.matches("[a-zA-Z1-9,.! ]+")){
-            if(input.toUpperCase() == "Y"){
-                view.askForMentorNewEmail();
-                String mentorEmailInput = view.getUserInput();
-                setEmail(mentorEmailInput);
-                emailNotChanged = false;
-                break;
-            }else if (input.toUpperCase() == "N"){
-                emailNotChanged = false;
-                break;
-            }else{
-                view.showWrongAnswer();
-                input = view.getUserInput();
-            }
+        String upperInput = input.toUpperCase();
+        if(upperInput.matches("Y")){
+            view.askForMentorNewEmail();
+            String mentorEmailInput = view.getUserInput();
+            emailNotChanged = setEmail(mentorEmailInput);
+        }else if (upperInput.matches("N")){
+            emailNotChanged = false;
+        }else{
+            view.showWrongAnswer();
         }
         return emailNotChanged;
     }
 
 
-    private void setEmail(String input) {
-        if (input.matches("[a-zA-Z@.]+")) {
+    private boolean setEmail(String input) {
+        boolean emailNotSet = true;
+        if (input.matches("[a-zA-Z0-9@.]+")) {
             try {
                 if (new UserDAO().checkIfUsersExists(input)) {
                     view.showExistingValueWarning();
                 } else {
                     selectedMentor.setEmail(input);
+                    emailNotSet = false;
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -137,55 +130,41 @@ class MentorEdit {
         } else {
             view.showWrongEmailInput();
         }
+        return emailNotSet;
     }
 
     private boolean editClass(String input){
         boolean classNotChanged = true;
-        while(input.matches("[a-zA-Z1-9,.! ]+")){
-            if(input.toUpperCase() == "Y"){
-                view.showAllClasses();
-                view.askForMentorNewClass();
-                String mentorClassInput = view.getUserInput();
-                setClass(mentorClassInput);
-                classNotChanged = false;
-                break;
-            }else if (input.toUpperCase() == "N"){
-                classNotChanged = false;
-                break;
-            }else{
-                view.showWrongAnswer();
-                input = view.getUserInput();
-            }
+        String upperInput = input.toUpperCase();
+        if(upperInput.matches("Y")){
+            view.showAllClasses();
+            view.askForMentorNewClass();
+            String mentorClassInput = view.getUserInput();
+            classNotChanged = setClass(mentorClassInput);
+        }else if (upperInput.matches("N")){
+            classNotChanged = false;
+        }else{
+            view.showWrongAnswer();
         }
         return classNotChanged;
     }
 
-    private void setClass(String input){
-        while((input.matches("[a-zA-Z1-9,. ]+"))){
-            try{
-                if(classDAO.checkIfClassExists(input)){
-                    if(!classDAO.checkIfUserIsInClass(selectedMentor)){
-                        selectedClass = classDAO.getCodecoolClass(input); 
-                        classDAO.addUserToCodecoolClass(selectedMentor, selectedClass);
-                        break;
-                    }else{
-                        view.showMentorInClassInfo();
-                        break;
-                    }
+    private boolean setClass(String input){
+        boolean classNotSet = true;
+        try{
+            if(new CodecoolClassDAO().checkIfClassExists(input)){
+                if(!new CodecoolClassDAO().checkIfUserIsInClass(selectedMentor)){
+                    selectedClass = new CodecoolClassDAO().getCodecoolClass(input); 
+                    new CodecoolClassDAO().addUserToCodecoolClass(selectedMentor, selectedClass);
+                    classNotSet = false;
                 }else{
-                    view.showWrongClassName();
-                    view.showAllClasses();
-                    view.askForMentorNewClass();
-                    input = view.getUserInput();
+                    view.showMentorInClassInfo();
                 }
-            }catch (SQLException e) {
-                e.printStackTrace();
-                view.showDatabaseError();
             }
+        }catch (SQLException e) {
+            e.printStackTrace();
+            view.showDatabaseError();
         }
-    }
-
-    private void updateMentorEmail(){
-        new UserDAO().updateUser(selectedMentor);
+        return classNotSet;
     }
 }
