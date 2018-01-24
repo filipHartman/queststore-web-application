@@ -44,7 +44,7 @@ class AssignMentorToClass{
                 userInputs++;
             }
         }if(userInputs==prompts){
-            addMentorToClass(selectedMentor, selectedClass);
+            new CodecoolClassDAO().addUserToCodecoolClass(selectedMentor, selectedClass);
             view.showMentorAssign();
         }else{
             view.showOperationCancelled();
@@ -109,14 +109,5 @@ class AssignMentorToClass{
                 promptNotSet = false;
         }
         return promptNotSet;
-    }
-
-    private void addMentorToClass(User mentor, CodecoolClass ccClass){
-        try {
-            new CodecoolClassDAO().addUserToCodecoolClass(mentor, ccClass);
-        }catch (SQLException e) {
-            e.printStackTrace();
-            view.showDatabaseError();
-        }
     }
 }
