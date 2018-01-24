@@ -45,16 +45,18 @@ public class CodecoolerView extends UserView{
         getUserInput();
     }
 
-    public void showBuyArtifactMenu(ArrayList<String> namesOfArtifacts, ArrayList<Integer> prices, long balance){
+    public void showBuyArtifactMenu(ArrayList<String> artifactsInfo, long balance){
         System.out.println(String.format(
                     "%s%sBASIC ARTIFACTS SHOP         %sYOUR MONEY: %s%scc\n%s",
                 CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, Colors.BLACK_BOLD_BRIGHT, Colors.YELLOW_BOLD_BRIGHT,
                 balance, Colors.RESET));
-        for (String artifact : namesOfArtifacts) {
-            int index = namesOfArtifacts.indexOf(artifact);
+        for (String artifact : artifactsInfo) {
+            String title = artifact.split("@")[0];
+            String price = artifact.split("@")[1];
+            int index = artifactsInfo.indexOf(artifact);
             System.out.println(String.format(
                         "%s. %s%s   %s%scc%s",
-                    index + 1, Colors.WHITE_BOLD, artifact, Colors.YELLOW_BOLD_BRIGHT, prices.get(index), Colors.RESET));
+                    index + 1, Colors.WHITE_BOLD, title, Colors.YELLOW_BOLD_BRIGHT, price, Colors.RESET));
         }
         System.out.println("\n\n0 - Back");
     }

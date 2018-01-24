@@ -101,27 +101,25 @@ public class CodecoolerController {
 
     private Artifact chooseArtifact(){
         Artifact chosenArtifact = null;
-        ArrayList<String> namesOfArtifacts = new ArrayList<>();
-        ArrayList<Integer> IDs = new ArrayList<>();
-        ArrayList<Integer> prices = new ArrayList<>();
+        ArrayList<Artifact> artifacts = new ArrayList<>();
+        ArrayList<String> artifactsInfo = new ArrayList<>();
         for (Artifact artifact : artifactDAO.getAllArtifacts()) {
             if (artifact.getCategory() == ArtifactCategory.Basic) {
-                namesOfArtifacts.add(artifact.getTitle());
-                IDs.add(artifact.getId());
-                prices.add(artifact.getPrice());
+                artifacts.add(artifact);
+                artifactsInfo.add(artifact.getTitle() + "@" + artifact.getPrice());
             }
         }
         boolean optionIsChosen = false;
         while (!optionIsChosen){
-            view.showBuyArtifactMenu(namesOfArtifacts, prices, wallet.getCurrentState());
+            view.showBuyArtifactMenu(artifactsInfo, wallet.getCurrentState());
             String input = view.getUserInput();
             if (input.matches("\\d+")) {
                 if (input.equals("0")) {
                     optionIsChosen = true;
                 } else {
                     int chosenPosition = Integer.parseInt(input);
-                    if (chosenPosition <= namesOfArtifacts.size()) {
-                        chosenArtifact = artifactDAO.getArtifact(IDs.get(chosenPosition - 1));
+                    if (chosenPosition <= artifacts.size()) {
+                        chosenArtifact = artifacts.get(chosenPosition - 1);
                         optionIsChosen = true;
                     }
                 }
