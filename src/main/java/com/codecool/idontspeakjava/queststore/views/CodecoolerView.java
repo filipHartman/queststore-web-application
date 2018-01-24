@@ -45,7 +45,7 @@ public class CodecoolerView extends UserView{
         getUserInput();
     }
 
-    public void showBuyArtifactMenu(ArrayList<String> namesOfArtifacts, ArrayList<Long> prices, long balance){
+    public void showBuyArtifactMenu(ArrayList<String> namesOfArtifacts, ArrayList<Integer> prices, long balance){
         System.out.println(String.format(
                     "%s%sBASIC ARTIFACTS SHOP         %sYOUR MONEY: %s%scc\n%s",
                 CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, Colors.BLACK_BOLD_BRIGHT, Colors.YELLOW_BOLD_BRIGHT,
@@ -54,7 +54,7 @@ public class CodecoolerView extends UserView{
             int index = namesOfArtifacts.indexOf(artifact);
             System.out.println(String.format(
                         "%s. %s%s   %s%scc%s",
-                    index, Colors.WHITE_BOLD, artifact, Colors.YELLOW_BOLD_BRIGHT, prices.get(index), Colors.RESET));
+                    index + 1, Colors.WHITE_BOLD, artifact, Colors.YELLOW_BOLD_BRIGHT, prices.get(index), Colors.RESET));
         }
         System.out.println("\n\n0 - Back");
     }
@@ -68,7 +68,7 @@ public class CodecoolerView extends UserView{
             int index = namesOfArtifacts.indexOf(artifact);
             System.out.println(String.format(
                         "%s. %s%s   %s%scc%s/%s%scc%s",
-                    index, Colors.WHITE_BOLD, artifact, Colors.YELLOW_BOLD_BRIGHT, prices.get(index), Colors.RESET,
+                    index + 1, Colors.WHITE_BOLD, artifact, Colors.YELLOW_BOLD_BRIGHT, prices.get(index), Colors.RESET,
                     Colors.YELLOW_BOLD_BRIGHT, collected.get(index), Colors.RESET));
         }
         System.out.println("\n\n0 - Back");
