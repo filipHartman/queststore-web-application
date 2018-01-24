@@ -17,6 +17,10 @@ public class TeamOrder extends Order {
         this.teamID = teamID;
     }
 
+    public TeamOrder() {
+
+    }
+
 
     public int getTeamID() {
         return teamID;
