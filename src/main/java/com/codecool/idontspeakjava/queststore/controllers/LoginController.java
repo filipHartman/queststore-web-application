@@ -2,6 +2,7 @@ package com.codecool.idontspeakjava.queststore.controllers;
 
 import com.codecool.idontspeakjava.queststore.controllers.codecooler.CodecoolerController;
 import com.codecool.idontspeakjava.queststore.controllers.mentor.MentorController;
+import com.codecool.idontspeakjava.queststore.controllers.root.RootController;
 import com.codecool.idontspeakjava.queststore.database.UserDAO;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.views.LoginView;
