@@ -23,6 +23,7 @@ public class TeamsDAO extends AbstractDAO {
                 PreparedStatement preparedStatement = getConnection().prepareStatement(query);
                 preparedStatement.setString(1, team.getName());
                 preparedStatement.executeUpdate();
+                team.setId(getTeam(team.getName()).getId());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -36,7 +37,23 @@ public class TeamsDAO extends AbstractDAO {
             if (checkIfTeamExists(name)) {
                 PreparedStatement preparedStatement = getConnection().prepareStatement(query);
                 preparedStatement.setString(1, name);
-                ResultSet resultSet = preparedStatement.executeQuery(query);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                team = new Team(resultSet.getInt("id"), resultSet.getString("name"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return team;
+    }
+
+    public Team getTeam(int teamID) {
+        String query = "SELECT * FROM teams WHERE id = ?";
+        Team team = null;
+        try {
+            if (checkIfTeamExists(teamID)) {
+                PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+                preparedStatement.setInt(1, teamID);
+                ResultSet resultSet = preparedStatement.executeQuery();
                 team = new Team(resultSet.getInt("id"), resultSet.getString("name"));
             }
         } catch (SQLException e) {

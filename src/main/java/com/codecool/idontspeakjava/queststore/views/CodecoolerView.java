@@ -1,6 +1,7 @@
 package com.codecool.idontspeakjava.queststore.views;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CodecoolerView extends UserView{
 
@@ -10,9 +11,20 @@ public class CodecoolerView extends UserView{
                     "1 - See your wallet\n" +
                     "2 - Buy an artifact\n" +
                     "3 - Buy an artifact for team\n" +
-                    "4 - See available quests\n\n\n" +
+                            "4 - See available quests\n" +
+                            "5 - Manage your team\n\n\n" +
                     "0 - Exit the program\n",
                 CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, Colors.BLACK_BOLD_BRIGHT, userName, rank, Colors.RESET));
+    }
+
+    public void showManageTeamMenu(String userName, String team) {
+        System.out.println(String.format(
+                "%s%sQUESTSTORE\n\n%sNAME: %s              TEAM: %s%s\n\n" +
+                        "1 - Create new team\n" +
+                        "2 - Join to existing team\n" +
+                        "3 - Leave your team\n\n\n" +
+                        "0 - Back to main menu\n",
+                CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, Colors.BLACK_BOLD_BRIGHT, userName, team, Colors.RESET));
     }
 
     public void showWallet(long totalMoney, long totalEarnings, ArrayList<String> namesOfArtifacts){
@@ -92,6 +104,60 @@ public class CodecoolerView extends UserView{
     }
 
     public void showWrongInput() {
+        clearScreen();
         System.out.println("Your input is wrong.\n");
+    }
+
+    public void showThatUserIsAlreadyInTeam() {
+        clearScreen();
+        System.out.println(String.format("%sYou already in team !", Colors.RED_BOLD));
+        continuePrompt();
+    }
+
+    public void showThatUserIsNotInTeam() {
+        clearScreen();
+        System.out.println(String.format("%sYou are not in any team !", Colors.RED_BOLD));
+        continuePrompt();
+
+    }
+
+    public void showThatTeamAlreadyExists() {
+        clearScreen();
+        System.out.println(String.format("%sSuch team already exists !", Colors.RED_BOLD));
+        continuePrompt();
+
+    }
+
+
+    public void showNewTeamHaveBeenCreatedSuccessfully(String teamName) {
+        clearScreen();
+        System.out.printf("%sNew team %s %s %s have been created successfully!\n",
+                Colors.YELLOW, Colors.GREEN_BOLD, teamName, Colors.YELLOW);
+        continuePrompt();
+    }
+
+    public void showTeamsList(List<String> teams) {
+        teams.forEach(System.out::println);
+    }
+
+
+    public void showNoTeamsInDatabase() {
+        clearScreen();
+        System.out.println(String.format("%sThere is no team in database avaible !", Colors.RED_BOLD));
+        continuePrompt();
+    }
+
+    public void showUserHavenBeenRemovedFromTeamSuccessfully(String teamName) {
+        clearScreen();
+        System.out.printf("%sYou've been removed from %s %s %s successfully!\n",
+                Colors.YELLOW, Colors.GREEN_BOLD, teamName, Colors.YELLOW);
+        continuePrompt();
+    }
+
+    public void showUserHavenAddedToTeamSuccessfully(String teamName) {
+        clearScreen();
+        System.out.printf("%sYou've been added to %s %s %s team successfully!\n",
+                Colors.YELLOW, Colors.GREEN_BOLD, teamName, Colors.YELLOW);
+        continuePrompt();
     }
 }
