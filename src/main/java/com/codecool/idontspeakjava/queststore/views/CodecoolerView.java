@@ -33,7 +33,7 @@ public class CodecoolerView extends UserView{
         getUserInput();
     }
 
-    public void showBuyArtifactMenu(ArrayList<String> namesOfArtifacts, ArrayList<Long> prices, long balance){
+    public void showBuyArtifactMenu(ArrayList<String> namesOfArtifacts, ArrayList<Integer> prices, long balance){
         System.out.println(String.format(
                     "%s%sBASIC ARTIFACTS SHOP         %sYOUR MONEY: %s%scc\n%s",
                 CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, Colors.BLACK_BOLD_BRIGHT, Colors.YELLOW_BOLD_BRIGHT,
