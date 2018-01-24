@@ -25,15 +25,18 @@ class ClassCreator {
                 view.showOperationCancelled();
                 loopContinuation = false;
             } else {
-                loopContinuation = setName(input);
-                new CodecoolClassDAO().createCodecoolClass(new CodecoolClass(className));
+                if(!setName(input)){
+                    new CodecoolClassDAO().createCodecoolClass(new CodecoolClass(className));
+                    loopContinuation = false;
+                    view.showClassCreateComplete();
+                }
             }
         }
     }
 
     private boolean setName(String input){
         boolean nameNotSet = true;
-        if (input.matches("[a-zA-Z1-9,. ]+")) {
+        if (input.matches("[a-zA-Z0-9,. ]+")) {
             try{
                 if(new CodecoolClassDAO().checkIfClassExists(input)){
                     view.showExistingValueWarning();
@@ -46,7 +49,7 @@ class ClassCreator {
                 view.showDatabaseError();
             }
         }else{
-            view.showWrongClassNameInput()
+            view.showWrongClassNameInput();
         }
         return nameNotSet;
     }
