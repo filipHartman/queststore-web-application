@@ -33,11 +33,13 @@ public class RootView extends UserView{
     }
 
     public void showMentorInfo(User selectedMentor, CodecoolClass mentorClass){
-        System.out.println("Mentor id " + selectedMentor.getId());
-        System.out.println("Mentor first name " + selectedMentor.getFirstName());
-        System.out.println("Mentor last name " + selectedMentor.getLastName());
-        System.out.println("Mentor email " + selectedMentor.getEmail());
-        System.out.println("Mentor class " + mentorClass.getName());
+        clearScreen();
+        System.out.println("Mentor id: " + selectedMentor.getId());
+        System.out.println("Mentor first name: " + selectedMentor.getFirstName());
+        System.out.println("Mentor last name: " + selectedMentor.getLastName());
+        System.out.println("Mentor email: " + selectedMentor.getEmail());
+        System.out.println("Mentor class: " + mentorClass.getName() + "\n");
+        continuePrompt();
     }
 
     public void showMainMenu(){
@@ -105,8 +107,14 @@ public class RootView extends UserView{
         continuePrompt();
     }
 
+    public void showClassCreateComplete(){
+        clearScreen();
+        System.out.println("You created class.\n");
+        continuePrompt();
+    }
+
     public void askForMentorEmailInput() {
-        System.out.println("Enter select mentor email or type 0 to exit.\n");
+        System.out.println("Enter selected mentor email or type 0 to exit.\n");
     }
 
     public void askForClassNameInput(){
