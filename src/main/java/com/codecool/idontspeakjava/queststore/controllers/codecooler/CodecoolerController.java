@@ -110,7 +110,7 @@ public class CodecoolerController {
 
     private int chooseArtifact(){
         int artifactId = 0;
-        ArrayList<String> namesOfArtifacts = new ArrayList<String>();
+        ArrayList<String> namesOfArtifacts = new ArrayList<>();
         ArrayList<Integer> IDs = new ArrayList<>();
         ArrayList<Long> prices = new ArrayList<>();
 
