@@ -16,7 +16,12 @@ public abstract class UserView {
         return scanner.nextLine();
     }
 
-    void continuePrompt() {
+    public String getUserInput(String prompt) {
+        System.out.print(prompt);
+        return scanner.nextLine();
+    }
+
+    public void continuePrompt() {
         System.out.println(String.format("%sHit enter to continue.\n", Colors.PURPLE_BOLD));
         getUserInput();
     }
