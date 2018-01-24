@@ -30,6 +30,7 @@ public class CodecoolerController {
     private TeamsDAO teamsDAO;
     private QuestsDAO questsDAO;
     private Wallet wallet;
+    private Team team;
 
     private static final String SEE_WALLET = "1";
     private static final String BUY_ARTIFACT = "2";
@@ -38,7 +39,7 @@ public class CodecoolerController {
     private static final String EXIT = "0";
 
     public CodecoolerController(User user) {
-        view = new CodecoolerView();
+        this.view = new CodecoolerView();
         this.codecooler = user;
         this.artifactDAO = new ArtifactsDAO();
         this.experienceLevelDAO = new ExperienceLevelDAO();
@@ -47,6 +48,7 @@ public class CodecoolerController {
         this.teamsDAO = new TeamsDAO();
         this.questsDAO = new QuestsDAO();
         this.wallet = walletDAO.getWalletByUserID(codecooler.getId());
+        this.team = teamsDAO.getUserTeam(codecooler);
     }
 
     public void run() {
@@ -113,7 +115,6 @@ public class CodecoolerController {
         ArrayList<String> namesOfArtifacts = new ArrayList<>();
         ArrayList<Integer> IDs = new ArrayList<>();
         ArrayList<Long> prices = new ArrayList<>();
-
         for (Artifact artifact : artifactDAO.getAllArtifacts()) {
             if (artifact.getCategory() == ArtifactCategory.Basic) {
                 namesOfArtifacts.add(artifact.getTitle());
@@ -121,27 +122,19 @@ public class CodecoolerController {
                 prices.add(new Long(artifact.getPrice()));
             }
         }
-
-        boolean optionIsChoosen = false;
-        while (!optionIsChoosen){
-
+        boolean optionIsChosen = false;
+        while (!optionIsChosen){
             view.showBuyArtifactMenu(namesOfArtifacts, prices, wallet.getCurrentState());
             String input = view.getUserInput();
-
             if (input.equals("0")) {
-                optionIsChoosen = true;
-
+                optionIsChosen = true;
             } else {
-
                 if (input.matches("\\d+")){
-
-                    int choosenPosition = Integer.parseInt(input);
-
-                    if (choosenPosition <= namesOfArtifacts.size()){
-
-                        artifactId = IDs.get(choosenPosition - 1).intValue();
+                    int chosenPosition = Integer.parseInt(input);
+                    if (chosenPosition <= namesOfArtifacts.size()){
+                        artifactId = IDs.get(chosenPosition - 1).intValue();
                         if (!checkIfItemIsBought(artifactId)){
-                            optionIsChoosen = true;
+                            optionIsChosen = true;
                         } else {
                             artifactId = 0;
                         }
@@ -283,7 +276,7 @@ public class CodecoolerController {
 
     private void seeQuests(){
         List<Quest> quests = questsDAO.getAllQuests();
-        ArrayList<String> questsStrings = new ArrayList<String>();
+        ArrayList<String> questsStrings = new ArrayList<>();
         for (Quest quest : quests) {
             String questInfo = quest.getTitle() + "@" + quest.getReward() + "@" + quest.getDescription();
             questsStrings.add(questInfo);

@@ -42,7 +42,7 @@ public class CodecoolerView extends UserView{
             int index = namesOfArtifacts.indexOf(artifact);
             System.out.println(String.format(
                         "%s. %s%s   %s%scc%s",
-                    index, Colors.WHITE_BOLD, artifact, Colors.YELLOW_BOLD_BRIGHT, prices.get(index), Colors.RESET));
+                    index + 1, Colors.WHITE_BOLD, artifact, Colors.YELLOW_BOLD_BRIGHT, prices.get(index), Colors.RESET));
         }
         System.out.println("\n\n0 - Back");
     }
@@ -56,7 +56,7 @@ public class CodecoolerView extends UserView{
             int index = namesOfArtifacts.indexOf(artifact);
             System.out.println(String.format(
                         "%s. %s%s   %s%scc%s/%s%scc%s",
-                    index, Colors.WHITE_BOLD, artifact, Colors.YELLOW_BOLD_BRIGHT, prices.get(index), Colors.RESET,
+                    index + 1, Colors.WHITE_BOLD, artifact, Colors.YELLOW_BOLD_BRIGHT, prices.get(index), Colors.RESET,
                     Colors.YELLOW_BOLD_BRIGHT, collected.get(index), Colors.RESET));
         }
         System.out.println("\n\n0 - Back");
