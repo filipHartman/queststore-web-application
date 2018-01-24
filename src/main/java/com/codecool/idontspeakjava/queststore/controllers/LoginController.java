@@ -29,17 +29,22 @@ public class LoginController {
         while (userNotDecidedToExit) {
             loginView.clearScreen();
             loginView.showGreeting();
-            Optional<User> user = Optional.ofNullable(processCredentialsAndReturnUserInstance(loginView.getUserLogin()));
-            if (user.isPresent()) {
-                if (checkIfUserProvideCorrectPassword(user.get())) {
-                    runNextController(user.get());
-                    userNotDecidedToExit = false;
+            String userLogin = loginView.getUserLogin();
+            if (userLogin.isEmpty() || userLogin.equals("0")) {
+                userNotDecidedToExit = false;
+            } else {
+                Optional<User> user = Optional.ofNullable(processCredentialsAndReturnUserInstance(loginView.getUserLogin()));
+                if (user.isPresent()) {
+                    if (checkIfUserProvideCorrectPassword(user.get())) {
+                        runNextController(user.get());
+                    } else {
+                        loginView.showBadCredentials();
+                    }
                 } else {
                     loginView.showBadCredentials();
                 }
-            } else {
-                loginView.showBadCredentials();
             }
+
 
         }
     }

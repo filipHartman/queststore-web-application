@@ -7,7 +7,8 @@ public class LoginView extends UserView {
     private static final Console console = System.console();
 
     public void showGreeting() {
-        System.out.println(String.format("%sWelcome to %sQuest Store 1.0-SNAPSHOT", Colors.GREEN, Colors.YELLOW));
+        System.out.println(String.format("%sWelcome to %sQuest Store 1.0-SNAPSHOT" +
+                "\n%sType 0 or nothing to exit.", Colors.GREEN, Colors.YELLOW, Colors.CYAN_BOLD));
     }
 
     public void showBadCredentials() {
