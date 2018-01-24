@@ -158,7 +158,8 @@ public class RootView extends UserView{
 
     public void showWrongAnswer(){
         clearScreen();
-        System.out.println("Please answer only Y or N");
+        System.out.println("Please answer only Y or N.\n");
+        continuePrompt();
     }
 
     public void askForMentorClassToEdit(){
