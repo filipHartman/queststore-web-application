@@ -49,7 +49,7 @@ public class CodecoolerView extends UserView{
 
     public void showBuyTeamArtifactMenu(ArrayList<String> namesOfArtifacts, ArrayList<Long> collected, ArrayList<Long> prices, long balance){
         System.out.println(String.format(
-                "%s%sMAGIC ARTIFACTS SHOP         %sYOUR MONEY: %s%scc\n%s",
+                    "%s%sMAGIC ARTIFACTS SHOP         %sYOUR MONEY: %s%scc\n%s",
                 CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, Colors.BLACK_BOLD_BRIGHT, Colors.YELLOW_BOLD_BRIGHT,
                 balance, Colors.RESET));
         for (String artifact : namesOfArtifacts) {
@@ -69,7 +69,7 @@ public class CodecoolerView extends UserView{
             questInfo = quest.split("@");
             String title = questInfo[0], reward = questInfo[1], description = questInfo[2];
             System.out.println(String.format(
-                    "%s%s     %sReward: %s%scc\n%s%s\n",
+                        "%s%s     %sReward: %s%scc\n%s%s\n",
                     Colors.WHITE_BOLD, title, Colors.BLACK_BOLD_BRIGHT, Colors.YELLOW_BOLD_BRIGHT, reward,
                     Colors.RESET, description));
         }

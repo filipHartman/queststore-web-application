@@ -37,7 +37,7 @@ public class CodecoolerController {
     private static final String SEE_QUESTS = "4";
     private static final String EXIT = "0";
 
-    public CodecoolerController(User user){
+    public CodecoolerController(User user) {
         view = new CodecoolerView();
         this.codecooler = user;
         this.artifactDAO = new ArtifactsDAO();
@@ -65,7 +65,7 @@ public class CodecoolerController {
                 checkWallet();
                 break;
             case BUY_ARTIFACT:
-                buyArtifact(chooseArtifact());
+                buyArtifact();
                 break;
             case BUY_ARTIFACT_FOR_TEAM:
                 addContributionToArtifact(chooseTeamArtifact());
@@ -82,7 +82,7 @@ public class CodecoolerController {
         return continueRunning;
     }
 
-    private void checkWallet(){
+    private void checkWallet() {
         ArrayList<String> namesOfArtifacts = new ArrayList<>();
         for (Order order : orderDAO.getAllOrdersByUser(codecooler)) {
             namesOfArtifacts.add(artifactDAO
@@ -90,6 +90,22 @@ public class CodecoolerController {
                     .getTitle());
         }
         view.showWallet(wallet.getCurrentState(), wallet.getTotalEarnings(), namesOfArtifacts);
+    }
+
+    private void buyArtifact() {
+        int id = chooseArtifact();
+        long currentState = wallet.getCurrentState();
+        if (!(id == 0)) {
+            Artifact artifact = artifactDAO.getArtifact(id);
+            if (currentState >= artifact.getPrice()) {
+                Order order = new Order(id, wallet.getId(), false);
+                orderDAO.createOrder(order);
+                wallet.setCurrentState(currentState - artifact.getPrice());
+                walletDAO.updateWallet(wallet);
+            } else {
+                view.notEnoughCoolcoins();
+            }
+        }
     }
 
     private int chooseArtifact(){
@@ -251,21 +267,6 @@ public class CodecoolerController {
             }
         }
         return false;
-    }
-
-    private void buyArtifact(int id){
-        if (!(id == 0)){
-            Artifact artifact = artifactDAO.getArtifact(id);
-            long currentState = wallet.getCurrentState();
-            if (artifact.getPrice() <= currentState){
-                Order order = new Order(id, wallet.getId(), false);
-                orderDAO.createOrder(order);
-                wallet.setCurrentState(currentState - artifact.getPrice());
-                walletDAO.updateWallet(wallet);
-            } else {
-                view.notEnoughCoolcoins();
-            }
-        }
     }
 
     private String checkExperienceLevel(){
