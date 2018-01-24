@@ -33,7 +33,7 @@ public class LoginController {
             if (userLogin.isEmpty() || userLogin.equals("0")) {
                 userNotDecidedToExit = false;
             } else {
-                Optional<User> user = Optional.ofNullable(processCredentialsAndReturnUserInstance(loginView.getUserLogin()));
+                Optional<User> user = Optional.ofNullable(processCredentialsAndReturnUserInstance(userLogin));
                 if (user.isPresent()) {
                     if (checkIfUserProvideCorrectPassword(user.get())) {
                         runNextController(user.get());
