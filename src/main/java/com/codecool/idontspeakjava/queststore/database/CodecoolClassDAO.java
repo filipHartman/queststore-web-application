@@ -38,7 +38,7 @@ public class CodecoolClassDAO extends AbstractDAO {
         try {
             if (checkIfClassExists(name)) {
                 PreparedStatement preparedStatement = getConnection().prepareStatement(query);
-                preparedStatement.setString(1, codecoolClass.getName());
+                preparedStatement.setString(1, name);
 
                 ResultSet resultSet = preparedStatement.executeQuery();
 
