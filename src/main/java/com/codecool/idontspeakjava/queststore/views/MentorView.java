@@ -216,7 +216,7 @@ public class MentorView extends UserView {
                 "%s\nThe current price is: %s%s%s\n", INFORMATION_COLOR, VALUE_COLOR, price, INPUT_COLOR));
     }
 
-    public void showThereIsNothingToEdit() {
+    public void showThereIsNothingToShow() {
         clearScreen();
         System.out.println(String.format("%sThere aren't anything to show.\n", ERROR_COLOR));
         continuePrompt();
