@@ -281,7 +281,7 @@ public class MentorView extends UserView {
         continuePrompt();
     }
 
-    public void showUsers(ArrayList<String> usersFullNames) {
+    public void showUsers(List<String> usersFullNames) {
         clearScreen();
         System.out.println(String.format("%sSelect user to mark:\n", MENU_HEADER_COLOR));
         ListIterator<String> iterator = usersFullNames.listIterator();
