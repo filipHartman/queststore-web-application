@@ -21,7 +21,7 @@ public class PasswordService {
         (?=.*[!@.,#$%&*()_+=|<>?{}\\[\\]) a special character must occur at least once
         (?=\\S+$) no whitespace allowed in the entire string
         .{8,} at least 8 characters*/
-        String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@.,#$%&*()_+=|<>?{}\\\\[\\\\]~-])(?=\\S+$).{8,}";
+        String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@.,#$%&*(^)_+=|<>?{}\\\\[\\\\]~-])(?=\\S+$).{8,}";
         return newPassword.matches(pattern);
     }
 }
