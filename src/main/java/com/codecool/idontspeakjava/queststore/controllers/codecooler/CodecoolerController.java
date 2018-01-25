@@ -114,23 +114,25 @@ public class CodecoolerController {
         if (teamsDAO.checkIfUserIsInTeam(codecooler)) {
             Team team = teamsDAO.getUserTeam(codecooler);
             artifact = chooseArtifact(ArtifactCategory.Magic);
-            int contribution = view.askForContribution();
-            List<TeamOrder> teamOrders = orderDAO.getAllOrdersByTeam(team);
-            TeamOrder existingOrder = null;
-            for (TeamOrder teamOrder : teamOrders) {
-                if (teamOrder.getArtifactID() == artifact.getId()) {
-                    existingOrder = teamOrder;
+            if (artifact != null) {
+                int contribution = view.askForContribution();
+                List<TeamOrder> teamOrders = orderDAO.getAllOrdersByTeam(team);
+                TeamOrder existingOrder = null;
+                for (TeamOrder teamOrder : teamOrders) {
+                    if (teamOrder.getArtifactID() == artifact.getId()) {
+                        existingOrder = teamOrder;
+                    }
                 }
+                if (existingOrder != null) {
+                    existingOrder.setCollectedMoney(existingOrder.getCollectedMoney() + contribution);
+                    orderDAO.updateOrder(existingOrder);
+                } else {
+                    TeamOrder newOrder = new TeamOrder(artifact.getId(), team.getId(), false, contribution);
+                    orderDAO.createOrder(newOrder);
+                }
+                wallet.setCurrentState(currentState - contribution);
+                walletDAO.updateWallet(wallet);
             }
-            if (existingOrder != null) {
-                existingOrder.setCollectedMoney(existingOrder.getCollectedMoney() + contribution);
-                orderDAO.updateOrder(existingOrder);
-            } else {
-                TeamOrder newOrder = new TeamOrder(artifact.getId(), team.getId(), false, contribution);
-                orderDAO.createOrder(newOrder);
-            }
-            wallet.setCurrentState(currentState - contribution);
-            walletDAO.updateWallet(wallet);
         } else {
             view.showThatUserIsNotInTeam();
         }
