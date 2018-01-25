@@ -6,6 +6,8 @@ import com.codecool.idontspeakjava.queststore.models.Permissions;
 import com.codecool.idontspeakjava.queststore.database.UserDAO;
 import com.codecool.idontspeakjava.queststore.database.CodecoolClassDAO;
 
+import java.lang.NullPointerException;
+
 public class RootView extends UserView{
 
     public void askForClassName(){
@@ -34,11 +36,15 @@ public class RootView extends UserView{
 
     public void showMentorInfo(User selectedMentor, CodecoolClass mentorClass){
         clearScreen();
-        System.out.println("Mentor id: " + selectedMentor.getId());
-        System.out.println("Mentor first name: " + selectedMentor.getFirstName());
-        System.out.println("Mentor last name: " + selectedMentor.getLastName());
-        System.out.println("Mentor email: " + selectedMentor.getEmail());
-        System.out.println("Mentor class: " + mentorClass.getName() + "\n");
+        try{
+            System.out.println("Mentor id: " + selectedMentor.getId());
+            System.out.println("Mentor first name: " + selectedMentor.getFirstName());
+            System.out.println("Mentor last name: " + selectedMentor.getLastName());
+            System.out.println("Mentor email: " + selectedMentor.getEmail());
+            System.out.println("Mentor class: " + mentorClass.getName() + "\n");
+        }catch(NullPointerException e){
+            showMentorNotAssignToClass();
+        }
         continuePrompt();
     }
 
@@ -49,8 +55,7 @@ public class RootView extends UserView{
                     "3. Assign Mentor To Class\n" +
                     "4. Edit Mentor\n" +
                     "5. Show Mentor\n" +
-                    "6. Show Codecool Class Of Mentor\n" +
-                    "7. Create Experience Level\n" +
+                    "6. Create Experience Level\n" +
                     "0. Exit the program\n");
 
     }
@@ -135,15 +140,17 @@ public class RootView extends UserView{
 
     public void showAllMentors(){
         clearScreen();
+        System.out.println("Name    Last name   email\n");
+        System.out.println("--------------------------\n");
         for (User mentorUser : new UserDAO().getUsersByPermission(Permissions.Mentor)) {
-            System.out.println(mentorUser.getFirstName() + " " + mentorUser.getLastName() + " " + mentorUser.getEmail()+"\n");
+            System.out.println(mentorUser.getFirstName() + "\t" + mentorUser.getLastName() + "\t" + mentorUser.getEmail()+"\n");
         }
     }
 
     public void showAllClasses(){
         clearScreen();
         for (CodecoolClass codecoolClass : new CodecoolClassDAO().getAllCodecoolClasses()) {
-            System.out.println(codecoolClass.getName());
+            System.out.println(codecoolClass.getName() + "\n");
         }
     }
     public void askForMentorEmailToEdit(){
@@ -178,6 +185,43 @@ public class RootView extends UserView{
 
     public void showMentorUpdate(){
         clearScreen();
-        System.out.println("You update mentor data.\n");
+        System.out.println("You updated mentor data.\n");
+    }
+
+    public void showWrongExpLvlInput(){
+        clearScreen();
+        System.out.println("Wrong input. You can use letters, numbers, coomas and dots.\n");
+        continuePrompt();
+    }
+
+    public void askForExpLvlName(){
+        clearScreen();
+        System.out.println("Enter experience level name or type 0 to exit .\n");
+    }
+
+    public void askForExpLvlThreshold(){
+        clearScreen();
+        System.out.println("Enter experience level threshold or type 0 to exit.\n");
+    }
+
+    public void WrongThresholdInput(){
+        clearScreen();
+        System.out.println("Wrong input. You can use only numbers.\n");
+        continuePrompt();
+    }
+
+    public void showExpLvlCreated(){
+        clearScreen();
+        System.out.println("You created new experience level.\n");
+    }
+
+    public void showClassNotExist(){
+        clearScreen();
+        System.out.println("Wrong class name. This class doesn't exist.\n");
+        continuePrompt();
+    }
+
+    public void showMentorNotAssignToClass(){
+        System.out.println("This mentor isn't assign to any class.\n");
     }
 }
