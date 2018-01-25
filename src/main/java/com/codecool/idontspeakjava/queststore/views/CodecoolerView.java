@@ -45,31 +45,21 @@ public class CodecoolerView extends UserView{
         getUserInput();
     }
 
-    public void showBuyArtifactMenu(ArrayList<String> namesOfArtifacts, ArrayList<Integer> prices, long balance){
+    public void showBuyArtifactMenu(ArrayList<String> artifactsInfo, long balance){
+        String category = (artifactsInfo.get(0).split("@").length > 2) ? "MAGIC" : "BASIC";
         System.out.println(String.format(
-                    "%s%sBASIC ARTIFACTS SHOP         %sYOUR MONEY: %s%scc\n%s",
-                CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, Colors.BLACK_BOLD_BRIGHT, Colors.YELLOW_BOLD_BRIGHT,
+                    "%s%s%s ARTIFACTS SHOP         %sYOUR MONEY: %s%scc\n%s",
+                CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, category, Colors.BLACK_BOLD_BRIGHT, Colors.YELLOW_BOLD_BRIGHT,
                 balance, Colors.RESET));
-        for (String artifact : namesOfArtifacts) {
-            int index = namesOfArtifacts.indexOf(artifact);
+        for (String artifact : artifactsInfo) {
+            String title = artifact.split("@")[0];
+            String price = artifact.split("@")[1];
+            String collected = category.equals("MAGIC") ?
+                    artifact.split("@")[2] + Colors.RESET + "/" + Colors.YELLOW_BOLD_BRIGHT : "";
+            int index = artifactsInfo.indexOf(artifact);
             System.out.println(String.format(
-                        "%s. %s%s   %s%scc%s",
-                    index + 1, Colors.WHITE_BOLD, artifact, Colors.YELLOW_BOLD_BRIGHT, prices.get(index), Colors.RESET));
-        }
-        System.out.println("\n\n0 - Back");
-    }
-
-    public void showBuyTeamArtifactMenu(ArrayList<String> namesOfArtifacts, ArrayList<Long> collected, ArrayList<Long> prices, long balance){
-        System.out.println(String.format(
-                    "%s%sMAGIC ARTIFACTS SHOP         %sYOUR MONEY: %s%scc\n%s",
-                CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, Colors.BLACK_BOLD_BRIGHT, Colors.YELLOW_BOLD_BRIGHT,
-                balance, Colors.RESET));
-        for (String artifact : namesOfArtifacts) {
-            int index = namesOfArtifacts.indexOf(artifact);
-            System.out.println(String.format(
-                        "%s. %s%s   %s%scc%s/%s%scc%s",
-                    index + 1, Colors.WHITE_BOLD, artifact, Colors.YELLOW_BOLD_BRIGHT, prices.get(index), Colors.RESET,
-                    Colors.YELLOW_BOLD_BRIGHT, collected.get(index), Colors.RESET));
+                        "%s. %s%s   %s%s%scc%s",
+                    index + 1, Colors.WHITE_BOLD, title, Colors.YELLOW_BOLD_BRIGHT, collected, price, Colors.RESET));
         }
         System.out.println("\n\n0 - Back");
     }
@@ -118,7 +108,6 @@ public class CodecoolerView extends UserView{
         clearScreen();
         System.out.println(String.format("%sYou are not in any team !", Colors.RED_BOLD));
         continuePrompt();
-
     }
 
     public void showThatTeamAlreadyExists() {
@@ -127,7 +116,6 @@ public class CodecoolerView extends UserView{
         continuePrompt();
 
     }
-
 
     public void showNewTeamHaveBeenCreatedSuccessfully(String teamName) {
         clearScreen();
@@ -139,7 +127,6 @@ public class CodecoolerView extends UserView{
     public void showTeamsList(List<String> teams) {
         teams.forEach(System.out::println);
     }
-
 
     public void showNoTeamsInDatabase() {
         clearScreen();

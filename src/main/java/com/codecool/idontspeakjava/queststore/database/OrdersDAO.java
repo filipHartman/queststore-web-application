@@ -85,7 +85,6 @@ public class OrdersDAO extends AbstractDAO {
         TeamOrder teamOrder = null;
         try {
             if (checkIfTeamOrderExists(id)) {
-                log.info(query);
                 ResultSet resultSet = getConnection().createStatement().executeQuery(query);
                 teamOrder = new TeamOrder();
                 teamOrder.setId(resultSet.getInt("id"));
@@ -165,10 +164,7 @@ public class OrdersDAO extends AbstractDAO {
 
     private void executeUpdateQuery(String query, Order order) {
         try {
-            if (checkIfOrderExists(order.getId())) {
-                log.info(query);
                 getConnection().createStatement().executeUpdate(query);
-            }
 
         } catch (SQLException e) {
             e.printStackTrace();

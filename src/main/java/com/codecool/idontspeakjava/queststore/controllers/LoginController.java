@@ -86,20 +86,20 @@ public class LoginController {
 
     private void runNextController(User user) {
 
-        switch (user.getPermission()) {
-            case Mentor:
-                new MentorController(user).run();
-                break;
-            case Student:
-                new CodecoolerController(user).run();
-                break;
-            case Root:
-                try {
+        try {
+            switch (user.getPermission()) {
+                case Mentor:
+                    new MentorController(user).run();
+                    break;
+                case Student:
+                    new CodecoolerController(user).run();
+                    break;
+                case Root:
                     new RootController(user).start();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                break;
+                    break;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

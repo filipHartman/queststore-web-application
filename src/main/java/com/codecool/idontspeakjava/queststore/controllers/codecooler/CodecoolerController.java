@@ -3,7 +3,10 @@ package com.codecool.idontspeakjava.queststore.controllers.codecooler;
 import com.codecool.idontspeakjava.queststore.database.*;
 import com.codecool.idontspeakjava.queststore.models.*;
 import com.codecool.idontspeakjava.queststore.views.CodecoolerView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +20,6 @@ public class CodecoolerController {
     private TeamsDAO teamsDAO;
     private QuestsDAO questsDAO;
     private Wallet wallet;
-    private Team team;
 
     private static final String SEE_WALLET = "1";
     private static final String BUY_ARTIFACT = "2";
@@ -25,6 +27,8 @@ public class CodecoolerController {
     private static final String SEE_QUESTS = "4";
     private static final String MANAGE_TEAMS = "5";
     private static final String EXIT = "0";
+
+    private Logger log = LoggerFactory.getLogger(CodecoolerController.class);
 
     public CodecoolerController(User user) {
         this.view = new CodecoolerView();
@@ -36,20 +40,24 @@ public class CodecoolerController {
         this.teamsDAO = new TeamsDAO();
         this.questsDAO = new QuestsDAO();
         this.wallet = walletDAO.getWalletByUserID(codecooler.getId());
-        this.team = teamsDAO.getUserTeam(codecooler);
     }
 
-    public void run() {
+    public void run() throws SQLException {
         boolean runProgram = true;
 
-        while (runProgram) {
-            view.showMainMenu(codecooler.getFirstName(), checkExperienceLevel());
-            runProgram = selectAction(view.getUserInput());
+        try {
+            while (runProgram) {
+                view.showMainMenu(codecooler.getFirstName(), checkExperienceLevel());
+                runProgram = selectAction(view.getUserInput());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
-    private boolean selectAction(String input) {
+    private boolean selectAction(String input) throws SQLException {
         boolean continueRunning = true;
+
         switch (input) {
             case SEE_WALLET:
                 checkWallet();
@@ -58,7 +66,7 @@ public class CodecoolerController {
                 buyArtifact();
                 break;
             case BUY_ARTIFACT_FOR_TEAM:
-                addContributionToArtifact(chooseTeamArtifact());
+                addContributionToArtifact();
                 break;
             case SEE_QUESTS:
                 seeQuests();
@@ -72,6 +80,7 @@ public class CodecoolerController {
             default:
                 view.showWrongInput();
         }
+
         return continueRunning;
     }
 
@@ -86,7 +95,7 @@ public class CodecoolerController {
     }
 
     private void buyArtifact() {
-        Artifact artifact = chooseArtifact();
+        Artifact artifact = chooseArtifact(ArtifactCategory.Basic);
         if (artifact != null) {
             long currentState = wallet.getCurrentState();
             if (currentState >= artifact.getPrice()) {
@@ -99,29 +108,60 @@ public class CodecoolerController {
         }
     }
 
-    private Artifact chooseArtifact(){
+    private void addContributionToArtifact() throws SQLException {
+        Artifact artifact = null;
+        long currentState = wallet.getCurrentState();
+        if (teamsDAO.checkIfUserIsInTeam(codecooler)) {
+            Team team = teamsDAO.getUserTeam(codecooler);
+            artifact = chooseArtifact(ArtifactCategory.Magic);
+            if (artifact != null) {
+                int contribution = view.askForContribution();
+                List<TeamOrder> teamOrders = orderDAO.getAllOrdersByTeam(team);
+                TeamOrder existingOrder = null;
+                for (TeamOrder teamOrder : teamOrders) {
+                    if (teamOrder.getArtifactID() == artifact.getId()) {
+                        existingOrder = teamOrder;
+                    }
+                }
+                if (existingOrder != null) {
+                    existingOrder.setCollectedMoney(existingOrder.getCollectedMoney() + contribution);
+                    orderDAO.updateOrder(existingOrder);
+                } else {
+                    TeamOrder newOrder = new TeamOrder(artifact.getId(), team.getId(), false, contribution);
+                    orderDAO.createOrder(newOrder);
+                }
+                wallet.setCurrentState(currentState - contribution);
+                walletDAO.updateWallet(wallet);
+            }
+        } else {
+            view.showThatUserIsNotInTeam();
+        }
+    }
+
+    private Artifact chooseArtifact(ArtifactCategory category){
         Artifact chosenArtifact = null;
-        ArrayList<String> namesOfArtifacts = new ArrayList<>();
-        ArrayList<Integer> IDs = new ArrayList<>();
-        ArrayList<Integer> prices = new ArrayList<>();
+        ArrayList<Artifact> artifacts = new ArrayList<>();
+        ArrayList<String> artifactsInfo = new ArrayList<>();
         for (Artifact artifact : artifactDAO.getAllArtifacts()) {
-            if (artifact.getCategory() == ArtifactCategory.Basic) {
-                namesOfArtifacts.add(artifact.getTitle());
-                IDs.add(artifact.getId());
-                prices.add(artifact.getPrice());
+            if (artifact.getCategory() == category) {
+                artifacts.add(artifact);
+                String string = artifact.getTitle() + "@" + artifact.getPrice();
+                string += category.name() == ArtifactCategory.Magic.name() ?
+                        String.valueOf("@" + getCollectedMoney(artifact)) : "";
+                artifactsInfo.add(string);
             }
         }
         boolean optionIsChosen = false;
         while (!optionIsChosen){
-            view.showBuyArtifactMenu(namesOfArtifacts, prices, wallet.getCurrentState());
+            view.showBuyArtifactMenu(artifactsInfo, wallet.getCurrentState());
             String input = view.getUserInput();
             if (input.matches("\\d+")) {
                 if (input.equals("0")) {
                     optionIsChosen = true;
                 } else {
                     int chosenPosition = Integer.parseInt(input);
-                    if (chosenPosition <= namesOfArtifacts.size()) {
-                        chosenArtifact = artifactDAO.getArtifact(IDs.get(chosenPosition - 1));
+                    if (chosenPosition <= artifacts.size()) {
+                        chosenArtifact = artifacts.get(chosenPosition - 1);
                         optionIsChosen = true;
                     }
                 }
@@ -130,85 +170,14 @@ public class CodecoolerController {
         return chosenArtifact;
     }
 
-    private ArrayList<Integer> chooseTeamArtifact(){
-//        if (teamsDAO.checkIfUserIsInTeam(codecooler)) {
-//
-//        }
-        int artifactId = 0;
-        Integer idOfCurrentTeamOrder = new Integer(0);
-        List<TeamOrder> teamOrders = orderDAO.getAllOrdersByTeam(team);
-        ArrayList<String> namesOfArtifacts = new ArrayList<>();
-        ArrayList<Integer> IDs = new ArrayList<>();
-        ArrayList<Long> prices = new ArrayList<>();
-        ArrayList<Long> collected = new ArrayList<>();
-        for (Artifact artifact : artifactDAO.getAllArtifacts()) {
-            if (artifact.getCategory() == ArtifactCategory.Magic) {
-                namesOfArtifacts.add(artifact.getTitle());
-                IDs.add(new Integer(artifact.getId()));
-                prices.add(new Long(artifact.getPrice()));
-                boolean artifactInTeamOrders = false;
-                TeamOrder currentTeamOrder = null;
-                for (TeamOrder teamOrder : teamOrders) {
-                    if (teamOrder.getArtifactID() == artifact.getId()) {
-                        artifactInTeamOrders = true;
-                        currentTeamOrder = teamOrder;
-                        idOfCurrentTeamOrder = new Integer(currentTeamOrder.getId());
-                    }
-                }
-                if (artifactInTeamOrders) {
-                        collected.add(new Long(currentTeamOrder.getCollectedMoney()));
-                } else {
-                        collected.add(new Long(0));
-                }
+    private int getCollectedMoney(Artifact artifact) {
+        List<TeamOrder> orders = orderDAO.getAllOrdersByTeam(teamsDAO.getUserTeam(codecooler));
+        for (TeamOrder order : orders) {
+            if (order.getArtifactID() == artifact.getId()) {
+                return order.getCollectedMoney();
             }
         }
-        boolean optionIsChoosen = false;
-        while (!optionIsChoosen){
-            view.showBuyTeamArtifactMenu(namesOfArtifacts, collected, prices, wallet.getCurrentState());
-            String input = view.getUserInput();
-            if (input.equals("0")) {
-                optionIsChoosen = true;
-            } else {
-                if (input.matches("\\d+")){
-                    int choosenPosition = Integer.parseInt(input);
-                    if (choosenPosition <= namesOfArtifacts.size()){
-                        artifactId = IDs.get(choosenPosition - 1).intValue();
-                    }
-                }
-            }
-        }
-        ArrayList<Integer> result = new ArrayList<>();
-        result.add(new Integer(artifactId));
-        result.add(idOfCurrentTeamOrder);
-
-        return result;
-    }
-
-    private void addContributionToArtifact(ArrayList<Integer> artifactAndIdOfOrder){
-        int id = Integer.parseInt(artifactAndIdOfOrder.get(0).toString());
-        int orderId = Integer.parseInt(artifactAndIdOfOrder.get(1).toString());
-
-        if (!(id == 0)){
-            Artifact artifact = artifactDAO.getArtifact(id);
-            long currentState = wallet.getCurrentState();
-            if (currentState > 0) {
-                int contribution = view.askForContribution();
-                if (orderId > 0) {
-                    TeamOrder order = orderDAO.getTeamOrder(orderId);
-                    order.setCollectedMoney(order.getCollectedMoney() + contribution);
-                    orderDAO.updateOrder(order);
-                } else {
-                    TeamOrder order = new TeamOrder(id, teamsDAO.getUserTeam(codecooler).getId(),false, contribution);
-                    orderDAO.createOrder(order);
-                    wallet.setCurrentState(currentState - artifact.getPrice());
-                    walletDAO.updateWallet(wallet);
-                }
-                wallet.setCurrentState(currentState - contribution);
-                walletDAO.updateWallet(wallet);
-            } else {
-                view.notEnoughCoolcoins();
-            }
-        }
+        return 0;
     }
 
     private String checkExperienceLevel(){
