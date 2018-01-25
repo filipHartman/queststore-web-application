@@ -3,6 +3,7 @@ package com.codecool.idontspeakjava.queststore.controllers.codecooler;
 import com.codecool.idontspeakjava.queststore.database.*;
 import com.codecool.idontspeakjava.queststore.models.*;
 import com.codecool.idontspeakjava.queststore.views.CodecoolerView;
+import com.codecool.idontspeakjava.queststore.views.Colors;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -86,7 +87,7 @@ public class CodecoolerController {
         if (teamsDAO.checkIfUserIsInTeam(codecooler)) {
             for (TeamOrder order : orderDAO.getAllOrdersByTeam(teamsDAO.getUserTeam(codecooler))) {
                 if (artifactDAO.getArtifact(order.getArtifactID()).getPrice() == order.getCollectedMoney())
-                    namesOfArtifacts.add(artifactDAO
+                    namesOfArtifacts.add(Colors.PURPLE_BOLD_BRIGHT + artifactDAO
                             .getArtifact(order.getArtifactID())
                             .getTitle());
             }
@@ -161,6 +162,9 @@ public class CodecoolerController {
                 String string = artifact.getTitle() + "@" + artifact.getPrice();
                 string += category.name().equals(ArtifactCategory.Magic.name()) ?
                         String.valueOf("@" + getCollectedMoney(artifact)) : "";
+                if (category.name().equals(ArtifactCategory.Magic.name()) && artifact.getPrice() == getCollectedMoney(artifact)) {
+                    string = artifact.getTitle() + "@" + artifact.getPrice() + "@" + "IN WALLET";
+                }
                 artifactsInfo.add(string);
             }
         }
