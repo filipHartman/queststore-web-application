@@ -44,6 +44,7 @@ class AssignMentorToClass{
                 userInputs++;
             }
         }if(userInputs==prompts){
+            new CodecoolClassDAO().removeUserFromCodecoolClass(selectedMentor);
             new CodecoolClassDAO().addUserToCodecoolClass(selectedMentor, selectedClass);
             view.showMentorAssign();
         }else{
