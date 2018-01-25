@@ -37,7 +37,7 @@ public class OrdersDAO extends AbstractDAO {
         int teamID = teamOrder.getTeamID();
         int is_used = teamOrder.isUsed() ? 1 : 0;
         int collected_money = teamOrder.getCollectedMoney();
-        String query = String.format("INSERT INTO team_orders(artifact_id, team_id, is_used, collected_money) " +
+        String query = String.format("INSERT INTO team_orders (artifact_id, team_id, is_used, collected_money) " +
                 "VALUES(%d, %d, %d, %d)", artifactID, teamID, is_used, collected_money);
 
         try {
