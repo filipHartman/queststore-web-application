@@ -3,6 +3,8 @@ package com.codecool.idontspeakjava.queststore.controllers.codecooler;
 import com.codecool.idontspeakjava.queststore.database.*;
 import com.codecool.idontspeakjava.queststore.models.*;
 import com.codecool.idontspeakjava.queststore.views.CodecoolerView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,6 +28,8 @@ public class CodecoolerController {
     private static final String MANAGE_TEAMS = "5";
     private static final String EXIT = "0";
 
+    private Logger log = LoggerFactory.getLogger(CodecoolerController.class);
+
     public CodecoolerController(User user) {
         this.view = new CodecoolerView();
         this.codecooler = user;
@@ -38,17 +42,22 @@ public class CodecoolerController {
         this.wallet = walletDAO.getWalletByUserID(codecooler.getId());
     }
 
-    public void run() {
+    public void run() throws SQLException {
         boolean runProgram = true;
 
-        while (runProgram) {
-            view.showMainMenu(codecooler.getFirstName(), checkExperienceLevel());
-            runProgram = selectAction(view.getUserInput());
+        try {
+            while (runProgram) {
+                view.showMainMenu(codecooler.getFirstName(), checkExperienceLevel());
+                runProgram = selectAction(view.getUserInput());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
-    private boolean selectAction(String input) {
+    private boolean selectAction(String input) throws SQLException {
         boolean continueRunning = true;
+
         switch (input) {
             case SEE_WALLET:
                 checkWallet();
@@ -71,6 +80,7 @@ public class CodecoolerController {
             default:
                 view.showWrongInput();
         }
+
         return continueRunning;
     }
 
@@ -98,15 +108,31 @@ public class CodecoolerController {
         }
     }
 
-    private void addContributionToArtifact(){
-        try {
-            if (teamsDAO.checkIfUserIsInTeam(codecooler)) {
-                Artifact artifact = chooseArtifact(ArtifactCategory.Magic);
-            } else {
-                view.showThatUserIsNotInTeam();
+    private void addContributionToArtifact() throws SQLException {
+        Artifact artifact = null;
+        long currentState = wallet.getCurrentState();
+        if (teamsDAO.checkIfUserIsInTeam(codecooler)) {
+            Team team = teamsDAO.getUserTeam(codecooler);
+            artifact = chooseArtifact(ArtifactCategory.Magic);
+            int contribution = view.askForContribution();
+            List<TeamOrder> teamOrders = orderDAO.getAllOrdersByTeam(team);
+            TeamOrder existingOrder = null;
+            for (TeamOrder teamOrder : teamOrders) {
+                if (teamOrder.getArtifactID() == artifact.getId()) {
+                    existingOrder = teamOrder;
+                }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            if (existingOrder != null) {
+                existingOrder.setCollectedMoney(existingOrder.getCollectedMoney() + contribution);
+                orderDAO.updateOrder(existingOrder);
+            } else {
+                TeamOrder newOrder = new TeamOrder(artifact.getId(), team.getId(), false, contribution);
+                orderDAO.createOrder(newOrder);
+            }
+            wallet.setCurrentState(currentState - contribution);
+            walletDAO.updateWallet(wallet);
+        } else {
+            view.showThatUserIsNotInTeam();
         }
     }
 
