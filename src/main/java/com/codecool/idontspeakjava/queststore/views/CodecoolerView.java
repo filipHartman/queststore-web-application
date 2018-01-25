@@ -52,13 +52,19 @@ public class CodecoolerView extends UserView{
                 CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, category, Colors.BLACK_BOLD_BRIGHT, Colors.YELLOW_BOLD_BRIGHT,
                 balance, Colors.RESET));
         for (String artifact : artifactsInfo) {
-            String title = artifact.split("@")[0];
+            String title = category.equals("MAGIC") ? Colors.PURPLE_BOLD_BRIGHT + artifact.split("@")[0] : artifact.split("@")[0];
             String price = artifact.split("@")[1];
             String collected = category.equals("MAGIC") ?
                     artifact.split("@")[2] + Colors.RESET + "/" + Colors.YELLOW_BOLD_BRIGHT : "";
             int index = artifactsInfo.indexOf(artifact);
+            String row = "%s. %s%s   %s%s%scc%s";
+            if (collected.equals("IN WALLET" + Colors.RESET + "/" + Colors.YELLOW_BOLD_BRIGHT)) {
+                collected = "IN WALLET" + Colors.RESET;
+                row = "%s. %s%s   " + Colors.GREEN_BOLD_BRIGHT + collected;
+                price = "";;
+            }
             System.out.println(String.format(
-                        "%s. %s%s   %s%s%scc%s",
+                        row,
                     index + 1, Colors.WHITE_BOLD, title, Colors.YELLOW_BOLD_BRIGHT, collected, price, Colors.RESET));
         }
         System.out.println("\n\n0 - Back");
