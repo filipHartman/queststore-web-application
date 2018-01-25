@@ -33,7 +33,7 @@ abstract class Editor {
         boolean continueEdit = true;
 
         if (getCollection().isEmpty()) {
-            view.showThereIsNothingToEdit();
+            view.showThereIsNothingToShow();
             return;
         }
         while (continueEdit) {
