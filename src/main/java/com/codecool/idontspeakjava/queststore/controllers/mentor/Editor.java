@@ -15,13 +15,17 @@ abstract class Editor {
 
     private static final String EXIT = "0";
     private String[] availableOptions = {"1", "2", "3", "4"};
+    private String typeOfEditor;
+
+    private static final String ARTIFACT = "Artifact";
 
     MentorView view;
     private Validator validator;
     int indexOfItemToEdit;
 
-    Editor(MentorView view) {
+    Editor(MentorView view, String typeOfEditor) {
         this.view = view;
+        this.typeOfEditor = typeOfEditor;
         this.validator = new Validator();
     }
 
@@ -29,11 +33,11 @@ abstract class Editor {
         boolean continueEdit = true;
 
         if (getCollection().isEmpty()) {
-            view.showNoArtifacts();
+            view.showThereIsNothingToEdit();
             return;
         }
         while (continueEdit) {
-            view.selectArtifacts(getTitles());
+            view.printListForSelection(getTitles());
             String input = view.getUserInput();
 
             if (input.equals(EXIT)) {
@@ -43,7 +47,7 @@ abstract class Editor {
                 view.showWrongInput();
             } else {
                 indexOfItemToEdit = Integer.parseInt(input) - 1;
-                view.selectAttributeOfArtifactToEdit();
+                view.selectAttributeToEdit(typeOfEditor.equals(ARTIFACT) ? "Price" : "Reward");
                 input = view.getUserInput();
 
                 if (input.equals(EXIT)) {
