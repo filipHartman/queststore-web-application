@@ -2,6 +2,7 @@ package com.codecool.idontspeakjava.queststore.views;
 
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 
 public class MentorView extends UserView {
@@ -99,7 +100,7 @@ public class MentorView extends UserView {
     public void showWrongTitleInput() {
         clearScreen();
         System.out.println(String.format(
-                "%sWrong input. You can use only letters, digits and whitespaces.\n", ERROR_COLOR));
+                "%sWrong input or this title already exists. You can use only letters, digits and whitespaces.\n", ERROR_COLOR));
         continuePrompt();
     }
 
@@ -156,12 +157,10 @@ public class MentorView extends UserView {
     }
 
     public void askForArtifactTitle() {
-        clearScreen();
         System.out.println(String.format("%sEnter the name of new artifact or 0 to cancel: %s", PROMPT_COLOR, INPUT_COLOR));
     }
 
     public void askForArtifactCategory() {
-        clearScreen();
         System.out.println(String.format("%sSelect artifact category:\n", MENU_HEADER_COLOR));
         System.out.println(String.format("%s1 - Basic\n2 - Magic\n0 - Cancel\n%s", MENU_OPTIONS_COLOR, INPUT_COLOR));
     }
@@ -173,13 +172,11 @@ public class MentorView extends UserView {
     }
 
     public void askForArtifactDescription() {
-        clearScreen();
         System.out.print(String.format(
                 "%sEnter the description of your artifact or 0 to cancel: %s", PROMPT_COLOR, INPUT_COLOR));
     }
 
     public void askForArtifactPrice() {
-        clearScreen();
         System.out.print(String.format(
                 "%sEnter the price of your artifact or 0 to cancel: %s", PROMPT_COLOR, INPUT_COLOR));
     }
@@ -222,27 +219,32 @@ public class MentorView extends UserView {
     }
 
     public void showTitle(String title) {
-        System.out.println(String.format(
+        clearScreen();
+        System.out.print(String.format(
                 "%s\nThe current title: %s%s%s\n", INFORMATION_COLOR, VALUE_COLOR, title, INPUT_COLOR));
     }
 
     public void showCategory(String category) {
-        System.out.println(String.format(
+        clearScreen();
+        System.out.print(String.format(
                 "%s\nThe current category : %s%s%s\n", INFORMATION_COLOR, VALUE_COLOR, category, INPUT_COLOR));
     }
 
     public void showDescription(String description) {
-        System.out.println(String.format(
+        clearScreen();
+        System.out.print(String.format(
                 "%s\nThe current description: %s%s%s\n", INFORMATION_COLOR, VALUE_COLOR, description, INPUT_COLOR));
     }
 
     public void showReward(String reward) {
-        System.out.println(String.format(
+        clearScreen();
+        System.out.print(String.format(
                 "%s\nThe current reward is: %s%s%s\n", INFORMATION_COLOR, VALUE_COLOR, reward, INPUT_COLOR));
     }
 
     public void showPrice(String price) {
-        System.out.println(String.format(
+        clearScreen();
+        System.out.print(String.format(
                 "%s\nThe current price is: %s%s%s\n", INFORMATION_COLOR, VALUE_COLOR, price, INPUT_COLOR));
     }
 
@@ -252,7 +254,7 @@ public class MentorView extends UserView {
         continuePrompt();
     }
 
-    public void selectArtifacts(ArrayList<String> artifactsTitles) {
+    public void selectArtifacts(List<String> artifactsTitles) {
         clearScreen();
         ListIterator<String> iterator = artifactsTitles.listIterator();
 
