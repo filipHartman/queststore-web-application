@@ -44,6 +44,7 @@ class MentorEdit {
             }
         }if(userInputs==prompts){
             new UserDAO().updateUser(selectedMentor);
+            new CodecoolClassDAO().addUserToCodecoolClass(selectedMentor, selectedClass);
             view.showMentorUpdate();
         }else{
             view.showOperationCancelled();
@@ -140,7 +141,8 @@ class MentorEdit {
             view.showAllClasses();
             view.askForMentorNewClass();
             String mentorClassInput = view.getUserInput();
-            classNotChanged = setClass(mentorClassInput);
+            setClass(mentorClassInput);
+            classNotChanged = false;
         }else if (upperInput.matches("N")){
             classNotChanged = false;
         }else{
@@ -153,13 +155,11 @@ class MentorEdit {
         boolean classNotSet = true;
         try{
             if(new CodecoolClassDAO().checkIfClassExists(input)){
-                if(!new CodecoolClassDAO().checkIfUserIsInClass(selectedMentor)){
+                    new CodecoolClassDAO().removeUserFromCodecoolClass(selectedMentor);
                     selectedClass = new CodecoolClassDAO().getCodecoolClass(input); 
-                    new CodecoolClassDAO().addUserToCodecoolClass(selectedMentor, selectedClass);
                     classNotSet = false;
-                }else{
-                    view.showMentorInClassInfo();
-                }
+            }else{
+                view.showClassNotExist();
             }
         }catch (SQLException e) {
             e.printStackTrace();
