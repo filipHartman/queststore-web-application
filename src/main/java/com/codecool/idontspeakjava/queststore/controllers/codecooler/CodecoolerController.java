@@ -3,8 +3,6 @@ package com.codecool.idontspeakjava.queststore.controllers.codecooler;
 import com.codecool.idontspeakjava.queststore.database.*;
 import com.codecool.idontspeakjava.queststore.models.*;
 import com.codecool.idontspeakjava.queststore.views.CodecoolerView;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,7 +26,6 @@ public class CodecoolerController {
     private static final String MANAGE_TEAMS = "5";
     private static final String EXIT = "0";
 
-    private Logger log = LoggerFactory.getLogger(CodecoolerController.class);
 
     public CodecoolerController(User user) {
         this.view = new CodecoolerView();
@@ -42,7 +39,7 @@ public class CodecoolerController {
         this.wallet = walletDAO.getWalletByUserID(codecooler.getId());
     }
 
-    public void run() throws SQLException {
+    public void run() {
         boolean runProgram = true;
 
         try {
@@ -89,9 +86,9 @@ public class CodecoolerController {
         if (teamsDAO.checkIfUserIsInTeam(codecooler)) {
             for (TeamOrder order : orderDAO.getAllOrdersByTeam(teamsDAO.getUserTeam(codecooler))) {
                 if (artifactDAO.getArtifact(order.getArtifactID()).getPrice() == order.getCollectedMoney())
-                namesOfArtifacts.add(artifactDAO
-                        .getArtifact(order.getArtifactID())
-                        .getTitle());
+                    namesOfArtifacts.add(artifactDAO
+                            .getArtifact(order.getArtifactID())
+                            .getTitle());
             }
         }
         for (Order order : orderDAO.getAllOrdersByUser(codecooler)) {
@@ -154,7 +151,7 @@ public class CodecoolerController {
         }
     }
 
-    private Artifact chooseArtifact(ArtifactCategory category){
+    private Artifact chooseArtifact(ArtifactCategory category) {
         Artifact chosenArtifact = null;
         ArrayList<Artifact> artifacts = new ArrayList<>();
         ArrayList<String> artifactsInfo = new ArrayList<>();
@@ -162,13 +159,13 @@ public class CodecoolerController {
             if (artifact.getCategory() == category) {
                 artifacts.add(artifact);
                 String string = artifact.getTitle() + "@" + artifact.getPrice();
-                string += category.name() == ArtifactCategory.Magic.name() ?
+                string += category.name().equals(ArtifactCategory.Magic.name()) ?
                         String.valueOf("@" + getCollectedMoney(artifact)) : "";
                 artifactsInfo.add(string);
             }
         }
         boolean optionIsChosen = false;
-        while (!optionIsChosen){
+        while (!optionIsChosen) {
             view.showBuyArtifactMenu(artifactsInfo, wallet.getCurrentState());
             String input = view.getUserInput();
             if (input.matches("\\d+")) {
@@ -196,7 +193,7 @@ public class CodecoolerController {
         return 0;
     }
 
-    private String checkExperienceLevel(){
+    private String checkExperienceLevel() {
         long totalEarnings = wallet.getTotalEarnings();
         List<ExperienceLevel> levels = experienceLevelDAO.getAllExperienceLevels();
         ExperienceLevel level = levels.get(0);
@@ -208,7 +205,7 @@ public class CodecoolerController {
         return level.getName();
     }
 
-    private void seeQuests(){
+    private void seeQuests() {
         List<Quest> quests = questsDAO.getAllQuests();
         ArrayList<String> questsStrings = new ArrayList<>();
         for (Quest quest : quests) {
