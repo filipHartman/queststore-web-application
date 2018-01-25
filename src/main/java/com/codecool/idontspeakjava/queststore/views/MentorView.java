@@ -218,7 +218,7 @@ public class MentorView extends UserView {
 
     public void showThereIsNothingToEdit() {
         clearScreen();
-        System.out.println(String.format("%sThere aren't anything to edit.\n", ERROR_COLOR));
+        System.out.println(String.format("%sThere aren't anything to show.\n", ERROR_COLOR));
         continuePrompt();
     }
 
