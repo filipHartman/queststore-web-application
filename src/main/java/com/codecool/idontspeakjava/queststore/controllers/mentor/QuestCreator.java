@@ -27,7 +27,7 @@ class QuestCreator extends Creator {
     void addToDatabase() {
         Quest quest = new Quest(
                 temporaryQuest.getTitle(),
-                temporaryQuest.getCategory().equals(BASIC_CATEGORY) ? QuestCategory.Basic : QuestCategory.Extra,
+                temporaryQuest.getCategory().equals(Validator.BASIC_CATEGORY) ? QuestCategory.Basic : QuestCategory.Extra,
                 temporaryQuest.getDescription(),
                 temporaryQuest.getRewardOrPrice());
         QuestsDAO questsDAO = new QuestsDAO();

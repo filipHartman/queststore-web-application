@@ -9,6 +9,7 @@ import com.codecool.idontspeakjava.queststore.views.MentorView;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 class ArtifactCreator extends Creator {
 
     private static final int TITLE = 0;
@@ -27,7 +28,7 @@ class ArtifactCreator extends Creator {
     void addToDatabase() {
         Artifact artifact = new Artifact(
                 temporaryArtifact.getTitle(),
-                temporaryArtifact.getCategory().equals(BASIC_CATEGORY) ? ArtifactCategory.Basic : ArtifactCategory.Magic,
+                temporaryArtifact.getCategory().equals(Validator.BASIC_CATEGORY) ? ArtifactCategory.Basic : ArtifactCategory.Magic,
                 temporaryArtifact.getDescription(),
                 temporaryArtifact.getRewardOrPrice());
 

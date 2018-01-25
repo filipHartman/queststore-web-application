@@ -3,56 +3,22 @@ package com.codecool.idontspeakjava.queststore.controllers.mentor;
 import com.codecool.idontspeakjava.queststore.models.DummyItem;
 import com.codecool.idontspeakjava.queststore.views.MentorView;
 
-import java.util.Arrays;
 import java.util.List;
 
 abstract class Creator {
 
-    final static String BASIC_CATEGORY = "1";
-    private final static String EXTRA_CATEGORY = "2";
     private static final String EXIT = "0";
 
     MentorView view;
+    private Validator validator;
 
     Creator(MentorView view) {
         this.view = view;
-    }
-
-    private boolean checkIfPriceOrRewardIsValid(String input) {
-        boolean priceIsValid = false;
-        if (input.matches("\\d+")) {
-            if (Integer.valueOf(input) > 0) {
-                priceIsValid = true;
-            }
-        }
-        return priceIsValid;
-    }
-
-    private boolean checkIfDescriptionIsValid(String input) {
-        boolean descriptionIsValid = false;
-        if (input.matches("[a-zA-Z1-9,.! ]+")) {
-            descriptionIsValid = true;
-        }
-        return descriptionIsValid;
-    }
-
-    private boolean checkIfTitleIsValid(String input, List<String> titles) {
-        boolean titleIsValid = false;
-        if (input.matches("[a-zA-Z1-9 ]+")) {
-            if (!titles.contains(input)) {
-                titleIsValid = true;
-            }
-        }
-        return titleIsValid;
-    }
-
-    private boolean checkIfCategoryIsValid(String input) {
-        String[] validInputs = {BASIC_CATEGORY, EXTRA_CATEGORY};
-        return Arrays.asList(validInputs).contains(input);
+        validator = new Validator();
     }
 
     boolean setTitle(DummyItem dummy, String input, List<String> titles, MentorView view) {
-        if (checkIfTitleIsValid(input, titles)) {
+        if (validator.checkIfTitleIsValid(input, titles)) {
             dummy.setTitle(input);
             return true;
         } else {
@@ -62,7 +28,7 @@ abstract class Creator {
     }
 
     boolean setCategory(DummyItem dummy, String input, MentorView view) {
-        if (checkIfCategoryIsValid(input)) {
+        if (validator.checkIfCategoryIsValid(input)) {
             dummy.setCategory(input);
             return true;
         } else {
@@ -72,7 +38,7 @@ abstract class Creator {
     }
 
     boolean setDescription(DummyItem dummy, String input, MentorView view) {
-        if (checkIfDescriptionIsValid(input)) {
+        if (validator.checkIfDescriptionIsValid(input)) {
             dummy.setDescription(input);
             return true;
         } else {
@@ -82,7 +48,7 @@ abstract class Creator {
     }
 
     boolean setPriceOrReward(DummyItem dummy, String input, MentorView view) {
-        if (checkIfPriceOrRewardIsValid(input)) {
+        if (validator.checkIfPriceOrRewardIsValid(input)) {
             dummy.setRewardOrPrice(input);
             return true;
         } else {

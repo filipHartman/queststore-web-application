@@ -10,7 +10,6 @@ import com.codecool.idontspeakjava.queststore.views.MentorView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
 class ArtifactMarker {
     private static final String EXIT = "0";
@@ -54,7 +53,7 @@ class ArtifactMarker {
                         view.showOperationCancelled();
                     }
                 } else {
-                    view.showNoArtifacts();
+                    view.showThereIsNothingToShow();
                 }
             } else {
                 view.showWrongInput();
