@@ -77,22 +77,18 @@ public class MentorView extends UserView {
     }
 
     public void askForQuestTitle() {
-        clearScreen();
         System.out.print(String.format("%sEnter the quest title or 0 to cancel: %s", PROMPT_COLOR, INPUT_COLOR));
     }
 
     public void askForQuestDescription() {
-        clearScreen();
         System.out.print(String.format("%sEnter the description of the quest or 0 to cancel: %s", PROMPT_COLOR, INPUT_COLOR));
     }
 
     public void askForQuestReward() {
-        clearScreen();
         System.out.print(String.format("%sEnter the reward for the quest or 0 to cancel: %s", PROMPT_COLOR, INPUT_COLOR));
     }
 
     public void askForQuestCategory() {
-        clearScreen();
         System.out.println(String.format("%sSelect quest category:\n", MENU_HEADER_COLOR));
         System.out.println(String.format("%s1 - Basic\n2 - Extra\n0 - Cancel\n%s", MENU_OPTIONS_COLOR, INPUT_COLOR));
     }
