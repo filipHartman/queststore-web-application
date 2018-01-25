@@ -7,6 +7,7 @@ import com.codecool.idontspeakjava.queststore.database.UserDAO;
 import com.codecool.idontspeakjava.queststore.database.CodecoolClassDAO;
 
 import java.sql.SQLException;
+import java.lang.NullPointerException;
 
 class MentorData{
     private static final String EXIT = "0";
@@ -54,6 +55,11 @@ class MentorData{
     }
 
     private void getMentorClass(User mentor){
-        mentorClass = new CodecoolClassDAO().getUserCodecoolClass(selectedMentor);
+        try{
+            mentorClass = new CodecoolClassDAO().getUserCodecoolClass(selectedMentor);
+        }catch(NullPointerException e){
+            e.printStackTrace();
+            view.showMentorNotAssignToClass();
+        }
     }
 }
