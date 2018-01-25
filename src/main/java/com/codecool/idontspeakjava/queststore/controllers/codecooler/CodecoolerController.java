@@ -84,8 +84,16 @@ public class CodecoolerController {
         return continueRunning;
     }
 
-    private void checkWallet() {
+    private void checkWallet() throws SQLException {
         ArrayList<String> namesOfArtifacts = new ArrayList<>();
+        if (teamsDAO.checkIfUserIsInTeam(codecooler)) {
+            for (TeamOrder order : orderDAO.getAllOrdersByTeam(teamsDAO.getUserTeam(codecooler))) {
+                if (artifactDAO.getArtifact(order.getArtifactID()).getPrice() == order.getCollectedMoney())
+                namesOfArtifacts.add(artifactDAO
+                        .getArtifact(order.getArtifactID())
+                        .getTitle());
+            }
+        }
         for (Order order : orderDAO.getAllOrdersByUser(codecooler)) {
             namesOfArtifacts.add(artifactDAO
                     .getArtifact(order.getArtifactID())
@@ -116,22 +124,30 @@ public class CodecoolerController {
             artifact = chooseArtifact(ArtifactCategory.Magic);
             if (artifact != null) {
                 int contribution = view.askForContribution();
-                List<TeamOrder> teamOrders = orderDAO.getAllOrdersByTeam(team);
-                TeamOrder existingOrder = null;
-                for (TeamOrder teamOrder : teamOrders) {
-                    if (teamOrder.getArtifactID() == artifact.getId()) {
-                        existingOrder = teamOrder;
-                    }
-                }
-                if (existingOrder != null) {
-                    existingOrder.setCollectedMoney(existingOrder.getCollectedMoney() + contribution);
-                    orderDAO.updateOrder(existingOrder);
+                if (contribution > wallet.getCurrentState()) {
+                    view.notEnoughCoolcoins();
                 } else {
-                    TeamOrder newOrder = new TeamOrder(artifact.getId(), team.getId(), false, contribution);
-                    orderDAO.createOrder(newOrder);
+                    List<TeamOrder> teamOrders = orderDAO.getAllOrdersByTeam(team);
+                    TeamOrder existingOrder = null;
+                    for (TeamOrder teamOrder : teamOrders) {
+                        if (teamOrder.getArtifactID() == artifact.getId()) {
+                            existingOrder = teamOrder;
+                        }
+                    }
+                    if (existingOrder != null) {
+                        int remainingContribution = artifact.getPrice() - existingOrder.getCollectedMoney();
+                        if (contribution > remainingContribution) {
+                            contribution -= contribution - remainingContribution;
+                        }
+                        existingOrder.setCollectedMoney(existingOrder.getCollectedMoney() + contribution);
+                        orderDAO.updateOrder(existingOrder);
+                    } else {
+                        TeamOrder newOrder = new TeamOrder(artifact.getId(), team.getId(), false, contribution);
+                        orderDAO.createOrder(newOrder);
+                    }
+                    wallet.setCurrentState(currentState - contribution);
+                    walletDAO.updateWallet(wallet);
                 }
-                wallet.setCurrentState(currentState - contribution);
-                walletDAO.updateWallet(wallet);
             }
         } else {
             view.showThatUserIsNotInTeam();
