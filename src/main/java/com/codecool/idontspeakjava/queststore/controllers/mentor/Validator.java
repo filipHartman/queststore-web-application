@@ -40,4 +40,14 @@ public class Validator {
         String[] validInputs = {BASIC_CATEGORY, EXTRA_CATEGORY};
         return Arrays.asList(validInputs).contains(input);
     }
+
+    public boolean isSelectFromListInvalid(List collection, String input) {
+        boolean inputIsInvalid = true;
+        if (input.matches("\\d+")) {
+            if (Integer.parseInt(input) <= collection.size()) {
+                inputIsInvalid = false;
+            }
+        }
+        return inputIsInvalid;
+    }
 }
