@@ -148,10 +148,6 @@ public class MentorView extends UserView {
         continuePrompt();
     }
 
-    public void showInputMustBeHigherThanZero() {
-        System.out.println(String.format("%sWrong input. The value must be higher than zero.\n", ERROR_COLOR));
-    }
-
     public void askForArtifactTitle() {
         System.out.println(String.format("%sEnter the name of new artifact or 0 to cancel: %s", PROMPT_COLOR, INPUT_COLOR));
     }
@@ -190,30 +186,6 @@ public class MentorView extends UserView {
         continuePrompt();
     }
 
-    public void showNoQuests() {
-        clearScreen();
-        System.out.println(String.format("%sThere are no quests to edit.\n", ERROR_COLOR));
-        continuePrompt();
-    }
-
-    public void selectQuest(ArrayList<String> questTitles) {
-        clearScreen();
-        ListIterator<String> iterator = questTitles.listIterator();
-
-        System.out.println(String.format("%sSelect quest to edit or 0 to cancel:\n", MENU_HEADER_COLOR));
-        for (; iterator.hasNext(); ) {
-            String title = iterator.next();
-            System.out.println(String.format("%s%d. %s", MENU_OPTIONS_COLOR, iterator.nextIndex(), title));
-        }
-    }
-
-    public void selectAttributeOfQuestToEdit() {
-        clearScreen();
-        System.out.println(String.format("%sSelect what you want to edit, or 0 to cancel:\n", MENU_HEADER_COLOR));
-        System.out.println(String.format("%s1 - Title\n2 - Description\n3 - Category\n4 - Reward\n", MENU_OPTIONS_COLOR));
-
-    }
-
     public void showTitle(String title) {
         clearScreen();
         System.out.print(String.format(
@@ -244,27 +216,27 @@ public class MentorView extends UserView {
                 "%s\nThe current price is: %s%s%s\n", INFORMATION_COLOR, VALUE_COLOR, price, INPUT_COLOR));
     }
 
-    public void showNoArtifacts() {
+    public void showThereIsNothingToEdit() {
         clearScreen();
-        System.out.println(String.format("%sThere aren't any artifacts.\n", ERROR_COLOR));
+        System.out.println(String.format("%sThere aren't anything to edit.\n", ERROR_COLOR));
         continuePrompt();
     }
 
-    public void selectArtifacts(List<String> artifactsTitles) {
+    public void printListForSelection(List<String> titles) {
         clearScreen();
-        ListIterator<String> iterator = artifactsTitles.listIterator();
+        ListIterator<String> iterator = titles.listIterator();
 
-        System.out.println(String.format("%sSelect artifact to edit or 0 to cancel:\n", MENU_HEADER_COLOR));
+        System.out.println(String.format("%sSelect what to edit or 0 to cancel:\n", MENU_HEADER_COLOR));
         for (; iterator.hasNext(); ) {
             String title = iterator.next();
             System.out.println(String.format("%s%d. %s", MENU_OPTIONS_COLOR, iterator.nextIndex(), title));
         }
     }
 
-    public void selectAttributeOfArtifactToEdit() {
+    public void selectAttributeToEdit(String priceOrReward) {
         clearScreen();
         System.out.println(String.format("%sSelect what you want to edit, or 0 to cancel:\n", MENU_HEADER_COLOR));
-        System.out.println(String.format("%s1 - Title\n2 - Description\n3 - Category\n4 - Price\n", MENU_OPTIONS_COLOR));
+        System.out.println(String.format("%s1 - Title\n2 - Description\n3 - Category\n4 - %s\n", MENU_OPTIONS_COLOR, priceOrReward));
     }
 
     public void showNoUsers() {
