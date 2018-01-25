@@ -61,7 +61,7 @@ public class CodecoolerView extends UserView{
             if (collected.equals("IN WALLET" + Colors.RESET + "/" + Colors.YELLOW_BOLD_BRIGHT)) {
                 collected = "IN WALLET" + Colors.RESET;
                 row = "%s. %s%s   " + Colors.GREEN_BOLD_BRIGHT + collected;
-                price = "";
+                price = "";s
             }
             System.out.println(String.format(
                         row,
