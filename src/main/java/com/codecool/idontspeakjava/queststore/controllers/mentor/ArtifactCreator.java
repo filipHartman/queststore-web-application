@@ -3,67 +3,41 @@ package com.codecool.idontspeakjava.queststore.controllers.mentor;
 import com.codecool.idontspeakjava.queststore.database.ArtifactsDAO;
 import com.codecool.idontspeakjava.queststore.models.Artifact;
 import com.codecool.idontspeakjava.queststore.models.ArtifactCategory;
+import com.codecool.idontspeakjava.queststore.models.DummyItem;
 import com.codecool.idontspeakjava.queststore.views.MentorView;
 
-import java.sql.SQLException;
+import java.util.List;
+import java.util.stream.Collectors;
 
-class ArtifactCreator {
+
+class ArtifactCreator extends Creator {
 
     private static final int TITLE = 0;
     private static final int CATEGORY = 1;
     private static final int DESCRIPTION = 2;
     private static final int PRICE = 3;
 
-    private static final String EXIT = "0";
-    private MentorView view;
-
-    private String title;
-    private ArtifactCategory category;
-    private String description;
-    private int price;
+    private DummyItem temporaryArtifact;
 
     ArtifactCreator(MentorView view) {
-        this.view = view;
+        super(view);
+        temporaryArtifact = new DummyItem();
     }
 
-    void createArtifact() {
-        int inputsReceived = 0;
-        boolean continueLoop = true;
+    @Override
+    void addToDatabase() {
+        Artifact artifact = new Artifact(
+                temporaryArtifact.getTitle(),
+                temporaryArtifact.getCategory().equals(Validator.BASIC_CATEGORY) ? ArtifactCategory.Basic : ArtifactCategory.Magic,
+                temporaryArtifact.getDescription(),
+                temporaryArtifact.getRewardOrPrice());
 
-        final int PROMPTS = 4;
-
-        for (int i = 0; i < PROMPTS && continueLoop; i++) {
-            boolean continueIteration = true;
-            while (continueIteration) {
-                selectPromptForCreateQuest(i);
-                String input = view.getUserInput();
-
-                if (input.equals(EXIT)) {
-                    continueLoop = false;
-                    continueIteration = false;
-                } else {
-                    continueIteration = setAttribute(i, input);
-                }
-            }
-            if (continueLoop) {
-                inputsReceived++;
-            }
-        }
-
-        if (inputsReceived == PROMPTS) {
-            addArtifactToDatabase();
-        } else {
-            view.showOperationCancelled();
-        }
-    }
-
-    private void addArtifactToDatabase() {
-        Artifact artifact = new Artifact(title, category, description, price);
         new ArtifactsDAO().createArtifact(artifact);
         view.showArtifactCreated();
     }
 
-    private void selectPromptForCreateQuest(int promptNumber) {
+    @Override
+    void selectPrompt(int promptNumber) {
         switch (promptNumber) {
             case TITLE:
                 view.askForArtifactTitle();
@@ -80,92 +54,30 @@ class ArtifactCreator {
         }
     }
 
-    private boolean setAttribute(int promptNumber, String input) {
-        boolean attributeNotSet;
+    @Override
+    boolean setAttribute(int promptNumber, String input) {
+        boolean attributeSet;
         switch (promptNumber) {
             case TITLE:
-                attributeNotSet = setTitle(input);
+                attributeSet = setTitle(temporaryArtifact, input, getArtifactsTitles(), view);
                 break;
             case CATEGORY:
-                attributeNotSet = setCategory(input);
+                attributeSet = setCategory(temporaryArtifact, input, view);
                 break;
             case DESCRIPTION:
-                attributeNotSet = setDescription(input);
+                attributeSet = setDescription(temporaryArtifact, input, view);
                 break;
             case PRICE:
-                attributeNotSet = setPrice(input);
+                attributeSet = setPriceOrReward(temporaryArtifact, input, view);
                 break;
             default:
-                attributeNotSet = false;
+                attributeSet = false;
         }
-        return attributeNotSet;
+        return attributeSet;
     }
 
-    private boolean setPrice(String input) {
-        boolean priceNotSet = true;
-        if (input.matches("\\d+")) {
-            int inputAsInt = Integer.valueOf(input);
-            if (inputAsInt > 0) {
-                price = inputAsInt;
-                priceNotSet = false;
-            } else {
-                view.showInputMustBeHigherThanZero();
-            }
-        } else {
-            view.showWrongDigitInput();
-        }
-        return priceNotSet;
+    private List<String> getArtifactsTitles() {
+        List<Artifact> artifacts = new ArtifactsDAO().getAllArtifacts();
+        return artifacts.stream().map(Artifact::getTitle).collect(Collectors.toList());
     }
-
-    private boolean setDescription(String input) {
-        boolean descriptionNotSet = true;
-        if (input.matches("[a-zA-Z1-9,.! ]+")) {
-            description = input;
-            descriptionNotSet = false;
-        } else {
-            view.showWrongDescriptionInput();
-        }
-        return descriptionNotSet;
-    }
-
-    private boolean setCategory(String input) {
-        final String BASIC = "1";
-        final String MAGIC = "2";
-
-        boolean categoryNotSet = false;
-
-        switch (input) {
-            case BASIC:
-                category = ArtifactCategory.Basic;
-                break;
-            case MAGIC:
-                category = ArtifactCategory.Magic;
-                break;
-            default:
-                categoryNotSet = true;
-                view.showWrongInput();
-        }
-        return categoryNotSet;
-    }
-
-    private boolean setTitle(String input) {
-        boolean titleNotSet = true;
-        if (input.matches("[a-zA-Z1-9 ]+")) {
-            try {
-                if (!new ArtifactsDAO().checkIfArtifactExists(input)) {
-                    title = input;
-                    titleNotSet = false;
-                } else {
-                    view.showDuplicateWarning();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                view.showDatabaseError();
-            }
-        } else {
-            view.showWrongTitleInput();
-        }
-        return titleNotSet;
-    }
-
 }

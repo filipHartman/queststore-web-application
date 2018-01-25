@@ -39,16 +39,16 @@ public class MentorController {
                 new CodecoolerCreator(view).createCodecooler();
                 break;
             case ADD_QUEST:
-                new QuestCreator(view).createQuest();
+                new QuestCreator(view).create();
                 break;
             case ADD_ARTIFACT:
-                new ArtifactCreator(view).createArtifact();
+                new ArtifactCreator(view).create();
                 break;
             case EDIT_QUEST:
-                new QuestEditor(view).editQuest();
+                new QuestEditor(view).edit();
                 break;
             case EDIT_ARTIFACT:
-                new ArtifactEditor(view).editArtifact();
+                new ArtifactEditor(view).edit();
                 break;
             case MARK_QUEST:
                 new QuestMarker(view).markQuest();

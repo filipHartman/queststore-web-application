@@ -4,6 +4,7 @@ import com.codecool.idontspeakjava.queststore.models.ExperienceLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -14,13 +15,17 @@ public class ExperienceLevelDAO extends AbstractDAO {
     private static final Logger log = LoggerFactory.getLogger(ExperienceLevelDAO.class);
 
     public void createExperienceLevel(ExperienceLevel experienceLevel) {
-        String query = String.format("INSERT INTO experience_levels(name, threshold) " +
-                "VALUES('%s', %d)", experienceLevel.getName(), experienceLevel.getThreshold());
+        String query = "INSERT INTO experience_levels(name, threshold) " +
+                "VALUES(?, ?)";
 
         try {
             if (!checkIfExperienceLevelExists(experienceLevel.getName())) {
-                log.info(query);
-                getConnection().createStatement().executeUpdate(query);
+                PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+
+                preparedStatement.setString(1, experienceLevel.getName());
+                preparedStatement.setLong(2, experienceLevel.getThreshold());
+
+                preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -52,12 +57,14 @@ public class ExperienceLevelDAO extends AbstractDAO {
 
     public void updateExperienceLevel(ExperienceLevel experienceLevel) {
 
-        String query = String.format("UPDATE experience_levels SET name = '%s', threshold = %d WHERE id = %d",
-                experienceLevel.getName(), experienceLevel.getThreshold(), experienceLevel.getId());
+        String query = "UPDATE experience_levels SET name = ?, threshold = ? WHERE id = ?";
 
         try {
             if (checkIfExperienceLevelExists(experienceLevel.getId())) {
-                log.info(query);
+                PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+
+                preparedStatement.setString(1, experienceLevel.getName());
+                preparedStatement.setLong(2, experienceLevel.getThreshold());
                 getConnection().createStatement().executeUpdate(query);
             }
         } catch (SQLException e) {
@@ -66,13 +73,16 @@ public class ExperienceLevelDAO extends AbstractDAO {
     }
 
     public void deleteExperienceLevel(ExperienceLevel experienceLevel) {
-        String query = String.format("DELETE FROM experience_levels WHERE id = %d or name = '%s'",
-                experienceLevel.getId(), experienceLevel.getName());
+        String query = "DELETE FROM experience_levels WHERE id = ? or name = ?";
 
         try {
             if (checkIfExperienceLevelExists(experienceLevel.getName())) {
-                log.info(query);
-                getConnection().createStatement().executeUpdate(query);
+
+                PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+                preparedStatement.setInt(1, experienceLevel.getId());
+                preparedStatement.setString(2, experienceLevel.getName());
+
+                preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -80,23 +90,19 @@ public class ExperienceLevelDAO extends AbstractDAO {
     }
 
     public boolean checkIfExperienceLevelExists(String name) throws SQLException {
-        String query = String.format("SELECT * FROM experience_levels WHERE name='%s';", name);
-        log.info(query);
-        ResultSet resultSet = getConnection()
-                .createStatement()
-                .executeQuery(query);
+        String query = "SELECT * FROM experience_levels WHERE name=?";
 
-        return resultSet.next();
+        PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+        preparedStatement.setString(1, name);
+        return preparedStatement.executeQuery().next();
     }
 
     public boolean checkIfExperienceLevelExists(int id) throws SQLException {
-        String query = String.format("SELECT * FROM experience_levels WHERE id=%d;", id);
-        log.info(query);
-        ResultSet resultSet = getConnection()
-                .createStatement()
-                .executeQuery(query);
+        String query = "SELECT * FROM experience_levels WHERE id=?";
 
-        return resultSet.next();
+        PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+        preparedStatement.setInt(1, id);
+        return preparedStatement.executeQuery().next();
     }
 
 

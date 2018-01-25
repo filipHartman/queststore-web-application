@@ -1,10 +1,13 @@
 package com.codecool.idontspeakjava.queststore.database;
 
 import com.codecool.idontspeakjava.queststore.models.Order;
+import com.codecool.idontspeakjava.queststore.models.Team;
+import com.codecool.idontspeakjava.queststore.models.TeamOrder;
 import com.codecool.idontspeakjava.queststore.models.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -29,11 +32,33 @@ public class OrdersDAO extends AbstractDAO {
 
     }
 
+    public void createOrder(TeamOrder teamOrder) {
+        int artifactID = teamOrder.getArtifactID();
+        int teamID = teamOrder.getTeamID();
+        int is_used = teamOrder.isUsed() ? 1 : 0;
+        int collected_money = teamOrder.getCollectedMoney();
+        String query = String.format("INSERT INTO team_orders(artifact_id, team_id, is_used, collected_money) " +
+                "VALUES(%d, %d, %d, %d)", artifactID, teamID, is_used, collected_money);
+
+        try {
+            getConnection().createStatement().executeUpdate(query);
+        } catch (Exception e) {
+        }
+
+    }
+
     public void updateOrder(Order order) {
         String query = String.format("UPDATE orders SET artifact_id = %d, wallet_id = %d, is_used = %d WHERE id = %d",
                 order.getArtifactID(), order.getWalletID(), order.isUsed() ? 1 : 0, order.getId());
         executeUpdateQuery(query, order);
     }
+
+    public void updateOrder(TeamOrder teamOrder) {
+        String query = String.format("UPDATE team_orders SET artifact_id = %d, team_id = %d, is_used = %d, collected_money = %d WHERE id = %d",
+                teamOrder.getArtifactID(), teamOrder.getTeamID(), teamOrder.isUsed() ? 1 : 0, teamOrder.getCollectedMoney(), teamOrder.getId());
+        executeUpdateQuery(query, teamOrder);
+    }
+
     public Order getOrder(int id) {
         String query = String.format("SELECT * FROM orders WHERE id = %d", id);
         Order order = null;
@@ -53,6 +78,26 @@ public class OrdersDAO extends AbstractDAO {
             e.printStackTrace();
         }
         return order;
+    }
+
+    public TeamOrder getTeamOrder(int id) {
+        String query = String.format("SELECT * FROM team_orders WHERE id = %d", id);
+        TeamOrder teamOrder = null;
+        try {
+            if (checkIfTeamOrderExists(id)) {
+                ResultSet resultSet = getConnection().createStatement().executeQuery(query);
+                teamOrder = new TeamOrder();
+                teamOrder.setId(resultSet.getInt("id"));
+                teamOrder.setArtifactID(resultSet.getInt("artifact_id"));
+                teamOrder.setTeamID(resultSet.getInt("team_id"));
+                teamOrder.setCollectedMoney(resultSet.getInt("collected_money"));
+                teamOrder.setUsed(resultSet.getBoolean("is_used"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return teamOrder;
     }
 
     public void removeOrder(Order order) {
@@ -78,6 +123,24 @@ public class OrdersDAO extends AbstractDAO {
         return orders;
     }
 
+    public List<TeamOrder> getAllOrdersByTeam(Team team) {
+        List<TeamOrder> orders = new ArrayList<>();
+        String query = "SELECT * FROM team_orders WHERE team_id = (SELECT id FROM teams WHERE name = ?);";
+
+        try {
+            PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+            preparedStatement.setString(1, team.getName());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                orders.add(getTeamOrder(resultSet.getInt("id")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return orders;
+    }
+
 
     public boolean checkIfOrderExists(int id) throws SQLException {
         String query = String.format("SELECT * FROM orders WHERE id=%d;", id);
@@ -89,12 +152,19 @@ public class OrdersDAO extends AbstractDAO {
         return resultSet.next();
     }
 
+    public boolean checkIfTeamOrderExists(int id) throws SQLException {
+        String query = String.format("SELECT * FROM team_orders WHERE id=%d;", id);
+        log.info(query);
+        ResultSet resultSet = getConnection()
+                .createStatement()
+                .executeQuery(query);
+
+        return resultSet.next();
+    }
+
     private void executeUpdateQuery(String query, Order order) {
         try {
-            if (checkIfOrderExists(order.getId())) {
-                log.info(query);
                 getConnection().createStatement().executeUpdate(query);
-            }
 
         } catch (SQLException e) {
             e.printStackTrace();
