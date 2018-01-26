@@ -44,7 +44,6 @@ class MentorEdit {
             }
         }if(userInputs==prompts){
             new UserDAO().updateUser(selectedMentor);
-            new CodecoolClassDAO().addUserToCodecoolClass(selectedMentor, selectedClass);
             view.showMentorUpdate();
         }else{
             view.showOperationCancelled();
@@ -157,6 +156,7 @@ class MentorEdit {
             if(new CodecoolClassDAO().checkIfClassExists(input)){
                     new CodecoolClassDAO().removeUserFromCodecoolClass(selectedMentor);
                     selectedClass = new CodecoolClassDAO().getCodecoolClass(input); 
+                    new CodecoolClassDAO().addUserToCodecoolClass(selectedMentor, selectedClass);
                     classNotSet = false;
             }else{
                 view.showClassNotExist();
