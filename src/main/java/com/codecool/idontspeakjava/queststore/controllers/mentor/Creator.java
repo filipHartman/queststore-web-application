@@ -62,10 +62,10 @@ abstract class Creator {
         boolean continueLoop = true;
 
         final int PROMPTS = 4;
-
         for (int i = 0; i < PROMPTS && continueLoop; i++) {
             boolean continueIteration = true;
             while (continueIteration) {
+                view.clearScreen();
                 selectPrompt(i);
                 String input = view.getUserInput();
 
