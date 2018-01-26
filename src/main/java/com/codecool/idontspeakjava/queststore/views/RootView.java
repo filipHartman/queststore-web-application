@@ -64,6 +64,7 @@ public class RootView extends UserView{
     }
 
     public void showWrongInput(){
+        clearScreen();
         System.out.println(String.format("%sChoose only available numbers.", Colors.BLUE));
     }
 
