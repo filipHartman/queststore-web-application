@@ -39,16 +39,16 @@ public class RootView extends UserView{
 
     public void showMentorInfo(User selectedMentor, CodecoolClass mentorClass){
         clearScreen();
-        try{
-            System.out.println(String.format("%sMentor id: " + selectedMentor.getId(), Colors.CYAN));
-            System.out.println(String.format("%sMentor first name: " + selectedMentor.getFirstName(), Colors.CYAN));
-            System.out.println(String.format("%sMentor last name: " + selectedMentor.getLastName(), Colors.CYAN));
-            System.out.println(String.format("%sMentor email: " + selectedMentor.getEmail(), Colors.CYAN));
-            System.out.println(String.format("%sMentor class: " + mentorClass.getName() + "\n", Color.CYAN));
-        }catch(NullPointerException e){
-            showMentorNotAssignToClass();
-        }
-        continuePrompt();
+            try{
+        System.out.println(String.format("%sMentor id: " + selectedMentor.getId(), Colors.CYAN));
+        System.out.println(String.format("%sMentor first name: " + selectedMentor.getFirstName(), Colors.CYAN));
+        System.out.println(String.format("%sMentor last name: " + selectedMentor.getLastName(), Colors.CYAN));
+        System.out.println(String.format("%sMentor email: " + selectedMentor.getEmail(), Colors.CYAN));
+        System.out.println(String.format("Mentor class: " + mentorClass.getName() + "\n"));
+            }catch(NullPointerException e){
+                showMentorNotAssignToClass();
+            }
+            continuePrompt();
     }
 
     public void showMainMenu(){
