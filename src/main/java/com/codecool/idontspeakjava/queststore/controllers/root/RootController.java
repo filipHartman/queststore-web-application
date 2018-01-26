@@ -24,6 +24,7 @@ public class RootController {
         boolean runProgram = true;
 
         while (runProgram) {
+            view.clearScreen();
             view.showMainMenu();
             String userInput = view.getUserInput();
             switch (userInput) {
