@@ -6,12 +6,10 @@ import com.codecool.idontspeakjava.queststore.models.Permissions;
 import com.codecool.idontspeakjava.queststore.database.UserDAO;
 import com.codecool.idontspeakjava.queststore.database.CodecoolClassDAO;
 
-import java.awt.Color;
 import java.lang.NullPointerException;
 
 public class RootView extends UserView{
 
-    // String kolor = new Colors().CYAN;
 
     public void askForClassName(){
         clearScreen();
