@@ -1,12 +1,10 @@
 package com.codecool.idontspeakjava.queststore.controllers.root;
 
-import com.codecool.idontspeakjava.queststore.views.RootView;
-import com.codecool.idontspeakjava.queststore.database.UserDAO;
-import com.codecool.idontspeakjava.queststore.database.CodecoolClassDAO;;
-import com.codecool.idontspeakjava.queststore.models.Permissions;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteCodecoolClassDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
 import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
 import com.codecool.idontspeakjava.queststore.models.User;
-
+import com.codecool.idontspeakjava.queststore.views.RootView;
 
 import java.sql.SQLException;
 
@@ -44,8 +42,8 @@ class AssignMentorToClass{
                 userInputs++;
             }
         }if(userInputs==prompts){
-            new CodecoolClassDAO().removeUserFromCodecoolClass(selectedMentor);
-            new CodecoolClassDAO().addUserToCodecoolClass(selectedMentor, selectedClass);
+            new SQLiteCodecoolClassDAO().removeUserFromCodecoolClass(selectedMentor);
+            new SQLiteCodecoolClassDAO().addUserToCodecoolClass(selectedMentor, selectedClass);
             view.showMentorAssign();
         }else{
             view.showOperationCancelled();
@@ -68,8 +66,8 @@ class AssignMentorToClass{
     private boolean selectMentor(String input){
         boolean mentorNotSelected = true;
         try{
-            if(new UserDAO().checkIfUsersExists(input)) {
-                selectedMentor = new UserDAO().getUserByEmail(input);
+            if (new SQLiteUserDAO().checkIfUsersExists(input)) {
+                selectedMentor = new SQLiteUserDAO().getUserByEmail(input);
                 mentorNotSelected = false;
             }else{
                 view.showWrongEmailInput();
@@ -84,8 +82,8 @@ class AssignMentorToClass{
     private boolean selectClass(String input){
         boolean classNotSelected = true;
         try{
-            if(new CodecoolClassDAO().checkIfClassExists(input)){
-                selectedClass = new CodecoolClassDAO().getCodecoolClass(input);
+            if (new SQLiteCodecoolClassDAO().checkIfClassExists(input)) {
+                selectedClass = new SQLiteCodecoolClassDAO().getCodecoolClass(input);
                 classNotSelected = false;
             }else{
                 view.showWrongClassName();

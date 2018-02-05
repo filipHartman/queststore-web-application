@@ -1,8 +1,8 @@
 package com.codecool.idontspeakjava.queststore.controllers.mentor;
 
-import com.codecool.idontspeakjava.queststore.database.ArtifactsDAO;
-import com.codecool.idontspeakjava.queststore.database.OrdersDAO;
-import com.codecool.idontspeakjava.queststore.database.UserDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteArtifactsDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteOrdersDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
 import com.codecool.idontspeakjava.queststore.models.Order;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
 import com.codecool.idontspeakjava.queststore.models.User;
@@ -22,7 +22,7 @@ class ArtifactMarker {
 
     ArtifactMarker(MentorView view) {
         this.view = view;
-        codecoolers = new UserDAO().getUsersByPermission(Permissions.Student);
+        codecoolers = new SQLiteUserDAO().getUsersByPermission(Permissions.Student);
     }
 
     void markArtifact() {
@@ -36,7 +36,7 @@ class ArtifactMarker {
         if (!userInput.equals(EXIT)) {
             if (!inputIsInvalid) {
                 User selectedUser = codecoolers.get(temporaryIndex);
-                orders = new OrdersDAO().getAllOrdersByUser(selectedUser);
+                orders = new SQLiteOrdersDAO().getAllOrdersByUser(selectedUser);
                 filterOrders();
                 view.showArtifactsToMark(createArtifactsToPrint());
                 if (!orders.isEmpty()) {
@@ -76,13 +76,13 @@ class ArtifactMarker {
 
     private void toggleOrderAsUsed() {
         selectedOrder.setUsed(true);
-        new OrdersDAO().updateOrder(selectedOrder);
+        new SQLiteOrdersDAO().updateOrder(selectedOrder);
         view.showArtifactUsed();
     }
 
     private ArrayList<String> createArtifactsToPrint() {
         ArrayList<String> artifactsToPrint = new ArrayList<>();
-        ArtifactsDAO artifactsDAO = new ArtifactsDAO();
+        SQLiteArtifactsDAO artifactsDAO = new SQLiteArtifactsDAO();
         for (Order order : orders) {
             if (!order.isUsed()) {
                 String artifactTitle = artifactsDAO.getArtifact(order.getArtifactID()).getTitle();

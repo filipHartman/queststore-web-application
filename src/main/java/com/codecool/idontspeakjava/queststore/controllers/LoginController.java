@@ -4,6 +4,7 @@ import com.codecool.idontspeakjava.queststore.controllers.codecooler.CodecoolerC
 import com.codecool.idontspeakjava.queststore.controllers.mentor.MentorController;
 import com.codecool.idontspeakjava.queststore.controllers.root.RootController;
 import com.codecool.idontspeakjava.queststore.database.UserDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.services.PasswordService;
 import com.codecool.idontspeakjava.queststore.views.LoginView;
@@ -19,7 +20,7 @@ public class LoginController {
 
     public LoginController() {
         this.loginView = new LoginView();
-        this.usersDAO = new UserDAO();
+        this.usersDAO = new SQLiteUserDAO();
         this.passwordService = new PasswordService();
         start();
     }

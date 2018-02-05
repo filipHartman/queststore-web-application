@@ -1,8 +1,8 @@
 package com.codecool.idontspeakjava.queststore.controllers.root;
 
-import com.codecool.idontspeakjava.queststore.views.RootView;
-import com.codecool.idontspeakjava.queststore.database.ExperienceLevelDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteExperienceLevelDAO;
 import com.codecool.idontspeakjava.queststore.models.ExperienceLevel;
+import com.codecool.idontspeakjava.queststore.views.RootView;
 
 import java.sql.SQLException;
 
@@ -39,7 +39,7 @@ class ExpLevel{
                 userInput++;
             }
         }if(userInput == prompt){
-            new ExperienceLevelDAO().createExperienceLevel(new ExperienceLevel(lvlName, threshold));
+            new SQLiteExperienceLevelDAO().createExperienceLevel(new ExperienceLevel(lvlName, threshold));
             view.showExpLvlCreated();
         }else{
             view.showOperationCancelled();
@@ -74,7 +74,7 @@ class ExpLevel{
         boolean nameNotSet = true;
         if (input.matches("[a-zA-Z0-9,. ]+")){
             try{
-                if (!new ExperienceLevelDAO().checkIfExperienceLevelExists(input)){
+                if (!new SQLiteExperienceLevelDAO().checkIfExperienceLevelExists(input)) {
                     lvlName = input;
                     nameNotSet = false;
                 }else{

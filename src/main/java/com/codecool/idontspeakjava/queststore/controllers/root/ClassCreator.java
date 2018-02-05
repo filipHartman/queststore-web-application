@@ -1,8 +1,8 @@
 package com.codecool.idontspeakjava.queststore.controllers.root;
 
-import com.codecool.idontspeakjava.queststore.views.RootView;
-import com.codecool.idontspeakjava.queststore.database.CodecoolClassDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteCodecoolClassDAO;
 import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
+import com.codecool.idontspeakjava.queststore.views.RootView;
 
 import java.sql.SQLException;
 
@@ -26,7 +26,7 @@ class ClassCreator {
                 loopContinuation = false;
             } else {
                 if(!setName(input)){
-                    new CodecoolClassDAO().createCodecoolClass(new CodecoolClass(className));
+                    new SQLiteCodecoolClassDAO().createCodecoolClass(new CodecoolClass(className));
                     loopContinuation = false;
                     view.showClassCreateComplete();
                 }
@@ -38,7 +38,7 @@ class ClassCreator {
         boolean nameNotSet = true;
         if (input.matches("[a-zA-Z0-9,. ]+")) {
             try{
-                if(new CodecoolClassDAO().checkIfClassExists(input)){
+                if (new SQLiteCodecoolClassDAO().checkIfClassExists(input)) {
                     view.showExistingValueWarning();
                 }else{
                     className = input;

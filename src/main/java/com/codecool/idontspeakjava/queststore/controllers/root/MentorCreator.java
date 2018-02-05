@@ -1,9 +1,9 @@
 package com.codecool.idontspeakjava.queststore.controllers.root;
 
-import com.codecool.idontspeakjava.queststore.views.RootView;
-import com.codecool.idontspeakjava.queststore.database.UserDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
 import com.codecool.idontspeakjava.queststore.models.User;
+import com.codecool.idontspeakjava.queststore.views.RootView;
 
 import java.sql.SQLException;
 
@@ -96,7 +96,7 @@ class MentorCreator{
         boolean emailNotSet = true;
         if (input.matches("[a-zA-Z@.]+")) {
             try {
-                if (new UserDAO().checkIfUsersExists(input)) {
+                if (new SQLiteUserDAO().checkIfUsersExists(input)) {
                     view.showExistingValueWarning();
                 } else {
                     email = input;
@@ -115,7 +115,7 @@ class MentorCreator{
     private void addMentorToDatabase() {
         User newMentor = new User(name, lastName, hash, email, Permissions.Mentor);
         try {
-            new UserDAO().createUser(newMentor);
+            new SQLiteUserDAO().createUser(newMentor);
             view.showMentorCreated();
         } catch (SQLException e) {
             e.printStackTrace();

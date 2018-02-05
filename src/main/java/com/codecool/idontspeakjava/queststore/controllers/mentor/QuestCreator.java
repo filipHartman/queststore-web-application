@@ -1,6 +1,6 @@
 package com.codecool.idontspeakjava.queststore.controllers.mentor;
 
-import com.codecool.idontspeakjava.queststore.database.QuestsDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteQuestsDAO;
 import com.codecool.idontspeakjava.queststore.models.DummyItem;
 import com.codecool.idontspeakjava.queststore.models.Quest;
 import com.codecool.idontspeakjava.queststore.models.QuestCategory;
@@ -30,7 +30,7 @@ class QuestCreator extends Creator {
                 temporaryQuest.getCategory().equals(Validator.BASIC_CATEGORY) ? QuestCategory.Basic : QuestCategory.Extra,
                 temporaryQuest.getDescription(),
                 temporaryQuest.getRewardOrPrice());
-        QuestsDAO questsDAO = new QuestsDAO();
+        SQLiteQuestsDAO questsDAO = new SQLiteQuestsDAO();
         questsDAO.createQuest(quest);
         view.showQuestCreated();
     }
@@ -76,7 +76,7 @@ class QuestCreator extends Creator {
     }
 
     private List<String> getQuestsTitles() {
-        List<Quest> quests = new QuestsDAO().getAllQuests();
+        List<Quest> quests = new SQLiteQuestsDAO().getAllQuests();
         return quests.stream().map(Quest::getTitle).collect(Collectors.toList());
     }
 }
