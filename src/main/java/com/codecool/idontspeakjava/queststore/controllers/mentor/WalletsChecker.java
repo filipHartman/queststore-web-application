@@ -1,9 +1,10 @@
 package com.codecool.idontspeakjava.queststore.controllers.mentor;
 
-import com.codecool.idontspeakjava.queststore.database.ArtifactsDAO;
-import com.codecool.idontspeakjava.queststore.database.OrdersDAO;
-import com.codecool.idontspeakjava.queststore.database.UserDAO;
 import com.codecool.idontspeakjava.queststore.database.WalletsDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteArtifactsDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteOrdersDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteWalletsDAO;
 import com.codecool.idontspeakjava.queststore.models.Order;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
 import com.codecool.idontspeakjava.queststore.models.User;
@@ -23,8 +24,8 @@ class WalletsChecker {
 
     WalletsChecker(MentorView view) {
         this.view = view;
-        walletsDAO = new WalletsDAO();
-        codecoolers = new UserDAO().getUsersByPermission(Permissions.Student);
+        walletsDAO = new SQLiteWalletsDAO();
+        codecoolers = new SQLiteUserDAO().getUsersByPermission(Permissions.Student);
     }
 
     void showWallets() {
@@ -62,7 +63,7 @@ class WalletsChecker {
         String fullName = String.format("%s %s", user.getFirstName(), user.getLastName());
         String currentCoins = String.valueOf(userWallet.getCurrentState());
         String allEarnings = String.valueOf(userWallet.getTotalEarnings());
-        List<Order> orders = new OrdersDAO().getAllOrdersByUser(user);
+        List<Order> orders = new SQLiteOrdersDAO().getAllOrdersByUser(user);
         ArrayList<String> ordersToPrint = createInfoAboutOrders(orders);
 
         view.printUserWallet(fullName, currentCoins, allEarnings, ordersToPrint);
@@ -70,7 +71,7 @@ class WalletsChecker {
 
     private ArrayList<String> createInfoAboutOrders(List<Order> orders) {
         ArrayList<String> infoAboutOrders = new ArrayList<>();
-        ArtifactsDAO artifactsDAO = new ArtifactsDAO();
+        SQLiteArtifactsDAO artifactsDAO = new SQLiteArtifactsDAO();
         for (Order order : orders) {
             String isUsed = order.isUsed() ? "used" : "not used";
             String artifactTitle = artifactsDAO.getArtifact(order.getArtifactID()).getTitle();

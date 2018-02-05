@@ -1,12 +1,10 @@
 package com.codecool.idontspeakjava.queststore.views;
 
-import com.codecool.idontspeakjava.queststore.models.User;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteCodecoolClassDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
 import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
-import com.codecool.idontspeakjava.queststore.database.UserDAO;
-import com.codecool.idontspeakjava.queststore.database.CodecoolClassDAO;
-
-import java.lang.NullPointerException;
+import com.codecool.idontspeakjava.queststore.models.User;
 
 public class RootView extends UserView{
 
@@ -144,14 +142,14 @@ public class RootView extends UserView{
         clearScreen();
         System.out.println(String.format("%sName    Last name   email\n", Colors.BLUE_BOLD));
         System.out.println(String.format("%s--------------------------\n", Colors.CYAN_BOLD));
-        for (User mentorUser : new UserDAO().getUsersByPermission(Permissions.Mentor)) {
+        for (User mentorUser : new SQLiteUserDAO().getUsersByPermission(Permissions.Mentor)) {
             System.out.println(String.format("%s" + mentorUser.getFirstName() + "\t" + mentorUser.getLastName() + "\t" + mentorUser.getEmail()+"\n", Colors.BLUE_BOLD));
         }
     }
 
     public void showAllClasses(){
         clearScreen();
-        for (CodecoolClass codecoolClass : new CodecoolClassDAO().getAllCodecoolClasses()) {
+        for (CodecoolClass codecoolClass : new SQLiteCodecoolClassDAO().getAllCodecoolClasses()) {
             System.out.println(String.format("%s" + codecoolClass.getName() + "\n", Colors.GREEN_BOLD));
         }
     }

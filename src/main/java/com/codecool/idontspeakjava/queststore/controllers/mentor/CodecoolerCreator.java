@@ -1,7 +1,7 @@
 package com.codecool.idontspeakjava.queststore.controllers.mentor;
 
-import com.codecool.idontspeakjava.queststore.database.CodecoolClassDAO;
-import com.codecool.idontspeakjava.queststore.database.UserDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteCodecoolClassDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
 import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
 import com.codecool.idontspeakjava.queststore.models.User;
@@ -35,7 +35,7 @@ class CodecoolerCreator {
 
     CodecoolerCreator(MentorView view) {
         this.view = view;
-        codecoolClasses = new CodecoolClassDAO().getAllCodecoolClasses();
+        codecoolClasses = new SQLiteCodecoolClassDAO().getAllCodecoolClasses();
     }
 
     void createCodecooler() {
@@ -111,7 +111,7 @@ class CodecoolerCreator {
         boolean emailNotSet = true;
         if (input.matches(EMAIL_REGEX)) {
             try {
-                if (new UserDAO().checkIfUsersExists(input)) {
+                if (new SQLiteUserDAO().checkIfUsersExists(input)) {
                     view.showDuplicateWarning();
                 } else {
                     email = input;
@@ -178,8 +178,8 @@ class CodecoolerCreator {
     private void addCodecoolerToDatabase() {
         User newCodecooler = new User(name, secondName, hash, email, Permissions.Student);
         try {
-            new UserDAO().createUser(newCodecooler);
-            new CodecoolClassDAO().addUserToCodecoolClass(newCodecooler, selectedCodecoolClass);
+            new SQLiteUserDAO().createUser(newCodecooler);
+            new SQLiteCodecoolClassDAO().addUserToCodecoolClass(newCodecooler, selectedCodecoolClass);
             view.showCodecoolerCreated();
         } catch (SQLException e) {
             e.printStackTrace();

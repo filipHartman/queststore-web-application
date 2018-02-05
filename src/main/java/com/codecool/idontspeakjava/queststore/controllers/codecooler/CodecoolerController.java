@@ -1,6 +1,8 @@
 package com.codecool.idontspeakjava.queststore.controllers.codecooler;
 
-import com.codecool.idontspeakjava.queststore.database.*;
+import com.codecool.idontspeakjava.queststore.database.TeamsDAO;
+import com.codecool.idontspeakjava.queststore.database.WalletsDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.*;
 import com.codecool.idontspeakjava.queststore.models.*;
 import com.codecool.idontspeakjava.queststore.views.CodecoolerView;
 import com.codecool.idontspeakjava.queststore.views.Colors;
@@ -12,12 +14,12 @@ import java.util.List;
 public class CodecoolerController {
     private CodecoolerView view;
     private User codecooler;
-    private ArtifactsDAO artifactDAO;
+    private SQLiteArtifactsDAO artifactDAO;
     private WalletsDAO walletDAO;
-    private ExperienceLevelDAO experienceLevelDAO;
-    private OrdersDAO orderDAO;
+    private SQLiteExperienceLevelDAO experienceLevelDAO;
+    private SQLiteOrdersDAO orderDAO;
     private TeamsDAO teamsDAO;
-    private QuestsDAO questsDAO;
+    private SQLiteQuestsDAO questsDAO;
     private Wallet wallet;
 
     private static final String SEE_WALLET = "1";
@@ -31,12 +33,12 @@ public class CodecoolerController {
     public CodecoolerController(User user) {
         this.view = new CodecoolerView();
         this.codecooler = user;
-        this.artifactDAO = new ArtifactsDAO();
-        this.experienceLevelDAO = new ExperienceLevelDAO();
-        this.walletDAO = new WalletsDAO();
-        this.orderDAO = new OrdersDAO();
-        this.teamsDAO = new TeamsDAO();
-        this.questsDAO = new QuestsDAO();
+        this.artifactDAO = new SQLiteArtifactsDAO();
+        this.experienceLevelDAO = new SQLiteExperienceLevelDAO();
+        this.walletDAO = new SQLiteWalletsDAO();
+        this.orderDAO = new SQLiteOrdersDAO();
+        this.teamsDAO = new SQLiteTeamsDAO();
+        this.questsDAO = new SQLiteQuestsDAO();
         this.wallet = walletDAO.getWalletByUserID(codecooler.getId());
     }
 

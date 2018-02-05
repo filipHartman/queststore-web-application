@@ -1,8 +1,9 @@
 package com.codecool.idontspeakjava.queststore.controllers.mentor;
 
-import com.codecool.idontspeakjava.queststore.database.QuestsDAO;
-import com.codecool.idontspeakjava.queststore.database.UserDAO;
 import com.codecool.idontspeakjava.queststore.database.WalletsDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteQuestsDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteWalletsDAO;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
 import com.codecool.idontspeakjava.queststore.models.Quest;
 import com.codecool.idontspeakjava.queststore.models.User;
@@ -26,8 +27,8 @@ public class QuestMarker {
 
     QuestMarker(MentorView view) {
         this.view = view;
-        quests = new QuestsDAO().getAllQuests();
-        codecoolers = new UserDAO().getUsersByPermission(Permissions.Student);
+        quests = new SQLiteQuestsDAO().getAllQuests();
+        codecoolers = new SQLiteUserDAO().getUsersByPermission(Permissions.Student);
     }
 
     void markQuest() {
@@ -76,7 +77,7 @@ public class QuestMarker {
 
     private void addCoinsFromQuest() {
         int reward = selectedQuest.getReward();
-        WalletsDAO walletsDAO = new WalletsDAO();
+        WalletsDAO walletsDAO = new SQLiteWalletsDAO();
         Wallet wallet = walletsDAO.getWalletByUserID(selectedUser.getId());
 
         long currentCoins = wallet.getCurrentState();

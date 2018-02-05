@@ -1,6 +1,6 @@
 package com.codecool.idontspeakjava.queststore.controllers.mentor;
 
-import com.codecool.idontspeakjava.queststore.database.ArtifactsDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteArtifactsDAO;
 import com.codecool.idontspeakjava.queststore.models.Artifact;
 import com.codecool.idontspeakjava.queststore.views.MentorView;
 
@@ -18,7 +18,7 @@ class ArtifactEditor extends Editor {
 
     ArtifactEditor(MentorView view) {
         super(view, "Artifact");
-        artifacts = new ArtifactsDAO().getAllArtifacts();
+        artifacts = new SQLiteArtifactsDAO().getAllArtifacts();
     }
 
     @Override
