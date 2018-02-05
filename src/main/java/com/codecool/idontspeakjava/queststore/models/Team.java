@@ -29,7 +29,13 @@ public class Team{
     }
 
     public void setId(int id) {
+
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("ID: %d Name: %s", getId(), getName());
     }
 }
 

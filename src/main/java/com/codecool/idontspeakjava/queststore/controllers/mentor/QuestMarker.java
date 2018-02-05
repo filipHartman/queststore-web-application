@@ -11,6 +11,7 @@ import com.codecool.idontspeakjava.queststore.views.MentorView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class QuestMarker {
 
@@ -20,7 +21,6 @@ public class QuestMarker {
     private List<Quest> quests;
     private List<User> codecoolers;
 
-    private int temporaryIndex;
     private User selectedUser;
     private Quest selectedQuest;
 
@@ -31,6 +31,9 @@ public class QuestMarker {
     }
 
     void markQuest() {
+        Validator validator = new Validator();
+        int temporaryIndex;
+
         if (quests.isEmpty() || codecoolers.isEmpty()) {
             view.showMarkingNotPossible();
             return;
@@ -41,20 +44,20 @@ public class QuestMarker {
         if (input.equals(EXIT)) {
             view.showOperationCancelled();
         } else {
-            boolean inputIsInvalid = validateInput(input, codecoolers.size());
-            if (inputIsInvalid) {
+            if (validator.isSelectFromListInvalid(codecoolers, input)) {
                 view.showWrongInput();
             } else {
+                temporaryIndex = Integer.parseInt(input) - 1;
                 selectedUser = codecoolers.get(temporaryIndex);
                 view.showQuests(createQuestsToPrint());
                 input = view.getUserInput();
                 if (input.equals(EXIT)) {
                     view.showOperationCancelled();
                 } else {
-                    inputIsInvalid = validateInput(input, quests.size());
-                    if (inputIsInvalid) {
+                    if (validator.isSelectFromListInvalid(quests, input)) {
                         view.showWrongInput();
                     } else {
+                        temporaryIndex = Integer.parseInt(input) - 1;
                         selectedQuest = quests.get(temporaryIndex);
                         addCoinsFromQuest();
                     }
@@ -85,27 +88,8 @@ public class QuestMarker {
         view.showCoinsAdded();
     }
 
-    private boolean validateInput(String input, int length) {
-        boolean inputIsInvalid = true;
-        if (input.matches("\\d+")) {
-            int inputAsInt = Integer.parseInt(input);
-            if (inputAsInt > 0 && inputAsInt <= length) {
-                inputIsInvalid = false;
-                temporaryIndex = inputAsInt - 1;
-            } else {
-                view.showWrongInput();
-            }
-        } else {
-            view.showWrongInput();
-        }
-        return inputIsInvalid;
-    }
-
-    private ArrayList<String> getUsersFullNames() {
-        ArrayList<String> usersFullNames = new ArrayList<>();
-        for (User user : codecoolers) {
-            usersFullNames.add(String.format("%s %s", user.getFirstName(), user.getLastName()));
-        }
-        return usersFullNames;
+    private List<String> getUsersFullNames() {
+        return codecoolers.stream().map(codecooler -> String.format(
+                "%s %s", codecooler.getFirstName(), codecooler.getLastName())).collect(Collectors.toList());
     }
 }

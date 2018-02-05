@@ -1,72 +1,229 @@
 package com.codecool.idontspeakjava.queststore.views;
 
-import java.util.Scanner;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
+import com.codecool.idontspeakjava.queststore.models.Permissions;
+import com.codecool.idontspeakjava.queststore.database.UserDAO;
+import com.codecool.idontspeakjava.queststore.database.CodecoolClassDAO;
+
+import java.lang.NullPointerException;
 
 public class RootView extends UserView{
 
-    private Scanner scanner;
 
-    public String getUserInput(){
-        scanner = new Scanner(System.in);
-        return scanner.nextLine();
-    }
-
-    public void inputInfoClassName(){
-        System.out.println("Enter class name");
+    public void askForClassName(){
+        clearScreen();
+        System.out.println(String.format("%sEnter class name or type 0 to exit.\n", Colors.CYAN));
     }
     
-    public void inputInfoMentorName(){
-        System.out.println("Enter mentor first name");
+    public void askForMentorName(){
+        clearScreen();
+        System.out.println(String.format("%sEnter mentor first name or type 0 to exit.\n", Colors.BLUE_BOLD));
     }
 
-    public void inputInfoMentorEmail(){
-        System.out.println("Enter mentor email");
+    public void askForMentorEmail(){
+        clearScreen();
+        System.out.println(String.format("%sEnter mentor email or type 0 to exit.\n", Colors.GREEN));
     }
 
-    public void inputInfoMentorLastName(){
-        System.out.println("Enter mentor last name");
-    }
-
-    public void inputInfoMentorPassword(){
-        System.out.println("Enter mentor password");
+    public void askForMentorLastName(){
+        clearScreen();
+        System.out.println(String.format("%sEnter mentor last name or type 0 to exit.\n", Colors.PURPLE));
     }
 
     public void inputInfoNewMentorEmail(){
-        System.out.println("Enter mentor new email");
-    }
-
-    public boolean editMentorOptionAsk(String option){
-        System.out.println("Do you want to change mentor " + option + " [Y/N]");
-        String decision = getUserInput().toUpperCase();
-        if(decision == "Y")
-            return true;
-        return false;
+        System.out.println(String.format("%sEnter mentor new email.\n", Colors.YELLOW_BOLD));
     }
 
     public void showMentorInfo(User selectedMentor, CodecoolClass mentorClass){
-        System.out.println("Mentor id " + selectedMentor.getId());
-        System.out.println("Mentor first name " + selectedMentor.getFirstName());
-        System.out.println("Mentor last name " + selectedMentor.getLastName());
-        System.out.println("Mentor email " + selectedMentor.getEmail());
-        System.out.println("Mentor class " + mentorClass.getName());
+        clearScreen();
+            try{
+        System.out.println(String.format("%sMentor id: " + selectedMentor.getId(), Colors.CYAN));
+        System.out.println(String.format("%sMentor first name: " + selectedMentor.getFirstName(), Colors.CYAN));
+        System.out.println(String.format("%sMentor last name: " + selectedMentor.getLastName(), Colors.CYAN));
+        System.out.println(String.format("%sMentor email: " + selectedMentor.getEmail(), Colors.CYAN));
+        System.out.println(String.format("Mentor class: " + mentorClass.getName() + "\n"));
+            }catch(NullPointerException e){
+                showMentorNotAssignToClass();
+            }
+            continuePrompt();
     }
 
     public void showMainMenu(){
-        System.out.println("Select what to do:\n" +
+        System.out.println(String.format("%sSelect what to do:\n" +
                     "1. Create mentor\n" +
                     "2. Create Codecool Class\n" +
                     "3. Assign Mentor To Class\n" +
                     "4. Edit Mentor\n" +
                     "5. Show Mentor\n" +
-                    "6. Show Codecool Class Of Mentor\n" +
-                    "7. Create Experience Level\n" +
-                    "0. Exit the program\n");
+                    "6. Create Experience Level\n" +
+                    "0. Exit the program\n", Colors.GREEN_BOLD));
 
     }
 
     public void showWrongInput(){
-        System.out.println("Choose only available numbers.");
+        clearScreen();
+        System.out.println(String.format("%sChoose only available numbers.", Colors.BLUE));
+    }
+
+    public void showWrongNameInput() {
+        clearScreen();
+        System.out.println(String.format("%sWrong input. You can only use letters.\n", Colors.PURPLE_BOLD));
+        continuePrompt();
+    }
+
+    public void showExistingValueWarning() {
+        clearScreen();
+        System.out.println(String.format("%sYou can't add position with this value. It is already in the database.\n", Colors.GREEN_BOLD));
+        continuePrompt();
+    }
+
+    public void showWrongEmailInput() {
+        clearScreen();
+        System.out.println(String.format("%sWrong input. Invalid email address.\n", Colors.RED_BOLD));
+        continuePrompt();
+    }
+
+    public void showDatabaseError() {
+        clearScreen();
+        System.out.println(String.format("%sAn error in the database occurred.\n", Colors.BLUE_BRIGHT));
+        continuePrompt();
+    }
+
+    public void showMentorCreated() {
+        clearScreen();
+        System.out.println(String.format("%sYou created a mentor.\n", Colors.RED));
+        continuePrompt();
+    }
+
+    public void showMentorCreationFailed() {
+        clearScreen();
+        System.out.println(String.format("%sAn error occured. The new mentor wasn't created.\n", Colors.YELLOW_BOLD));
+        continuePrompt();
+    }
+
+    public void showOperationCancelled() {
+        clearScreen();
+        System.out.println(String.format("%sOperation cancelled.\n", Colors.CYAN));
+        continuePrompt();
+    }
+
+    public void showWrongClassNameInput() {
+        clearScreen();
+        System.out.println(String.format("%sWrong input. You can only use letters, numbers, commas and dots.\n", Colors.BLUE));
+        continuePrompt();
+    }
+
+    public void showClassCreateComplete(){
+        clearScreen();
+        System.out.println(String.format("%sYou created class.\n", Colors.GREEN));
+        continuePrompt();
+    }
+
+    public void askForMentorEmailInput() {
+        System.out.println(String.format("%sEnter selected mentor email or type 0 to exit.\n", Colors.YELLOW));
+    }
+
+    public void askForClassNameInput(){
+        System.out.println(String.format("%sEnter class name or type 0 to exit.\n", Colors.CYAN_BOLD));
+    }
+
+    public void showWrongClassName(){
+        clearScreen();
+        System.out.println(String.format("%sWrong input. Invalid class name.\n", Colors.PURPLE_BOLD));
+        continuePrompt();
+    }
+
+    public void showMentorAssign(){
+        clearScreen();
+        System.out.println(String.format("%sYou assign mentor to a class.\n", Colors.CYAN));
+        continuePrompt();
+    }
+
+    public void showAllMentors(){
+        clearScreen();
+        System.out.println(String.format("%sName    Last name   email\n", Colors.BLUE_BOLD));
+        System.out.println(String.format("%s--------------------------\n", Colors.CYAN_BOLD));
+        for (User mentorUser : new UserDAO().getUsersByPermission(Permissions.Mentor)) {
+            System.out.println(String.format("%s" + mentorUser.getFirstName() + "\t" + mentorUser.getLastName() + "\t" + mentorUser.getEmail()+"\n", Colors.BLUE_BOLD));
+        }
+    }
+
+    public void showAllClasses(){
+        clearScreen();
+        for (CodecoolClass codecoolClass : new CodecoolClassDAO().getAllCodecoolClasses()) {
+            System.out.println(String.format("%s" + codecoolClass.getName() + "\n", Colors.GREEN_BOLD));
+        }
+    }
+    public void askForMentorEmailToEdit(){
+        clearScreen();
+        System.out.println(String.format("%sDo you want to change mentor email[Y/N]? or type 0 to exit\n", Colors.YELLOW_BOLD));
+    }
+
+    public void askForMentorNewEmail(){
+        clearScreen();
+        System.out.println(String.format("%sEnter mentor new email.\n", Colors.RED_BOLD));
+    }
+
+    public void showWrongAnswer(){
+        clearScreen();
+        System.out.println(String.format("%sPlease answer only Y or N.\n", Colors.PURPLE));
+        continuePrompt();
+    }
+
+    public void askForMentorClassToEdit(){
+        clearScreen();
+        System.out.println(String.format("%sDo you want to change mentor class[Y/N]? or type 0 to exit\n", Colors.GREEN_BOLD));
+    }
+
+    public void askForMentorNewClass(){
+        System.out.println(String.format("%sEnter mentor new class name.\n", Colors.YELLOW));
+    }
+
+    public void showMentorInClassInfo(){
+        clearScreen();
+        System.out.println(String.format("%sSelected mentor is already in this class.\n", Colors.BLUE));
+    }
+
+    public void showMentorUpdate(){
+        clearScreen();
+        System.out.println(String.format("%sYou updated mentor data.\n", Colors.RED));
+    }
+
+    public void showWrongExpLvlInput(){
+        clearScreen();
+        System.out.println(String.format("%sWrong input. You can use letters, numbers, coomas and dots.\n", Colors.PURPLE));
+        continuePrompt();
+    }
+
+    public void askForExpLvlName(){
+        clearScreen();
+        System.out.println(String.format("%sEnter experience level name or type 0 to exit .\n", Colors.CYAN));
+    }
+
+    public void askForExpLvlThreshold(){
+        clearScreen();
+        System.out.println(String.format("%sEnter experience level threshold or type 0 to exit.\n", Colors.GREEN));
+    }
+
+    public void WrongThresholdInput(){
+        clearScreen();
+        System.out.println(String.format("%sWrong input. You can use only numbers.\n", Colors.RED));
+        continuePrompt();
+    }
+
+    public void showExpLvlCreated(){
+        clearScreen();
+        System.out.println(String.format("%sYou created new experience level.\n", Colors.PURPLE));
+    }
+
+    public void showClassNotExist(){
+        clearScreen();
+        System.out.println(String.format("%sWrong class name. This class doesn't exist.\n", Colors.BLUE));
+        continuePrompt();
+    }
+
+    public void showMentorNotAssignToClass(){
+        System.out.println(String.format("%sThis mentor isn't assign to any class.\n", Colors.GREEN));
     }
 }
