@@ -20,7 +20,6 @@ class ArtifactMarker {
     private MentorView view;
     private List<User> codecoolers;
     private List<Order> orders;
-    private int temporaryIndex;
     private Order selectedOrder;
 
     ArtifactMarker(MentorView view) {
@@ -33,21 +32,21 @@ class ArtifactMarker {
             view.showNoUsers();
             return;
         }
+        Validator validator = new Validator();
         view.showUsers(getUsersFullNames());
         String userInput = view.getUserInput();
-        boolean inputIsInvalid = validateInput(userInput, codecoolers);
+
         if (!userInput.equals(EXIT)) {
-            if (!inputIsInvalid) {
-                User selectedUser = codecoolers.get(temporaryIndex);
+            if (!validator.isSelectFromListInvalid(codecoolers, userInput)) {
+                User selectedUser = codecoolers.get(Integer.parseInt(userInput) - 1);
                 orders = createOrders(selectedUser);
                 filterOrders();
                 view.showArtifactsToMark(createArtifactsToPrint());
                 if (!orders.isEmpty()) {
                     userInput = view.getUserInput();
                     if (!userInput.equals(EXIT)) {
-                        inputIsInvalid = validateInput(userInput, orders);
-                        if (!inputIsInvalid) {
-                            selectedOrder = orders.get(temporaryIndex);
+                        if (!validator.isSelectFromListInvalid(orders, userInput)) {
+                            selectedOrder = orders.get(Integer.parseInt(userInput) - 1);
                             toggleOrderAsUsed();
                         } else {
                             view.showWrongInput();
@@ -115,15 +114,6 @@ class ArtifactMarker {
             }
         }
         return artifactsToPrint;
-    }
-
-    private boolean validateInput(String input, List collection) {
-        boolean inputIsInvalid = true;
-        if (!new Validator().isSelectFromListInvalid(collection, input)) {
-            inputIsInvalid = false;
-            temporaryIndex = Integer.parseInt(input) - 1;
-        }
-        return inputIsInvalid;
     }
 
     private ArrayList<String> getUsersFullNames() {
