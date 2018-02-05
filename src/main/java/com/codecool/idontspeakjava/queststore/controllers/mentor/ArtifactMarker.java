@@ -2,9 +2,12 @@ package com.codecool.idontspeakjava.queststore.controllers.mentor;
 
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteArtifactsDAO;
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteOrdersDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteTeamsDAO;
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
 import com.codecool.idontspeakjava.queststore.models.Order;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
+import com.codecool.idontspeakjava.queststore.models.Team;
+import com.codecool.idontspeakjava.queststore.models.TeamOrder;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.views.MentorView;
 
@@ -36,7 +39,7 @@ class ArtifactMarker {
         if (!userInput.equals(EXIT)) {
             if (!inputIsInvalid) {
                 User selectedUser = codecoolers.get(temporaryIndex);
-                orders = new SQLiteOrdersDAO().getAllOrdersByUser(selectedUser);
+                orders = createOrders(selectedUser);
                 filterOrders();
                 view.showArtifactsToMark(createArtifactsToPrint());
                 if (!orders.isEmpty()) {
@@ -64,6 +67,24 @@ class ArtifactMarker {
 
     }
 
+    private List<Order> createOrders(User selectedUser) {
+        List<Order> orders = new SQLiteOrdersDAO().getAllOrdersByUser(selectedUser);
+        Team team = new SQLiteTeamsDAO().getUserTeam(selectedUser);
+
+        if (team != null) {
+            List<TeamOrder> teamOrders = new SQLiteOrdersDAO().getAllOrdersByTeam(team);
+
+            for (TeamOrder o : teamOrders) {
+                int collectedMoney = o.getCollectedMoney();
+                int priceOfArtifact = new SQLiteArtifactsDAO().getArtifact(o.getArtifactID()).getPrice();
+                if (collectedMoney >= priceOfArtifact) {
+                    orders.add(o);
+                }
+            }
+        }
+        return orders;
+    }
+
     private void filterOrders() {
         List<Order> filteredOrders = new ArrayList<>();
         for (Order order : orders) {
@@ -76,7 +97,11 @@ class ArtifactMarker {
 
     private void toggleOrderAsUsed() {
         selectedOrder.setUsed(true);
-        new SQLiteOrdersDAO().updateOrder(selectedOrder);
+        if (selectedOrder instanceof TeamOrder) {
+            new SQLiteOrdersDAO().updateOrder((TeamOrder) selectedOrder);
+        } else {
+            new SQLiteOrdersDAO().updateOrder(selectedOrder);
+        }
         view.showArtifactUsed();
     }
 
