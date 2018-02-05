@@ -1,12 +1,15 @@
 package com.codecool.idontspeakjava.queststore.controllers.mentor;
 
-import com.codecool.idontspeakjava.queststore.database.WalletsDAO;
+import com.codecool.idontspeakjava.queststore.database.OrdersDAO;
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteArtifactsDAO;
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteOrdersDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteTeamsDAO;
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteWalletsDAO;
 import com.codecool.idontspeakjava.queststore.models.Order;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
+import com.codecool.idontspeakjava.queststore.models.Team;
+import com.codecool.idontspeakjava.queststore.models.TeamOrder;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.models.Wallet;
 import com.codecool.idontspeakjava.queststore.views.MentorView;
@@ -18,13 +21,11 @@ class WalletsChecker {
 
     private MentorView view;
     private List<User> codecoolers;
-    private WalletsDAO walletsDAO;
 
     private static final String EXIT = "0";
 
     WalletsChecker(MentorView view) {
         this.view = view;
-        walletsDAO = new SQLiteWalletsDAO();
         codecoolers = new SQLiteUserDAO().getUsersByPermission(Permissions.Student);
     }
 
@@ -59,14 +60,33 @@ class WalletsChecker {
     }
 
     private void printSelectedUser(User user) {
-        Wallet userWallet = walletsDAO.getWalletByUserID(user.getId());
+        Wallet userWallet = new SQLiteWalletsDAO().getWalletByUserID(user.getId());
+        OrdersDAO ordersDAO = new SQLiteOrdersDAO();
+
         String fullName = String.format("%s %s", user.getFirstName(), user.getLastName());
         String currentCoins = String.valueOf(userWallet.getCurrentState());
         String allEarnings = String.valueOf(userWallet.getTotalEarnings());
-        List<Order> orders = new SQLiteOrdersDAO().getAllOrdersByUser(user);
+
+        List<Order> orders = ordersDAO.getAllOrdersByUser(user);
+        Team team = new SQLiteTeamsDAO().getUserTeam(user);
+
+        if (team != null) {
+            List<TeamOrder> teamOrders = ordersDAO.getAllOrdersByTeam(team);
+            addTeamOrdersToOrders(orders, teamOrders);
+        }
         ArrayList<String> ordersToPrint = createInfoAboutOrders(orders);
 
         view.printUserWallet(fullName, currentCoins, allEarnings, ordersToPrint);
+    }
+
+    private void addTeamOrdersToOrders(List<Order> orders, List<TeamOrder> teamOrders) {
+        for (TeamOrder o : teamOrders) {
+            int collectedMoney = o.getCollectedMoney();
+            int priceOfArtifact = new SQLiteArtifactsDAO().getArtifact(o.getArtifactID()).getPrice();
+            if (collectedMoney >= priceOfArtifact) {
+                orders.add(o);
+            }
+        }
     }
 
     private ArrayList<String> createInfoAboutOrders(List<Order> orders) {
@@ -93,7 +113,7 @@ class WalletsChecker {
     private ArrayList<String> getCoinsFromWallets() {
         ArrayList<String> coinsInWallets = new ArrayList<>();
         for (User user : codecoolers) {
-            Wallet wallet = walletsDAO.getWalletByUserID(user.getId());
+            Wallet wallet = new SQLiteWalletsDAO().getWalletByUserID(user.getId());
             coinsInWallets.add(String.valueOf(wallet.getCurrentState()));
         }
         return coinsInWallets;
