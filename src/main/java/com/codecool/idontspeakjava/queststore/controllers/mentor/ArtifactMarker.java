@@ -2,11 +2,9 @@ package com.codecool.idontspeakjava.queststore.controllers.mentor;
 
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteArtifactsDAO;
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteOrdersDAO;
-import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteTeamsDAO;
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
 import com.codecool.idontspeakjava.queststore.models.Order;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
-import com.codecool.idontspeakjava.queststore.models.Team;
 import com.codecool.idontspeakjava.queststore.models.TeamOrder;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.views.MentorView;
@@ -39,7 +37,7 @@ class ArtifactMarker {
         if (!userInput.equals(EXIT)) {
             if (!validator.isSelectFromListInvalid(codecoolers, userInput)) {
                 User selectedUser = codecoolers.get(Integer.parseInt(userInput) - 1);
-                orders = createOrders(selectedUser);
+                orders = Utilities.createOrders(selectedUser);
                 filterOrders();
                 view.showArtifactsToMark(createArtifactsToPrint());
                 if (!orders.isEmpty()) {
@@ -64,24 +62,6 @@ class ArtifactMarker {
             view.showOperationCancelled();
         }
 
-    }
-
-    private List<Order> createOrders(User selectedUser) {
-        List<Order> orders = new SQLiteOrdersDAO().getAllOrdersByUser(selectedUser);
-        Team team = new SQLiteTeamsDAO().getUserTeam(selectedUser);
-
-        if (team != null) {
-            List<TeamOrder> teamOrders = new SQLiteOrdersDAO().getAllOrdersByTeam(team);
-
-            for (TeamOrder o : teamOrders) {
-                int collectedMoney = o.getCollectedMoney();
-                int priceOfArtifact = new SQLiteArtifactsDAO().getArtifact(o.getArtifactID()).getPrice();
-                if (collectedMoney >= priceOfArtifact) {
-                    orders.add(o);
-                }
-            }
-        }
-        return orders;
     }
 
     private void filterOrders() {
