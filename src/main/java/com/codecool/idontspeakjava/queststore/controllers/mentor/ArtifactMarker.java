@@ -2,9 +2,12 @@ package com.codecool.idontspeakjava.queststore.controllers.mentor;
 
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteArtifactsDAO;
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteOrdersDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteTeamsDAO;
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
 import com.codecool.idontspeakjava.queststore.models.Order;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
+import com.codecool.idontspeakjava.queststore.models.Team;
+import com.codecool.idontspeakjava.queststore.models.TeamOrder;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.views.MentorView;
 
@@ -32,17 +35,17 @@ class ArtifactMarker {
         }
         view.showUsers(getUsersFullNames());
         String userInput = view.getUserInput();
-        boolean inputIsInvalid = validateInput(userInput, codecoolers.size());
+        boolean inputIsInvalid = validateInput(userInput, codecoolers);
         if (!userInput.equals(EXIT)) {
             if (!inputIsInvalid) {
                 User selectedUser = codecoolers.get(temporaryIndex);
-                orders = new SQLiteOrdersDAO().getAllOrdersByUser(selectedUser);
+                orders = createOrders(selectedUser);
                 filterOrders();
                 view.showArtifactsToMark(createArtifactsToPrint());
                 if (!orders.isEmpty()) {
                     userInput = view.getUserInput();
                     if (!userInput.equals(EXIT)) {
-                        inputIsInvalid = validateInput(userInput, orders.size());
+                        inputIsInvalid = validateInput(userInput, orders);
                         if (!inputIsInvalid) {
                             selectedOrder = orders.get(temporaryIndex);
                             toggleOrderAsUsed();
@@ -64,6 +67,24 @@ class ArtifactMarker {
 
     }
 
+    private List<Order> createOrders(User selectedUser) {
+        List<Order> orders = new SQLiteOrdersDAO().getAllOrdersByUser(selectedUser);
+        Team team = new SQLiteTeamsDAO().getUserTeam(selectedUser);
+
+        if (team != null) {
+            List<TeamOrder> teamOrders = new SQLiteOrdersDAO().getAllOrdersByTeam(team);
+
+            for (TeamOrder o : teamOrders) {
+                int collectedMoney = o.getCollectedMoney();
+                int priceOfArtifact = new SQLiteArtifactsDAO().getArtifact(o.getArtifactID()).getPrice();
+                if (collectedMoney >= priceOfArtifact) {
+                    orders.add(o);
+                }
+            }
+        }
+        return orders;
+    }
+
     private void filterOrders() {
         List<Order> filteredOrders = new ArrayList<>();
         for (Order order : orders) {
@@ -76,7 +97,11 @@ class ArtifactMarker {
 
     private void toggleOrderAsUsed() {
         selectedOrder.setUsed(true);
-        new SQLiteOrdersDAO().updateOrder(selectedOrder);
+        if (selectedOrder instanceof TeamOrder) {
+            new SQLiteOrdersDAO().updateOrder((TeamOrder) selectedOrder);
+        } else {
+            new SQLiteOrdersDAO().updateOrder(selectedOrder);
+        }
         view.showArtifactUsed();
     }
 
@@ -92,18 +117,11 @@ class ArtifactMarker {
         return artifactsToPrint;
     }
 
-    private boolean validateInput(String input, int length) {
+    private boolean validateInput(String input, List collection) {
         boolean inputIsInvalid = true;
-        if (input.matches("\\d+")) {
-            int inputAsInt = Integer.parseInt(input);
-            if (inputAsInt > 0 && inputAsInt <= length) {
-                inputIsInvalid = false;
-                temporaryIndex = inputAsInt - 1;
-            } else if (inputAsInt != 0) {
-                view.showWrongInput();
-            }
-        } else {
-            view.showWrongInput();
+        if (!new Validator().isSelectFromListInvalid(collection, input)) {
+            inputIsInvalid = false;
+            temporaryIndex = Integer.parseInt(input) - 1;
         }
         return inputIsInvalid;
     }
