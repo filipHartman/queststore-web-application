@@ -2,11 +2,9 @@ package com.codecool.idontspeakjava.queststore.controllers.mentor;
 
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteArtifactsDAO;
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteOrdersDAO;
-import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteTeamsDAO;
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
 import com.codecool.idontspeakjava.queststore.models.Order;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
-import com.codecool.idontspeakjava.queststore.models.Team;
 import com.codecool.idontspeakjava.queststore.models.TeamOrder;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.views.MentorView;
@@ -20,7 +18,6 @@ class ArtifactMarker {
     private MentorView view;
     private List<User> codecoolers;
     private List<Order> orders;
-    private int temporaryIndex;
     private Order selectedOrder;
 
     ArtifactMarker(MentorView view) {
@@ -33,21 +30,21 @@ class ArtifactMarker {
             view.showNoUsers();
             return;
         }
+        Validator validator = new Validator();
         view.showUsers(getUsersFullNames());
         String userInput = view.getUserInput();
-        boolean inputIsInvalid = validateInput(userInput, codecoolers);
+
         if (!userInput.equals(EXIT)) {
-            if (!inputIsInvalid) {
-                User selectedUser = codecoolers.get(temporaryIndex);
-                orders = createOrders(selectedUser);
+            if (!validator.isSelectFromListInvalid(codecoolers, userInput)) {
+                User selectedUser = codecoolers.get(Integer.parseInt(userInput) - 1);
+                orders = Utilities.createOrders(selectedUser);
                 filterOrders();
                 view.showArtifactsToMark(createArtifactsToPrint());
                 if (!orders.isEmpty()) {
                     userInput = view.getUserInput();
                     if (!userInput.equals(EXIT)) {
-                        inputIsInvalid = validateInput(userInput, orders);
-                        if (!inputIsInvalid) {
-                            selectedOrder = orders.get(temporaryIndex);
+                        if (!validator.isSelectFromListInvalid(orders, userInput)) {
+                            selectedOrder = orders.get(Integer.parseInt(userInput) - 1);
                             toggleOrderAsUsed();
                         } else {
                             view.showWrongInput();
@@ -65,24 +62,6 @@ class ArtifactMarker {
             view.showOperationCancelled();
         }
 
-    }
-
-    private List<Order> createOrders(User selectedUser) {
-        List<Order> orders = new SQLiteOrdersDAO().getAllOrdersByUser(selectedUser);
-        Team team = new SQLiteTeamsDAO().getUserTeam(selectedUser);
-
-        if (team != null) {
-            List<TeamOrder> teamOrders = new SQLiteOrdersDAO().getAllOrdersByTeam(team);
-
-            for (TeamOrder o : teamOrders) {
-                int collectedMoney = o.getCollectedMoney();
-                int priceOfArtifact = new SQLiteArtifactsDAO().getArtifact(o.getArtifactID()).getPrice();
-                if (collectedMoney >= priceOfArtifact) {
-                    orders.add(o);
-                }
-            }
-        }
-        return orders;
     }
 
     private void filterOrders() {
@@ -115,15 +94,6 @@ class ArtifactMarker {
             }
         }
         return artifactsToPrint;
-    }
-
-    private boolean validateInput(String input, List collection) {
-        boolean inputIsInvalid = true;
-        if (!new Validator().isSelectFromListInvalid(collection, input)) {
-            inputIsInvalid = false;
-            temporaryIndex = Integer.parseInt(input) - 1;
-        }
-        return inputIsInvalid;
     }
 
     private ArrayList<String> getUsersFullNames() {
