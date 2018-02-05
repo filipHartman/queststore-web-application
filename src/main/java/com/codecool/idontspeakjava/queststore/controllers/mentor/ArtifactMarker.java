@@ -35,7 +35,7 @@ class ArtifactMarker {
         }
         view.showUsers(getUsersFullNames());
         String userInput = view.getUserInput();
-        boolean inputIsInvalid = validateInput(userInput, codecoolers.size());
+        boolean inputIsInvalid = validateInput(userInput, codecoolers);
         if (!userInput.equals(EXIT)) {
             if (!inputIsInvalid) {
                 User selectedUser = codecoolers.get(temporaryIndex);
@@ -45,7 +45,7 @@ class ArtifactMarker {
                 if (!orders.isEmpty()) {
                     userInput = view.getUserInput();
                     if (!userInput.equals(EXIT)) {
-                        inputIsInvalid = validateInput(userInput, orders.size());
+                        inputIsInvalid = validateInput(userInput, orders);
                         if (!inputIsInvalid) {
                             selectedOrder = orders.get(temporaryIndex);
                             toggleOrderAsUsed();
@@ -117,18 +117,11 @@ class ArtifactMarker {
         return artifactsToPrint;
     }
 
-    private boolean validateInput(String input, int length) {
+    private boolean validateInput(String input, List collection) {
         boolean inputIsInvalid = true;
-        if (input.matches("\\d+")) {
-            int inputAsInt = Integer.parseInt(input);
-            if (inputAsInt > 0 && inputAsInt <= length) {
-                inputIsInvalid = false;
-                temporaryIndex = inputAsInt - 1;
-            } else if (inputAsInt != 0) {
-                view.showWrongInput();
-            }
-        } else {
-            view.showWrongInput();
+        if (!new Validator().isSelectFromListInvalid(collection, input)) {
+            inputIsInvalid = false;
+            temporaryIndex = Integer.parseInt(input) - 1;
         }
         return inputIsInvalid;
     }
