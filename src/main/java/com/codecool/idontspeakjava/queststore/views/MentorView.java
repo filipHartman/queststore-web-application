@@ -131,7 +131,7 @@ public class MentorView extends UserView {
         continuePrompt();
     }
 
-    public void askForCodecoolClass(ArrayList<String> classesTitles) {
+    public void askForCodecoolClass(List<String> classesTitles) {
         clearScreen();
         ListIterator<String> iterator = classesTitles.listIterator();
         System.out.println(String.format("%sSelect to which class you want to add student, or 0 to cancel:\n", MENU_HEADER_COLOR));
