@@ -245,7 +245,7 @@ public class MentorView extends UserView {
         continuePrompt();
     }
 
-    public void showUsersAndWallets(ArrayList<String> userFullNames, ArrayList<String> coinsFromWallets) {
+    public void showUsersAndWallets(List<String> userFullNames, List<String> coinsFromWallets) {
         clearScreen();
         System.out.println(String.format("%sSelect which user details you want to show or 0 to cancel:\n", MENU_HEADER_COLOR));
         int iterations = userFullNames.size();
@@ -255,7 +255,7 @@ public class MentorView extends UserView {
         }
     }
 
-    public void printUserWallet(String fullName, String currentCoins, String allEarnings, ArrayList<String> ordersToPrint) {
+    public void printUserWallet(String fullName, String currentCoins, String allEarnings, List<String> ordersToPrint) {
         clearScreen();
         System.out.println(String.format(
                 "%sThe wallet of %s contains %s%s %scoins.\nTotal earnings are equal to : %s%s.\n" +
