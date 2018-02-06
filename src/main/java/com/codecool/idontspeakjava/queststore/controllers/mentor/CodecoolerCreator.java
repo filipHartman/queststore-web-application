@@ -94,28 +94,17 @@ class CodecoolerCreator {
                 }
                 break;
             case STUDENT_CODECOOL_CLASS:
-                attributeNotSet = setCodecoolClass(input);
+                if (!validator.isSelectFromListInvalid(codecoolClasses, input)) {
+                    selectedCodecoolClass = codecoolClasses.get(Integer.parseInt(input) - 1);
+                    attributeNotSet = false;
+                } else {
+                    view.showWrongInput();
+                }
                 break;
             default:
                 attributeNotSet = false;
         }
         return attributeNotSet;
-    }
-
-    private boolean setCodecoolClass(String input) {
-        boolean codecoolClassNotSet = true;
-        if (input.matches("\\d+")) {
-            int indexFromInput = Integer.valueOf(input);
-            if (indexFromInput <= codecoolClasses.size()) {
-                selectedCodecoolClass = codecoolClasses.get(indexFromInput - 1);
-                codecoolClassNotSet = false;
-            } else {
-                view.showWrongInput();
-            }
-        } else {
-            view.showWrongDigitInput();
-        }
-        return codecoolClassNotSet;
     }
 
     private void selectPromptForCreateCodecooler(int promptNumber) {
