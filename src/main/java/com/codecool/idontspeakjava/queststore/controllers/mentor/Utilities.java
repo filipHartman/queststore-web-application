@@ -29,4 +29,10 @@ public class Utilities {
         }
         return orders;
     }
+
+    public static String capitalizeString(String stringToCapitalize) {
+        char[] splittedString = stringToCapitalize.toLowerCase().toCharArray();
+        splittedString[0] = Character.toUpperCase(splittedString[0]);
+        return new String(splittedString);
+    }
 }

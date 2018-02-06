@@ -130,7 +130,7 @@ class CodecoolerCreator {
     private boolean setName(String input) {
         boolean nameNotSet = true;
         if (input.matches("[a-zA-Z]+")) {
-            name = capitalizeString(input);
+            name = Utilities.capitalizeString(input);
             nameNotSet = false;
         } else {
             view.showWrongNameInput();
@@ -141,7 +141,7 @@ class CodecoolerCreator {
     private boolean setSecondName(String input) {
         boolean nameNotSet = true;
         if (input.matches("[a-zA-Z]+")) {
-            secondName = capitalizeString(input);
+            secondName = Utilities.capitalizeString(input);
             nameNotSet = false;
         } else {
             view.showWrongNameInput();
@@ -185,11 +185,5 @@ class CodecoolerCreator {
             e.printStackTrace();
             view.showCodecoolerCreationFailed();
         }
-    }
-
-    private String capitalizeString(String stringToCapitalize) {
-        char[] splittedString = stringToCapitalize.toLowerCase().toCharArray();
-        splittedString[0] = Character.toUpperCase(splittedString[0]);
-        return new String(splittedString);
     }
 }
