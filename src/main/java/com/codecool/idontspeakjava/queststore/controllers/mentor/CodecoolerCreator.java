@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class CodecoolerCreator {
     private static final int STUDENT_NAME = 0;
@@ -156,13 +157,8 @@ class CodecoolerCreator {
         }
     }
 
-    private ArrayList<String> getClassesTitles() {
-        ArrayList<String> titles = new ArrayList<>();
-        Iterator<CodecoolClass> iterator = codecoolClasses.iterator();
-        for (; iterator.hasNext(); ) {
-            titles.add(iterator.next().getName());
-        }
-        return titles;
+    private List<String> getClassesTitles() {
+        return codecoolClasses.stream().map(CodecoolClass::getName).collect(Collectors.toList());
     }
 
     private void addCodecoolerToDatabase() {
