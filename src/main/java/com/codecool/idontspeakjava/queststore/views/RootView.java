@@ -213,6 +213,7 @@ public class RootView extends UserView{
     public void showExpLvlCreated(){
         clearScreen();
         System.out.println(String.format("%sYou created new experience level.\n", Colors.PURPLE));
+        continuePrompt();
     }
 
     public void showClassNotExist(){
