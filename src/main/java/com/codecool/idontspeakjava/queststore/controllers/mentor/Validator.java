@@ -50,4 +50,12 @@ public class Validator {
         }
         return inputIsInvalid;
     }
+
+    public boolean checkIfNameIsValid(String input) {
+        boolean nameIsValid = false;
+        if (input.matches("[a-zA-Z]+")) {
+            nameIsValid = true;
+        }
+        return nameIsValid;
+    }
 }
