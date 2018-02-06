@@ -8,7 +8,7 @@ public class Validator {
     public final static String BASIC_CATEGORY = "1";
     private final static String EXTRA_CATEGORY = "2";
 
-    public boolean checkIfPriceOrRewardIsValid(String input) {
+    public boolean checkIfIsPositiveInteger(String input) {
         boolean priceIsValid = false;
         if (input.matches("\\d+")) {
             if (Integer.valueOf(input) > 0) {
