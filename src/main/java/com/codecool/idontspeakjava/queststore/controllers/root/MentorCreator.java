@@ -14,6 +14,7 @@ class MentorCreator{
     private static final String EXIT = "0";
 
     private RootView view;
+    private InputValidation validation;
     private String name;
     private String lastName;
     private String email;
@@ -21,6 +22,7 @@ class MentorCreator{
 
     MentorCreator(RootView view){
         this.view = view;
+        validation = new InputValidation(view);
     }
 
     void createMentor(){
@@ -72,42 +74,26 @@ class MentorCreator{
 
     private boolean setName(String input) {
         boolean nameNotSet = true;
-        if (input.matches("[a-zA-Z]+")) {
+        if(validation.checkName(input)){
             name = capitalizeFirstLetter(input);
             nameNotSet = false;
-        } else {
-            view.showWrongNameInput();
         }
         return nameNotSet;
     }
 
     private boolean setLastName(String input) {
         boolean lastNameNotSet = true;
-        if (input.matches("[a-zA-Z]+")) {
-            lastName = capitalizeFirstLetter(input);
+        if (validation.checkEmail(input)) {
             lastNameNotSet = false;
-        } else {
-            view.showWrongNameInput();
         }
         return lastNameNotSet;
     }
 
     private boolean setEmail(String input) {
         boolean emailNotSet = true;
-        if (input.matches("[a-zA-Z@.]+")) {
-            try {
-                if (new SQLiteUserDAO().checkIfUsersExists(input)) {
-                    view.showExistingValueWarning();
-                } else {
-                    email = input;
-                    emailNotSet = false;
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                view.showDatabaseError();
-            }
-        } else {
-            view.showWrongEmailInput();
+        if(validation.checkEmail(input)) {
+            email = input;
+            emailNotSet = false;
         }
         return emailNotSet;
     }
