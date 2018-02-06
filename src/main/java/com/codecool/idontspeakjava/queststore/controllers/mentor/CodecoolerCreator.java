@@ -8,8 +8,6 @@ import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.views.MentorView;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,11 +18,6 @@ class CodecoolerCreator {
     private static final int STUDENT_CODECOOL_CLASS = 3;
 
     private static final String EXIT = "0";
-    private static final String EMAIL_REGEX = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:" +
-            "[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(" +
-            "?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]" +
-            "?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[" +
-            "\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
 
     private MentorView view;
     private List<CodecoolClass> codecoolClasses;
@@ -93,7 +86,12 @@ class CodecoolerCreator {
                 }
                 break;
             case STUDENT_EMAIL:
-                attributeNotSet = setEmail(input);
+                if (validator.checkIfEmailIsValid(input, getUsersEmails())) {
+                    email = input;
+                    attributeNotSet = false;
+                } else {
+                    view.showWrongEmailInput();
+                }
                 break;
             case STUDENT_CODECOOL_CLASS:
                 attributeNotSet = setCodecoolClass(input);
@@ -120,26 +118,6 @@ class CodecoolerCreator {
         return codecoolClassNotSet;
     }
 
-    private boolean setEmail(String input) {
-        boolean emailNotSet = true;
-        if (input.matches(EMAIL_REGEX)) {
-            try {
-                if (new SQLiteUserDAO().checkIfUsersExists(input)) {
-                    view.showDuplicateWarning();
-                } else {
-                    email = input;
-                    emailNotSet = false;
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                view.showDatabaseError();
-            }
-        } else {
-            view.showWrongEmailInput();
-        }
-        return emailNotSet;
-    }
-
     private void selectPromptForCreateCodecooler(int promptNumber) {
         switch (promptNumber) {
             case STUDENT_NAME:
@@ -159,6 +137,10 @@ class CodecoolerCreator {
 
     private List<String> getClassesTitles() {
         return codecoolClasses.stream().map(CodecoolClass::getName).collect(Collectors.toList());
+    }
+
+    private List<String> getUsersEmails() {
+        return new SQLiteUserDAO().getUsersByPermission(Permissions.Student).stream().map(User::getEmail).collect(Collectors.toList());
     }
 
     private void addCodecoolerToDatabase() {
