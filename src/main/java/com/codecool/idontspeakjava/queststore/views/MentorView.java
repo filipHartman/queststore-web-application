@@ -1,9 +1,7 @@
 package com.codecool.idontspeakjava.queststore.views;
 
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
 public class MentorView extends UserView {
 
@@ -119,12 +117,6 @@ public class MentorView extends UserView {
         continuePrompt();
     }
 
-    public void showWrongNameInput() {
-        clearScreen();
-        System.out.println(String.format("%sWrong input. You can only use letters.\n", ERROR_COLOR));
-        continuePrompt();
-    }
-
     public void showWrongEmailInput() {
         clearScreen();
         System.out.println(String.format("%sWrong input. This is not a valid email address.\n", ERROR_COLOR));
@@ -133,13 +125,9 @@ public class MentorView extends UserView {
 
     public void askForCodecoolClass(List<String> classesTitles) {
         clearScreen();
-        ListIterator<String> iterator = classesTitles.listIterator();
         System.out.println(String.format("%sSelect to which class you want to add student, or 0 to cancel:\n", MENU_HEADER_COLOR));
-        for (; iterator.hasNext(); ) {
-            String title = iterator.next();
-            System.out.println(String.format("%s%d. %s", MENU_OPTIONS_COLOR, iterator.nextIndex(), title));
-        }
-        System.out.print(String.format("\n%s", INPUT_COLOR));
+        final int[] index = {1};
+        classesTitles.forEach(title -> System.out.println(String.format("%s%d. %s%s", MENU_OPTIONS_COLOR, index[0]++, title, INPUT_COLOR)));
     }
 
     public void showClassesDontExist() {
@@ -171,19 +159,6 @@ public class MentorView extends UserView {
     public void askForArtifactPrice() {
         System.out.print(String.format(
                 "%sEnter the price of your artifact or 0 to cancel: %s", PROMPT_COLOR, INPUT_COLOR));
-    }
-
-    public void showDuplicateWarning() {
-        clearScreen();
-        System.out.println(String.format(
-                "%sYou can't add position with this value. It is already in the database.\n", ERROR_COLOR));
-        continuePrompt();
-    }
-
-    public void showDatabaseError() {
-        clearScreen();
-        System.out.println(String.format("%sAn error in the database occurred.\n", ERROR_COLOR));
-        continuePrompt();
     }
 
     public void showTitle(String title) {
@@ -224,13 +199,9 @@ public class MentorView extends UserView {
 
     public void printListForSelection(List<String> titles) {
         clearScreen();
-        ListIterator<String> iterator = titles.listIterator();
-
         System.out.println(String.format("%sSelect what to edit or 0 to cancel:\n", MENU_HEADER_COLOR));
-        for (; iterator.hasNext(); ) {
-            String title = iterator.next();
-            System.out.println(String.format("%s%d. %s", MENU_OPTIONS_COLOR, iterator.nextIndex(), title));
-        }
+        final int[] index = {1};
+        titles.forEach(title -> System.out.println(String.format("%s%d. %s", MENU_OPTIONS_COLOR, index[0]++, title)));
     }
 
     public void selectAttributeToEdit(String priceOrReward) {
@@ -264,11 +235,8 @@ public class MentorView extends UserView {
                 allEarnings, INFORMATION_COLOR
         ));
         if (!ordersToPrint.isEmpty()) {
-            ListIterator<String> iterator = ordersToPrint.listIterator();
-            for (; iterator.hasNext(); ) {
-                String order = iterator.next();
-                System.out.println(String.format("%s%d. %s", MENU_OPTIONS_COLOR, iterator.nextIndex(), order));
-            }
+            final int[] index = {1};
+            ordersToPrint.forEach(order -> System.out.println(String.format("%s%d. %s", MENU_OPTIONS_COLOR, index[0]++, order)));
         } else {
             System.out.println(String.format("%sThis codecooler didn't bought any artifacts.\n", ERROR_COLOR));
         }
@@ -284,11 +252,8 @@ public class MentorView extends UserView {
     public void showUsers(List<String> usersFullNames) {
         clearScreen();
         System.out.println(String.format("%sSelect user to mark:\n", MENU_HEADER_COLOR));
-        ListIterator<String> iterator = usersFullNames.listIterator();
-        for (; iterator.hasNext(); ) {
-            String fullName = iterator.next();
-            System.out.println(String.format("%s%d. %s", MENU_OPTIONS_COLOR, iterator.nextIndex(), fullName));
-        }
+        final int[] index = {1};
+        usersFullNames.forEach(user -> System.out.println(String.format("%s%d. %s", MENU_OPTIONS_COLOR, index[0]++, user)));
     }
 
     public void showCoinsAdded() {
@@ -297,24 +262,18 @@ public class MentorView extends UserView {
         continuePrompt();
     }
 
-    public void showQuests(ArrayList<String> questsToPrint) {
+    public void showQuests(List<String> questsToPrint) {
         clearScreen();
         System.out.println(String.format("%sSelect quest to mark:\n", MENU_HEADER_COLOR));
-        ListIterator<String> iterator = questsToPrint.listIterator();
-        for (; iterator.hasNext(); ) {
-            String quest = iterator.next();
-            System.out.println(String.format("%s%d. %s", MENU_OPTIONS_COLOR, iterator.nextIndex(), quest));
-        }
+        final int[] index = {1};
+        questsToPrint.forEach(quest -> System.out.println(String.format("%s%d. %s", MENU_OPTIONS_COLOR, index[0]++, quest)));
     }
 
-    public void showArtifactsToMark(ArrayList<String> artifactsToPrint) {
+    public void showArtifactsToMark(List<String> artifactsToPrint) {
         clearScreen();
         System.out.println(String.format("%sSelect artifact to activate:\n", MENU_HEADER_COLOR));
-        ListIterator<String> iterator = artifactsToPrint.listIterator();
-        for (; iterator.hasNext(); ) {
-            String artifact = iterator.next();
-            System.out.println(String.format("%s%d. %s", MENU_OPTIONS_COLOR, iterator.nextIndex(), artifact));
-        }
+        final int[] index = {1};
+        artifactsToPrint.forEach(artifact -> System.out.println(String.format("%s%d. %s", MENU_OPTIONS_COLOR, index[0]++, artifact)));
     }
 
     public void showArtifactUsed() {
