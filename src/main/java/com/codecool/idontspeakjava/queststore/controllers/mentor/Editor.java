@@ -86,7 +86,7 @@ abstract class Editor {
     }
 
     void editPrice(Artifact artifact, String input) {
-        if (validator.checkIfPriceOrRewardIsValid(input)) {
+        if (validator.checkIfIsPositiveInteger(input)) {
             artifact.setPrice(Integer.parseInt(input));
             new SQLiteArtifactsDAO().updateArtifact(artifact);
         } else {
@@ -95,7 +95,7 @@ abstract class Editor {
     }
 
     void editReward(Quest quest, String input) {
-        if (validator.checkIfPriceOrRewardIsValid(input)) {
+        if (validator.checkIfIsPositiveInteger(input)) {
             quest.setReward(Integer.parseInt(input));
             new SQLiteQuestsDAO().updateQuest(quest);
         } else {

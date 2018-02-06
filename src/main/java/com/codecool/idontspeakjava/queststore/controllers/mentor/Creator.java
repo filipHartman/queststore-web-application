@@ -48,7 +48,7 @@ abstract class Creator {
     }
 
     boolean setPriceOrReward(DummyItem dummy, String input, MentorView view) {
-        if (validator.checkIfPriceOrRewardIsValid(input)) {
+        if (validator.checkIfIsPositiveInteger(input)) {
             dummy.setRewardOrPrice(input);
             return true;
         } else {

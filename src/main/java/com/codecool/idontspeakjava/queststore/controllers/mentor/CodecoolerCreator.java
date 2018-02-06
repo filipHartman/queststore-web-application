@@ -8,9 +8,8 @@ import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.views.MentorView;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class CodecoolerCreator {
     private static final int STUDENT_NAME = 0;
@@ -19,11 +18,6 @@ class CodecoolerCreator {
     private static final int STUDENT_CODECOOL_CLASS = 3;
 
     private static final String EXIT = "0";
-    private static final String EMAIL_REGEX = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:" +
-            "[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(" +
-            "?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]" +
-            "?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[" +
-            "\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
 
     private MentorView view;
     private List<CodecoolClass> codecoolClasses;
@@ -31,10 +25,12 @@ class CodecoolerCreator {
     private String secondName;
     private String email;
     private CodecoolClass selectedCodecoolClass;
-    private String hash = "";
+
+    private Validator validator;
 
     CodecoolerCreator(MentorView view) {
         this.view = view;
+        validator = new Validator();
         codecoolClasses = new SQLiteCodecoolClassDAO().getAllCodecoolClasses();
     }
 
@@ -71,82 +67,44 @@ class CodecoolerCreator {
     }
 
     private boolean setAttribute(int promptNumber, String input) {
-        boolean attributeNotSet;
+        boolean attributeNotSet = true;
         switch (promptNumber) {
             case STUDENT_NAME:
-                attributeNotSet = setName(input);
+                if (validator.checkIfNameIsValid(input)) {
+                    name = Utilities.capitalizeString(input);
+                    attributeNotSet = false;
+                } else {
+                    view.showWrongInput();
+                }
                 break;
             case STUDENT_SECOND_NAME:
-                attributeNotSet = setSecondName(input);
+                if (validator.checkIfNameIsValid(input)) {
+                    secondName = Utilities.capitalizeString(input);
+                    attributeNotSet = false;
+                } else {
+                    view.showWrongInput();
+                }
                 break;
             case STUDENT_EMAIL:
-                attributeNotSet = setEmail(input);
+                if (validator.checkIfEmailIsValid(input, getUsersEmails())) {
+                    email = input;
+                    attributeNotSet = false;
+                } else {
+                    view.showWrongEmailInput();
+                }
                 break;
             case STUDENT_CODECOOL_CLASS:
-                attributeNotSet = setCodecoolClass(input);
+                if (!validator.isSelectFromListInvalid(codecoolClasses, input)) {
+                    selectedCodecoolClass = codecoolClasses.get(Integer.parseInt(input) - 1);
+                    attributeNotSet = false;
+                } else {
+                    view.showWrongInput();
+                }
                 break;
             default:
                 attributeNotSet = false;
         }
         return attributeNotSet;
-    }
-
-    private boolean setCodecoolClass(String input) {
-        boolean codecoolClassNotSet = true;
-        if (input.matches("\\d+")) {
-            int indexFromInput = Integer.valueOf(input);
-            if (indexFromInput <= codecoolClasses.size()) {
-                selectedCodecoolClass = codecoolClasses.get(indexFromInput - 1);
-                codecoolClassNotSet = false;
-            } else {
-                view.showWrongInput();
-            }
-        } else {
-            view.showWrongDigitInput();
-        }
-        return codecoolClassNotSet;
-    }
-
-    private boolean setEmail(String input) {
-        boolean emailNotSet = true;
-        if (input.matches(EMAIL_REGEX)) {
-            try {
-                if (new SQLiteUserDAO().checkIfUsersExists(input)) {
-                    view.showDuplicateWarning();
-                } else {
-                    email = input;
-                    emailNotSet = false;
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                view.showDatabaseError();
-            }
-        } else {
-            view.showWrongEmailInput();
-        }
-        return emailNotSet;
-    }
-
-    private boolean setName(String input) {
-        boolean nameNotSet = true;
-        if (input.matches("[a-zA-Z]+")) {
-            name = capitalizeString(input);
-            nameNotSet = false;
-        } else {
-            view.showWrongNameInput();
-        }
-        return nameNotSet;
-    }
-
-    private boolean setSecondName(String input) {
-        boolean nameNotSet = true;
-        if (input.matches("[a-zA-Z]+")) {
-            secondName = capitalizeString(input);
-            nameNotSet = false;
-        } else {
-            view.showWrongNameInput();
-        }
-        return nameNotSet;
     }
 
     private void selectPromptForCreateCodecooler(int promptNumber) {
@@ -166,16 +124,16 @@ class CodecoolerCreator {
         }
     }
 
-    private ArrayList<String> getClassesTitles() {
-        ArrayList<String> titles = new ArrayList<>();
-        Iterator<CodecoolClass> iterator = codecoolClasses.iterator();
-        for (; iterator.hasNext(); ) {
-            titles.add(iterator.next().getName());
-        }
-        return titles;
+    private List<String> getClassesTitles() {
+        return codecoolClasses.stream().map(CodecoolClass::getName).collect(Collectors.toList());
+    }
+
+    private List<String> getUsersEmails() {
+        return new SQLiteUserDAO().getUsersByPermission(Permissions.Student).stream().map(User::getEmail).collect(Collectors.toList());
     }
 
     private void addCodecoolerToDatabase() {
+        String hash = "";
         User newCodecooler = new User(name, secondName, hash, email, Permissions.Student);
         try {
             new SQLiteUserDAO().createUser(newCodecooler);
@@ -185,11 +143,5 @@ class CodecoolerCreator {
             e.printStackTrace();
             view.showCodecoolerCreationFailed();
         }
-    }
-
-    private String capitalizeString(String stringToCapitalize) {
-        char[] splittedString = stringToCapitalize.toLowerCase().toCharArray();
-        splittedString[0] = Character.toUpperCase(splittedString[0]);
-        return new String(splittedString);
     }
 }
