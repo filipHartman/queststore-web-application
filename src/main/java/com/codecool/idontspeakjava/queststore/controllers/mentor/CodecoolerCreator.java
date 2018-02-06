@@ -31,10 +31,12 @@ class CodecoolerCreator {
     private String secondName;
     private String email;
     private CodecoolClass selectedCodecoolClass;
-    private String hash = "";
+
+    private Validator validator;
 
     CodecoolerCreator(MentorView view) {
         this.view = view;
+        validator = new Validator();
         codecoolClasses = new SQLiteCodecoolClassDAO().getAllCodecoolClasses();
     }
 
@@ -71,13 +73,23 @@ class CodecoolerCreator {
     }
 
     private boolean setAttribute(int promptNumber, String input) {
-        boolean attributeNotSet;
+        boolean attributeNotSet = true;
         switch (promptNumber) {
             case STUDENT_NAME:
-                attributeNotSet = setName(input);
+                if (validator.checkIfNameIsValid(input)) {
+                    name = Utilities.capitalizeString(input);
+                    attributeNotSet = false;
+                } else {
+                    view.showWrongInput();
+                }
                 break;
             case STUDENT_SECOND_NAME:
-                attributeNotSet = setSecondName(input);
+                if (validator.checkIfNameIsValid(input)) {
+                    secondName = Utilities.capitalizeString(input);
+                    attributeNotSet = false;
+                } else {
+                    view.showWrongInput();
+                }
                 break;
             case STUDENT_EMAIL:
                 attributeNotSet = setEmail(input);
@@ -127,28 +139,6 @@ class CodecoolerCreator {
         return emailNotSet;
     }
 
-    private boolean setName(String input) {
-        boolean nameNotSet = true;
-        if (input.matches("[a-zA-Z]+")) {
-            name = Utilities.capitalizeString(input);
-            nameNotSet = false;
-        } else {
-            view.showWrongNameInput();
-        }
-        return nameNotSet;
-    }
-
-    private boolean setSecondName(String input) {
-        boolean nameNotSet = true;
-        if (input.matches("[a-zA-Z]+")) {
-            secondName = Utilities.capitalizeString(input);
-            nameNotSet = false;
-        } else {
-            view.showWrongNameInput();
-        }
-        return nameNotSet;
-    }
-
     private void selectPromptForCreateCodecooler(int promptNumber) {
         switch (promptNumber) {
             case STUDENT_NAME:
@@ -176,6 +166,7 @@ class CodecoolerCreator {
     }
 
     private void addCodecoolerToDatabase() {
+        String hash = "";
         User newCodecooler = new User(name, secondName, hash, email, Permissions.Student);
         try {
             new SQLiteUserDAO().createUser(newCodecooler);
