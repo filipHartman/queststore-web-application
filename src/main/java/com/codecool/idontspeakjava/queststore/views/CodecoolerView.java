@@ -27,7 +27,7 @@ public class CodecoolerView extends UserView{
                 CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, Colors.BLACK_BOLD_BRIGHT, userName, team, Colors.RESET));
     }
 
-    public void showWallet(long totalMoney, long totalEarnings, ArrayList<String> namesOfArtifacts){
+    public void showWallet(long totalMoney, long totalEarnings, ArrayList<String> namesOfArtifacts, ArrayList<String> usedArtifacts){
         System.out.println(String.format(
                     "%s%sWALLET         %sCurrent state: %s%scc         %sTotal earnings: %s%scc\n%s",
                 CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, Colors.BLACK_BOLD_BRIGHT, Colors.YELLOW_BOLD_BRIGHT,
@@ -40,6 +40,12 @@ public class CodecoolerView extends UserView{
             }
         } else {
             System.out.println("No artifacts");
+        }
+        if (usedArtifacts.size() > 0) {
+            System.out.println(String.format("\n%sUsed artifacts: %s", Colors.BLACK_BOLD_BRIGHT, Colors.RESET));
+            for (String artifact : usedArtifacts) {
+                System.out.println(String.format("- %s%s%s", Colors.WHITE_BOLD, artifact, Colors.RESET));
+            }
         }
         System.out.println("\n\nPress enter to continue...");
         getUserInput();
