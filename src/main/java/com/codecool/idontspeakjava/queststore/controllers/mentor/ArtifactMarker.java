@@ -11,6 +11,7 @@ import com.codecool.idontspeakjava.queststore.views.MentorView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class ArtifactMarker {
     private static final String EXIT = "0";
@@ -96,11 +97,7 @@ class ArtifactMarker {
         return artifactsToPrint;
     }
 
-    private ArrayList<String> getUsersFullNames() {
-        ArrayList<String> usersFullNames = new ArrayList<>();
-        for (User user : codecoolers) {
-            usersFullNames.add(String.format("%s %s", user.getFirstName(), user.getLastName()));
-        }
-        return usersFullNames;
+    private List<String> getUsersFullNames() {
+        return codecoolers.stream().map(User::getFullName).collect(Collectors.toList());
     }
 }

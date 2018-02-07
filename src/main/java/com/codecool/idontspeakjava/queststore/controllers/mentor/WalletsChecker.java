@@ -55,7 +55,7 @@ class WalletsChecker {
     private void printSelectedUser(User user) {
         Wallet userWallet = new SQLiteWalletsDAO().getWalletByUserID(user.getId());
 
-        String fullName = String.format("%s %s", user.getFirstName(), user.getLastName());
+        String fullName = user.getFullName();
         String currentCoins = String.valueOf(userWallet.getCurrentState());
         String allEarnings = String.valueOf(userWallet.getTotalEarnings());
 
@@ -73,8 +73,7 @@ class WalletsChecker {
     }
 
     private List<String> getUserFullNames() {
-        return codecoolers.stream().map(
-                user -> String.format("%s %s", user.getFirstName(), user.getLastName())).collect(Collectors.toList());
+        return codecoolers.stream().map(User::getFullName).collect(Collectors.toList());
     }
 
     private List<String> getCoinsFromWallets() {
