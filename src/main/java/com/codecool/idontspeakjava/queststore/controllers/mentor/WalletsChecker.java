@@ -5,6 +5,7 @@ import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteWalletsDAO;
 import com.codecool.idontspeakjava.queststore.models.Order;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
+import com.codecool.idontspeakjava.queststore.models.TeamOrder;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.models.Wallet;
 import com.codecool.idontspeakjava.queststore.views.MentorView;
@@ -65,7 +66,10 @@ class WalletsChecker {
     private List<String> createInfoAboutOrders(List<Order> orders) {
         SQLiteArtifactsDAO dao = new SQLiteArtifactsDAO();
         return orders.stream().map(
-                order -> String.format("%s - Is %s", dao.getArtifact(order.getArtifactID()).getTitle(), order.isUsed() ? "used" : "not used")).collect(Collectors.toList());
+                order -> String.format("%s - Is %s - %s",
+                        dao.getArtifact(order.getArtifactID()).getTitle(),
+                        order.isUsed() ? "used" : "not used",
+                        order instanceof TeamOrder ? "magic artifact" : "normal artifact")).collect(Collectors.toList());
     }
 
     private List<String> getUserFullNames() {
