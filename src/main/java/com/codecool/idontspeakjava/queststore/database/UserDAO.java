@@ -13,6 +13,8 @@ public interface UserDAO {
 
     List<User> getUsersByPermission(Permissions permission);
 
+    List<User> getAllUsers();
+
     void updateUser(User user);
 
     void deleteUser(User user);

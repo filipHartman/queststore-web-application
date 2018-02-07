@@ -69,6 +69,24 @@ public class SQLiteUserDAO extends AbstractDAO implements com.codecool.idontspea
     }
 
     @Override
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        String query = "SELECT * FROM users";
+        try {
+            PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+            log.info(preparedStatement.toString());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                users.add(getUserByEmail(resultSet.getString("email")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    @Override
     public List<User> getUsersByPermission(Permissions permission) {
         List<User> users = new ArrayList<>();
         String query = "SELECT * FROM users WHERE permission = ?";
