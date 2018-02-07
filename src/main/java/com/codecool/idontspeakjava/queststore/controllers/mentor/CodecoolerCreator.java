@@ -129,7 +129,7 @@ class CodecoolerCreator {
     }
 
     private List<String> getUsersEmails() {
-        return new SQLiteUserDAO().getUsersByPermission(Permissions.Student).stream().map(User::getEmail).collect(Collectors.toList());
+        return new SQLiteUserDAO().getAllUsers().stream().map(User::getEmail).collect(Collectors.toList());
     }
 
     private void addCodecoolerToDatabase() {
