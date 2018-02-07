@@ -10,7 +10,6 @@ import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.models.Wallet;
 import com.codecool.idontspeakjava.queststore.views.MentorView;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,12 +66,8 @@ public class QuestMarker {
         }
     }
 
-    private ArrayList<String> createQuestsToPrint() {
-        ArrayList<String> questsToPrint = new ArrayList<>();
-        for (Quest quest : quests) {
-            questsToPrint.add(String.format("%s - reward : %d", quest.getTitle(), quest.getReward()));
-        }
-        return questsToPrint;
+    private List<String> createQuestsToPrint() {
+        return quests.stream().map(q -> String.format("%s - reward : %d", q.getTitle(), q.getReward())).collect(Collectors.toList());
     }
 
     private void addCoinsFromQuest() {
@@ -90,7 +85,6 @@ public class QuestMarker {
     }
 
     private List<String> getUsersFullNames() {
-        return codecoolers.stream().map(codecooler -> String.format(
-                "%s %s", codecooler.getFirstName(), codecooler.getLastName())).collect(Collectors.toList());
+        return codecoolers.stream().map(User::getFullName).collect(Collectors.toList());
     }
 }

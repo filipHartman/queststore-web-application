@@ -9,8 +9,8 @@ import com.codecool.idontspeakjava.queststore.models.TeamOrder;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.views.MentorView;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class ArtifactMarker {
     private static final String EXIT = "0";
@@ -65,13 +65,7 @@ class ArtifactMarker {
     }
 
     private void filterOrders() {
-        List<Order> filteredOrders = new ArrayList<>();
-        for (Order order : orders) {
-            if (!order.isUsed()) {
-                filteredOrders.add(order);
-            }
-        }
-        orders = filteredOrders;
+        orders = orders.stream().filter(order -> !order.isUsed()).collect(Collectors.toList());
     }
 
     private void toggleOrderAsUsed() {
@@ -84,23 +78,15 @@ class ArtifactMarker {
         view.showArtifactUsed();
     }
 
-    private ArrayList<String> createArtifactsToPrint() {
-        ArrayList<String> artifactsToPrint = new ArrayList<>();
+    private List<String> createArtifactsToPrint() {
         SQLiteArtifactsDAO artifactsDAO = new SQLiteArtifactsDAO();
-        for (Order order : orders) {
-            if (!order.isUsed()) {
-                String artifactTitle = artifactsDAO.getArtifact(order.getArtifactID()).getTitle();
-                artifactsToPrint.add(String.format("%s", artifactTitle));
-            }
-        }
-        return artifactsToPrint;
+        return orders.stream()
+                .filter(order -> !order.isUsed())
+                .map(order -> artifactsDAO.getArtifact(order.getArtifactID()).getTitle())
+                .collect(Collectors.toList());
     }
 
-    private ArrayList<String> getUsersFullNames() {
-        ArrayList<String> usersFullNames = new ArrayList<>();
-        for (User user : codecoolers) {
-            usersFullNames.add(String.format("%s %s", user.getFirstName(), user.getLastName()));
-        }
-        return usersFullNames;
+    private List<String> getUsersFullNames() {
+        return codecoolers.stream().map(User::getFullName).collect(Collectors.toList());
     }
 }

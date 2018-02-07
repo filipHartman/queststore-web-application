@@ -5,12 +5,13 @@ import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteWalletsDAO;
 import com.codecool.idontspeakjava.queststore.models.Order;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
+import com.codecool.idontspeakjava.queststore.models.TeamOrder;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.models.Wallet;
 import com.codecool.idontspeakjava.queststore.views.MentorView;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class WalletsChecker {
 
@@ -43,11 +44,8 @@ class WalletsChecker {
         if (input.equals(EXIT)) {
             view.showOperationCancelled();
         } else {
-            if (input.matches("\\d+")) {
-                int inputAsInt = Integer.parseInt(input);
-                if (inputAsInt > 0 && inputAsInt <= codecoolers.size()) {
-                    printSelectedUser(codecoolers.get(inputAsInt - 1));
-                }
+            if (!new Validator().isSelectFromListInvalid(codecoolers, input)) {
+                printSelectedUser(codecoolers.get(Integer.parseInt(input) - 1));
             } else {
                 view.showWrongDigitInput();
             }
@@ -57,44 +55,30 @@ class WalletsChecker {
     private void printSelectedUser(User user) {
         Wallet userWallet = new SQLiteWalletsDAO().getWalletByUserID(user.getId());
 
-        String fullName = String.format("%s %s", user.getFirstName(), user.getLastName());
+        String fullName = user.getFullName();
         String currentCoins = String.valueOf(userWallet.getCurrentState());
         String allEarnings = String.valueOf(userWallet.getTotalEarnings());
 
-        List<Order> orders = Utilities.createOrders(user);
-        ArrayList<String> ordersToPrint = createInfoAboutOrders(orders);
-
+        List<String> ordersToPrint = createInfoAboutOrders(Utilities.createOrders(user));
         view.printUserWallet(fullName, currentCoins, allEarnings, ordersToPrint);
     }
 
-    private ArrayList<String> createInfoAboutOrders(List<Order> orders) {
-        ArrayList<String> infoAboutOrders = new ArrayList<>();
-        SQLiteArtifactsDAO artifactsDAO = new SQLiteArtifactsDAO();
-        for (Order order : orders) {
-            String isUsed = order.isUsed() ? "used" : "not used";
-            String artifactTitle = artifactsDAO.getArtifact(order.getArtifactID()).getTitle();
-            String info = String.format("%s - Is %s", artifactTitle, isUsed);
-
-            infoAboutOrders.add(info);
-        }
-        return infoAboutOrders;
+    private List<String> createInfoAboutOrders(List<Order> orders) {
+        SQLiteArtifactsDAO dao = new SQLiteArtifactsDAO();
+        return orders.stream().map(
+                order -> String.format("%s - Is %s - %s",
+                        dao.getArtifact(order.getArtifactID()).getTitle(),
+                        order.isUsed() ? "used" : "not used",
+                        order instanceof TeamOrder ? "magic artifact" : "normal artifact")).collect(Collectors.toList());
     }
 
-    private ArrayList<String> getUserFullNames() {
-        ArrayList<String> fullNames = new ArrayList<>();
-        for (User user : codecoolers) {
-            fullNames.add(String.format("%s %s", user.getFirstName(), user.getLastName()));
-        }
-        return fullNames;
+    private List<String> getUserFullNames() {
+        return codecoolers.stream().map(User::getFullName).collect(Collectors.toList());
     }
 
-    private ArrayList<String> getCoinsFromWallets() {
-        ArrayList<String> coinsInWallets = new ArrayList<>();
-        for (User user : codecoolers) {
-            Wallet wallet = new SQLiteWalletsDAO().getWalletByUserID(user.getId());
-            coinsInWallets.add(String.valueOf(wallet.getCurrentState()));
-        }
-        return coinsInWallets;
+    private List<String> getCoinsFromWallets() {
+        SQLiteWalletsDAO dao = new SQLiteWalletsDAO();
+        return codecoolers.stream().map(
+                user -> String.valueOf(dao.getWalletByUserID(user.getId()).getCurrentState())).collect(Collectors.toList());
     }
-
 }

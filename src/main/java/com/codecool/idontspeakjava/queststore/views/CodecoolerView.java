@@ -14,7 +14,7 @@ public class CodecoolerView extends UserView{
                             "4 - See available quests\n" +
                             "5 - Manage your team\n\n\n" +
                     "0 - Exit the program\n",
-                CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, Colors.BLACK_BOLD_BRIGHT, userName, rank, Colors.RESET));
+                CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, Colors.BLUE_BOLD_BRIGHT, userName, rank, Colors.RESET));
     }
 
     public void showManageTeamMenu(String userName, String team) {
@@ -24,22 +24,28 @@ public class CodecoolerView extends UserView{
                         "2 - Join to existing team\n" +
                         "3 - Leave your team\n\n\n" +
                         "0 - Back to main menu\n",
-                CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, Colors.BLACK_BOLD_BRIGHT, userName, team, Colors.RESET));
+                CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, Colors.BLUE_BOLD_BRIGHT, userName, team, Colors.RESET));
     }
 
-    public void showWallet(long totalMoney, long totalEarnings, ArrayList<String> namesOfArtifacts){
+    public void showWallet(long totalMoney, long totalEarnings, ArrayList<String> namesOfArtifacts, ArrayList<String> usedArtifacts){
         System.out.println(String.format(
                     "%s%sWALLET         %sCurrent state: %s%scc         %sTotal earnings: %s%scc\n%s",
-                CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, Colors.BLACK_BOLD_BRIGHT, Colors.YELLOW_BOLD_BRIGHT,
-                totalMoney, Colors.BLACK_BOLD_BRIGHT, Colors.YELLOW_BOLD_BRIGHT,
+                CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, Colors.BLUE_BOLD_BRIGHT, Colors.YELLOW_BOLD_BRIGHT,
+                totalMoney, Colors.BLUE_BOLD_BRIGHT, Colors.YELLOW_BOLD_BRIGHT,
                 totalEarnings, Colors.RESET));
         if (namesOfArtifacts.size() > 0) {
-            System.out.println(String.format("%sYour artifacts: %s", Colors.BLACK_BOLD_BRIGHT, Colors.RESET));
+            System.out.println(String.format("%sYour artifacts: %s", Colors.BLUE_BOLD_BRIGHT, Colors.RESET));
             for (String artifact : namesOfArtifacts) {
                 System.out.println(String.format("- %s%s%s", Colors.WHITE_BOLD, artifact, Colors.RESET));
             }
         } else {
             System.out.println("No artifacts");
+        }
+        if (usedArtifacts.size() > 0) {
+            System.out.println(String.format("\n%sUsed artifacts: %s", Colors.BLUE_BOLD_BRIGHT, Colors.RESET));
+            for (String artifact : usedArtifacts) {
+                System.out.println(String.format("- %s%s%s", Colors.WHITE_BOLD, artifact, Colors.RESET));
+            }
         }
         System.out.println("\n\nPress enter to continue...");
         getUserInput();
@@ -49,10 +55,10 @@ public class CodecoolerView extends UserView{
         String category = (artifactsInfo.get(0).split("@").length > 2) ? "MAGIC" : "BASIC";
         System.out.println(String.format(
                     "%s%s%s ARTIFACTS SHOP         %sYOUR MONEY: %s%scc\n%s",
-                CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, category, Colors.BLACK_BOLD_BRIGHT, Colors.YELLOW_BOLD_BRIGHT,
+                CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, category, Colors.BLUE_BOLD_BRIGHT, Colors.YELLOW_BOLD_BRIGHT,
                 balance, Colors.RESET));
         for (String artifact : artifactsInfo) {
-            String title = category.equals("MAGIC") ? Colors.PURPLE_BOLD_BRIGHT + artifact.split("@")[0] : artifact.split("@")[0];
+            String title = category.equals("MAGIC") ? Colors.RED_BOLD_BRIGHT + artifact.split("@")[0] : artifact.split("@")[0];
             String price = artifact.split("@")[1];
             String collected = category.equals("MAGIC") ?
                     artifact.split("@")[2] + Colors.RESET + "/" + Colors.YELLOW_BOLD_BRIGHT : "";
@@ -78,7 +84,7 @@ public class CodecoolerView extends UserView{
             String title = questInfo[0], reward = questInfo[1], description = questInfo[2];
             System.out.println(String.format(
                         "%s%s     %sReward: %s%scc\n%s%s\n",
-                    Colors.WHITE_BOLD, title, Colors.BLACK_BOLD_BRIGHT, Colors.YELLOW_BOLD_BRIGHT, reward,
+                    Colors.WHITE_BOLD, title, Colors.BLUE_BOLD_BRIGHT, Colors.YELLOW_BOLD_BRIGHT, reward,
                     Colors.RESET, description));
         }
         System.out.println("\nPress enter to continue...");

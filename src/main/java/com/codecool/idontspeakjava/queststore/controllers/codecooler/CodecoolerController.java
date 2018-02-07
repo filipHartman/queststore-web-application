@@ -85,21 +85,29 @@ public class CodecoolerController {
     }
 
     private void checkWallet() throws SQLException {
+        ArrayList<String> usedArtifacts = new ArrayList<>();
         ArrayList<String> namesOfArtifacts = new ArrayList<>();
         if (teamsDAO.checkIfUserIsInTeam(codecooler)) {
             for (TeamOrder order : orderDAO.getAllOrdersByTeam(teamsDAO.getUserTeam(codecooler))) {
-                if (artifactDAO.getArtifact(order.getArtifactID()).getPrice() == order.getCollectedMoney())
-                    namesOfArtifacts.add(Colors.PURPLE_BOLD_BRIGHT + artifactDAO
-                            .getArtifact(order.getArtifactID())
-                            .getTitle());
+                if (artifactDAO.getArtifact(order.getArtifactID()).getPrice() == order.getCollectedMoney()) {
+                    Artifact artifact = artifactDAO.getArtifact(order.getArtifactID());
+                    if (order.isUsed()) {
+                        usedArtifacts.add(Colors.RED_BOLD_BRIGHT + artifact.getTitle());
+                    } else {
+                        namesOfArtifacts.add(Colors.RED_BOLD_BRIGHT + artifact.getTitle());
+                    }
+                }
             }
         }
         for (Order order : orderDAO.getAllOrdersByUser(codecooler)) {
-            namesOfArtifacts.add(artifactDAO
-                    .getArtifact(order.getArtifactID())
-                    .getTitle());
+            Artifact artifact = artifactDAO.getArtifact(order.getArtifactID());
+            if (order.isUsed()) {
+                usedArtifacts.add(artifact.getTitle());
+            } else {
+                namesOfArtifacts.add(artifact.getTitle());
+            }
         }
-        view.showWallet(wallet.getCurrentState(), wallet.getTotalEarnings(), namesOfArtifacts);
+        view.showWallet(wallet.getCurrentState(), wallet.getTotalEarnings(), namesOfArtifacts, usedArtifacts);
     }
 
     private void buyArtifact() {
@@ -117,7 +125,7 @@ public class CodecoolerController {
     }
 
     private void addContributionToArtifact() throws SQLException {
-        Artifact artifact = null;
+        Artifact artifact;
         long currentState = wallet.getCurrentState();
         if (teamsDAO.checkIfUserIsInTeam(codecooler)) {
             Team team = teamsDAO.getUserTeam(codecooler);
@@ -130,7 +138,7 @@ public class CodecoolerController {
                     List<TeamOrder> teamOrders = orderDAO.getAllOrdersByTeam(team);
                     TeamOrder existingOrder = null;
                     for (TeamOrder teamOrder : teamOrders) {
-                        if (teamOrder.getArtifactID() == artifact.getId()) {
+                        if (teamOrder.getArtifactID() == artifact.getId() && !teamOrder.isUsed()) {
                             existingOrder = teamOrder;
                         }
                     }
@@ -192,8 +200,8 @@ public class CodecoolerController {
     private int getCollectedMoney(Artifact artifact) {
         List<TeamOrder> orders = orderDAO.getAllOrdersByTeam(teamsDAO.getUserTeam(codecooler));
         for (TeamOrder order : orders) {
-            if (order.getArtifactID() == artifact.getId()) {
-                return order.getCollectedMoney();
+            if (order.getArtifactID() == artifact.getId() && !order.isUsed()) {
+                    return order.getCollectedMoney();
             }
         }
         return 0;
