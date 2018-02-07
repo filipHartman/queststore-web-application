@@ -125,7 +125,7 @@ public class CodecoolerController {
     }
 
     private void addContributionToArtifact() throws SQLException {
-        Artifact artifact = null;
+        Artifact artifact;
         long currentState = wallet.getCurrentState();
         if (teamsDAO.checkIfUserIsInTeam(codecooler)) {
             Team team = teamsDAO.getUserTeam(codecooler);
@@ -138,7 +138,7 @@ public class CodecoolerController {
                     List<TeamOrder> teamOrders = orderDAO.getAllOrdersByTeam(team);
                     TeamOrder existingOrder = null;
                     for (TeamOrder teamOrder : teamOrders) {
-                        if (teamOrder.getArtifactID() == artifact.getId()) {
+                        if (teamOrder.getArtifactID() == artifact.getId() && !teamOrder.isUsed()) {
                             existingOrder = teamOrder;
                         }
                     }
@@ -200,8 +200,8 @@ public class CodecoolerController {
     private int getCollectedMoney(Artifact artifact) {
         List<TeamOrder> orders = orderDAO.getAllOrdersByTeam(teamsDAO.getUserTeam(codecooler));
         for (TeamOrder order : orders) {
-            if (order.getArtifactID() == artifact.getId()) {
-                return order.getCollectedMoney();
+            if (order.getArtifactID() == artifact.getId() && !order.isUsed()) {
+                    return order.getCollectedMoney();
             }
         }
         return 0;
