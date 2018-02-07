@@ -14,12 +14,14 @@ public class UserTest {
                         "Kowalski",
                         "98nc2y39xm30",
                         "jan.kowalski@onet.pl",
-                        "Student"},
+                        "Student",
+                        "Jan Kowalski"},
                 new String[]{user.getFirstName(),
                         user.getLastName(),
                         user.getPasswordHash(),
                         user.getEmail(),
-                        user.getPermission().name()});
+                        user.getPermission().name(),
+                        user.getFullName()});
     }
 
     @Test
@@ -39,13 +41,15 @@ public class UserTest {
                         "c23c123c123",
                         "zbigniew.stonoga@karakan.com",
                         "Mentor",
-                        "1234"},
+                        "1234",
+                        "Zbigniew Stonoga"},
                 new String[]{user.getFirstName(),
                         user.getLastName(),
                         user.getPasswordHash(),
                         user.getEmail(),
                         user.getPermission().name(),
-                        String.valueOf(user.getId())});
+                        String.valueOf(user.getId()),
+                        user.getFullName()});
     }
 
     @Test
@@ -65,13 +69,15 @@ public class UserTest {
                         "dkosdakosdako",
                         "jozef.pilsudski@polska.com",
                         "Root",
-                        "321231"},
+                        "321231",
+                        "Józef Piłsudski"},
                 new String[]{user.getFirstName(),
                         user.getLastName(),
                         user.getPasswordHash(),
                         user.getEmail(),
                         user.getPermission().name(),
-                        String.valueOf(user.getId())});
+                        String.valueOf(user.getId()),
+                        user.getFullName()});
     }
 
 
