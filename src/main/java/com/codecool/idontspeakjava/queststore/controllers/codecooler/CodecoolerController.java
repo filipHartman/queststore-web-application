@@ -190,6 +190,9 @@ public class CodecoolerController {
                     if (chosenPosition <= artifacts.size()) {
                         chosenArtifact = artifacts.get(chosenPosition - 1);
                         optionIsChosen = true;
+                        if (artifactsInfo.get(artifacts.indexOf(chosenArtifact)).split("@")[2].equals("IN WALLET")) {
+                            optionIsChosen = false;
+                        }
                     }
                 }
             }

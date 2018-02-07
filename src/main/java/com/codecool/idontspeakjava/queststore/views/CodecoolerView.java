@@ -44,7 +44,7 @@ public class CodecoolerView extends UserView{
         if (usedArtifacts.size() > 0) {
             System.out.println(String.format("\n%sUsed artifacts: %s", Colors.BLUE_BOLD_BRIGHT, Colors.RESET));
             for (String artifact : usedArtifacts) {
-                System.out.println(String.format("- %s%s%s", Colors.WHITE_BOLD, artifact, Colors.RESET));
+                System.out.print(String.format("| %s%s%s ", Colors.WHITE_BOLD, artifact, Colors.RESET));
             }
         }
         System.out.println("\n\nPress enter to continue...");
@@ -84,7 +84,7 @@ public class CodecoolerView extends UserView{
             String title = questInfo[0], reward = questInfo[1], description = questInfo[2];
             System.out.println(String.format(
                         "%s%s     %sReward: %s%scc\n%s%s\n",
-                    Colors.WHITE_BOLD, title, Colors.BLUE_BOLD_BRIGHT, Colors.YELLOW_BOLD_BRIGHT, reward,
+                    Colors.BLUE_BOLD_BRIGHT, title, Colors.BLUE_BOLD_BRIGHT, Colors.YELLOW_BOLD_BRIGHT, reward,
                     Colors.RESET, description));
         }
         System.out.println("\nPress enter to continue...");
