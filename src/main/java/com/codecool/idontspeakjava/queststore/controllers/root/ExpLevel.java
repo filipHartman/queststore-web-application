@@ -4,8 +4,6 @@ import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteExperienceLe
 import com.codecool.idontspeakjava.queststore.models.ExperienceLevel;
 import com.codecool.idontspeakjava.queststore.views.RootView;
 
-import java.sql.SQLException;
-
 class ExpLevel{
     private static final String EXIT = "0";
     private static final int SELECT_NAME = 0;
@@ -14,9 +12,11 @@ class ExpLevel{
     private RootView view;
     private long threshold;
     private String lvlName;
+    private InputValidation validation;
 
     ExpLevel(RootView view){
         this.view = view;
+        validation = new InputValidation(view);
     }
 
     void CreateExpLvl(){
@@ -72,31 +72,18 @@ class ExpLevel{
 
     private boolean setName(String input){
         boolean nameNotSet = true;
-        if (input.matches("[a-zA-Z0-9,. ]+")){
-            try{
-                if (!new SQLiteExperienceLevelDAO().checkIfExperienceLevelExists(input)) {
-                    lvlName = input;
-                    nameNotSet = false;
-                }else{
-                    view.showExistingValueWarning();
-                }
-            }catch(SQLException e){
-                e.printStackTrace();
-                view.showDatabaseError();
-            }
-        }else{
-            view.showWrongExpLvlInput();
+        if (validation.checkExpLvlName(input)){
+            lvlName = input;
+            nameNotSet = false;
         }
         return nameNotSet;
     }
 
     private boolean setThreshold(String input){
         boolean thresholdNotSet = true;
-        if (input.matches("[0-9]+")){
+        if (validation.setThreshold(input)){
             threshold = new Long(input).longValue();
             thresholdNotSet = false;
-        }else{
-            view.WrongThresholdInput();
         }
         return thresholdNotSet;
     }

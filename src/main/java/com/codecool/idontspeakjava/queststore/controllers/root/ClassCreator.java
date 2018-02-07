@@ -4,16 +4,16 @@ import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteCodecoolClas
 import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
 import com.codecool.idontspeakjava.queststore.views.RootView;
 
-import java.sql.SQLException;
-
 class ClassCreator {
     private static final String EXIT = "0";
 
     private String className;
     private RootView view;
+    private InputValidation validation;
 
     ClassCreator(RootView view) {
         this.view = view;
+        validation = new InputValidation(view);
     }
 
     void createClass() {
@@ -36,20 +36,9 @@ class ClassCreator {
 
     private boolean setName(String input){
         boolean nameNotSet = true;
-        if (input.matches("[a-zA-Z0-9,. ]+")) {
-            try{
-                if (new SQLiteCodecoolClassDAO().checkIfClassExists(input)) {
-                    view.showExistingValueWarning();
-                }else{
-                    className = input;
-                    nameNotSet = false;
-                }
-            }catch (SQLException e) {
-                e.printStackTrace();
-                view.showDatabaseError();
-            }
-        }else{
-            view.showWrongClassNameInput();
+        if (validation.checkClassName(input)) {
+            className = input;
+            nameNotSet = false;
         }
         return nameNotSet;
     }
