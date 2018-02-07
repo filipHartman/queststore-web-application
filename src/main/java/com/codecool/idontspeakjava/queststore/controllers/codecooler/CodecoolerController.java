@@ -92,9 +92,9 @@ public class CodecoolerController {
                 if (artifactDAO.getArtifact(order.getArtifactID()).getPrice() == order.getCollectedMoney()) {
                     Artifact artifact = artifactDAO.getArtifact(order.getArtifactID());
                     if (order.isUsed()) {
-                        usedArtifacts.add(Colors.PURPLE_BOLD_BRIGHT + artifact.getTitle());
+                        usedArtifacts.add(Colors.RED_BOLD_BRIGHT + artifact.getTitle());
                     } else {
-                        namesOfArtifacts.add(Colors.PURPLE_BOLD_BRIGHT + artifact.getTitle());
+                        namesOfArtifacts.add(Colors.RED_BOLD_BRIGHT + artifact.getTitle());
                     }
                 }
             }
