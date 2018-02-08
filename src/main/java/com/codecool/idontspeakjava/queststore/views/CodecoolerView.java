@@ -1,6 +1,5 @@
 package com.codecool.idontspeakjava.queststore.views;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,11 +53,11 @@ public class CodecoolerView extends UserView{
 
     public void showBuyArtifactMenu(ArrayList<String> artifactsInfo, long balance){
         String category = (artifactsInfo.get(0).split("@").length > 3) ? "MAGIC" : "BASIC";
+        ArrayList<Integer> maxLengths = getMaxStringsLength(artifactsInfo);
         System.out.println(String.format(
-                    "%s%s%s ARTIFACTS SHOP         %sYOUR MONEY: %s%scc\n%s",
+                    "%s%s%s ARTIFACTS SHOP" + getSpaces(maxLengths.get(0) + maxLengths.get(1) - 27) + "%sYOUR MONEY: %s%scc\n%s",
                 CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, category, Colors.BLUE_BOLD_BRIGHT, Colors.YELLOW_BOLD_BRIGHT,
                 balance, Colors.RESET));
-        ArrayList<Integer> maxLengths = getMaxStringsLength(artifactsInfo);
         for (String artifact : artifactsInfo) {
             String title = artifact.split("@")[0] + getSpaces(maxLengths.get(0) - artifact.split("@")[0].length());
             title = category.equals("MAGIC") ? Colors.RED_BOLD_BRIGHT + title : title;
@@ -67,10 +66,10 @@ public class CodecoolerView extends UserView{
             String collected = category.equals("MAGIC") ?
                     artifact.split("@")[3] + Colors.RESET + "/" + Colors.YELLOW_BOLD_BRIGHT : "";
             int index = artifactsInfo.indexOf(artifact);
-            String row = "%s. %s%s   %s    %s%s%scc%s";
+            String row = "%s. %s%s %s %s%s%scc%s";
             if (collected.equals("IN WALLET" + Colors.RESET + "/" + Colors.YELLOW_BOLD_BRIGHT)) {
-                collected = "    IN WALLET" + Colors.RESET;
-                row = "%s. %s%s   " + description + Colors.GREEN_BOLD_BRIGHT + collected;
+                collected = " IN WALLET" + Colors.RESET;
+                row = "%s. %s%s " + description + Colors.GREEN_BOLD_BRIGHT + collected;
                 price = "";
             }
             System.out.println(String.format(
