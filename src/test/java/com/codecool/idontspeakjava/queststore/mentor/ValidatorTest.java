@@ -139,4 +139,29 @@ public class ValidatorTest {
         List<Integer> list = Arrays.asList(1, 2, 3);
         assertTrue(new Validator().isSelectFromListInvalid(list, "5"));
     }
+
+    @Test
+    public void checkIfNameIsValid_HaveOnlyLetters_ReturnTrue() {
+        assertTrue(new Validator().checkIfNameIsValid("Jacek"));
+    }
+
+    @Test
+    public void checkIfNameIsValid_HaveLettersAndSpaces_ReturnFalse() {
+        assertFalse(new Validator().checkIfNameIsValid("Jacek "));
+    }
+
+    @Test
+    public void checkIfNameIsValid_HaveLettersAndSpecialChars_ReturnFalse() {
+        assertFalse(new Validator().checkIfNameIsValid("Jacek@"));
+    }
+
+    @Test
+    public void checkIfNameIsValid_IsEmpty_ReturnFalse() {
+        assertFalse(new Validator().checkIfNameIsValid(""));
+    }
+
+    @Test
+    public void checkIfNameIsValid_HaveLettersAndDigits_ReturnFalse() {
+        assertFalse(new Validator().checkIfNameIsValid("Jacek2"));
+    }
 }
