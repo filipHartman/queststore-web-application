@@ -37,6 +37,11 @@ public class ValidatorTest {
     }
 
     @Test
+    public void checkIfIsPositiveInteger_InputIsEmpty_ReturnFalse() {
+        assertFalse(new Validator().checkIfIsPositiveInteger(""));
+    }
+
+    @Test
     public void checkIfDescriptionIsValid_HaveCharsBesideSpaceDigitLetterDotComma_ReturnFalse() {
         assertFalse(new Validator().checkIfDescriptionIsValid("Ultra super, test % .."));
     }
@@ -44,6 +49,11 @@ public class ValidatorTest {
     @Test
     public void checkIfDescriptionIsValid_DoNotHaveCharsBesideSpaceDigitLetterDotComma_ReturnTrue() {
         assertTrue(new Validator().checkIfDescriptionIsValid("This is, a, correct description. Probably."));
+    }
+
+    @Test
+    public void checkIfDescriptionIsValid_DescriptionIsEmpty_ReturnFalse() {
+        assertFalse(new Validator().checkIfDescriptionIsValid(""));
     }
 
     @Test
@@ -62,6 +72,12 @@ public class ValidatorTest {
     public void checkIfTitleIsValid_HaveLettersOrSpaceAndIsUnique_ReturnTrue() {
         List<String> titles = Arrays.asList("Title", "Title 2", "Title 3");
         assertTrue(new Validator().checkIfTitleIsValid("Title 4", titles));
+    }
+
+    @Test
+    public void checkIfTitleIsValid_TitleIsEmpty_ReturnFalse() {
+        List<String> titles = Arrays.asList("Title", "Title 2", "Title 3");
+        assertFalse(new Validator().checkIfTitleIsValid("", titles));
     }
 
     @Test
