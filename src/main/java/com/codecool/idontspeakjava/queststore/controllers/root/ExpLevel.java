@@ -75,6 +75,8 @@ class ExpLevel{
         if (validation.checkExpLvlName(input)){
             lvlName = input;
             nameNotSet = false;
+        }else{
+            view.showWrongExpLvlInput();
         }
         return nameNotSet;
     }
@@ -82,7 +84,7 @@ class ExpLevel{
     private boolean setThreshold(String input){
         boolean thresholdNotSet = true;
         if (validation.setThreshold(input)){
-            threshold = new Long(input).longValue();
+            threshold = Long.valueOf(input).longValue();
             thresholdNotSet = false;
         }
         return thresholdNotSet;
