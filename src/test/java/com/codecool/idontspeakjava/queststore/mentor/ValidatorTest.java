@@ -1,26 +1,36 @@
 package com.codecool.idontspeakjava.queststore.mentor;
 
+import com.codecool.idontspeakjava.queststore.controllers.mentor.Validator;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class ValidatorTest {
 
     @Test
-    public void checkIfPositiveIntegerShouldReturnFalseWhenInputIsText() {
+    public void checkIfIsPositiveIntegerShouldReturnFalseWhenInputIsText() {
+        assertFalse(new Validator().checkIfIsPositiveInteger("Krowa"));
     }
 
     @Test
-    public void checkIfPositiveIntegerShouldReturnFalseWhenInputIsFloat() {
+    public void checkIfIsPositiveIntegerShouldReturnFalseWhenInputIsFloat() {
+        assertFalse(new Validator().checkIfIsPositiveInteger("1.2"));
     }
 
     @Test
-    public void checkIfPositiveIntegerShouldReturnFalseWhenInputIsZero() {
+    public void checkIfIsPositiveIntegerShouldReturnFalseWhenInputIsZero() {
+        assertFalse(new Validator().checkIfIsPositiveInteger("0"));
     }
 
     @Test
-    public void checkIfPositiveIntegerShouldReturnFalseWhenInputIsBelowZero() {
+    public void checkIfIsPositiveIntegerShouldReturnFalseWhenInputIsBelowZero() {
+        assertFalse(new Validator().checkIfIsPositiveInteger("-5"));
     }
 
     @Test
-    public void checkIfPositiveIntegerShouldReturnTrueWhenInputIsAnIntegerAboveZero() {
+    public void checkIfIsPositiveIntegerShouldReturnTrueWhenInputIsAnIntegerAboveZero() {
+        assertTrue(new Validator().checkIfIsPositiveInteger("5"));
     }
 }
