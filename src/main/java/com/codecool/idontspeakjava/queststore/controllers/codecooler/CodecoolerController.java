@@ -1,6 +1,8 @@
 package com.codecool.idontspeakjava.queststore.controllers.codecooler;
 
-import com.codecool.idontspeakjava.queststore.database.*;
+import com.codecool.idontspeakjava.queststore.database.TeamsDAO;
+import com.codecool.idontspeakjava.queststore.database.WalletsDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.*;
 import com.codecool.idontspeakjava.queststore.models.*;
 import com.codecool.idontspeakjava.queststore.views.CodecoolerView;
 import com.codecool.idontspeakjava.queststore.views.Colors;
@@ -12,12 +14,12 @@ import java.util.List;
 public class CodecoolerController {
     private CodecoolerView view;
     private User codecooler;
-    private ArtifactsDAO artifactDAO;
+    private SQLiteArtifactsDAO artifactDAO;
     private WalletsDAO walletDAO;
-    private ExperienceLevelDAO experienceLevelDAO;
-    private OrdersDAO orderDAO;
+    private SQLiteExperienceLevelDAO experienceLevelDAO;
+    private SQLiteOrdersDAO orderDAO;
     private TeamsDAO teamsDAO;
-    private QuestsDAO questsDAO;
+    private SQLiteQuestsDAO questsDAO;
     private Wallet wallet;
 
     private static final String SEE_WALLET = "1";
@@ -31,12 +33,12 @@ public class CodecoolerController {
     public CodecoolerController(User user) {
         this.view = new CodecoolerView();
         this.codecooler = user;
-        this.artifactDAO = new ArtifactsDAO();
-        this.experienceLevelDAO = new ExperienceLevelDAO();
-        this.walletDAO = new WalletsDAO();
-        this.orderDAO = new OrdersDAO();
-        this.teamsDAO = new TeamsDAO();
-        this.questsDAO = new QuestsDAO();
+        this.artifactDAO = new SQLiteArtifactsDAO();
+        this.experienceLevelDAO = new SQLiteExperienceLevelDAO();
+        this.walletDAO = new SQLiteWalletsDAO();
+        this.orderDAO = new SQLiteOrdersDAO();
+        this.teamsDAO = new SQLiteTeamsDAO();
+        this.questsDAO = new SQLiteQuestsDAO();
         this.wallet = walletDAO.getWalletByUserID(codecooler.getId());
     }
 
@@ -83,21 +85,29 @@ public class CodecoolerController {
     }
 
     private void checkWallet() throws SQLException {
+        ArrayList<String> usedArtifacts = new ArrayList<>();
         ArrayList<String> namesOfArtifacts = new ArrayList<>();
         if (teamsDAO.checkIfUserIsInTeam(codecooler)) {
             for (TeamOrder order : orderDAO.getAllOrdersByTeam(teamsDAO.getUserTeam(codecooler))) {
-                if (artifactDAO.getArtifact(order.getArtifactID()).getPrice() == order.getCollectedMoney())
-                    namesOfArtifacts.add(Colors.PURPLE_BOLD_BRIGHT + artifactDAO
-                            .getArtifact(order.getArtifactID())
-                            .getTitle());
+                if (artifactDAO.getArtifact(order.getArtifactID()).getPrice() == order.getCollectedMoney()) {
+                    Artifact artifact = artifactDAO.getArtifact(order.getArtifactID());
+                    if (order.isUsed()) {
+                        usedArtifacts.add(Colors.RED_BOLD_BRIGHT + artifact.getTitle());
+                    } else {
+                        namesOfArtifacts.add(Colors.RED_BOLD_BRIGHT + artifact.getTitle());
+                    }
+                }
             }
         }
         for (Order order : orderDAO.getAllOrdersByUser(codecooler)) {
-            namesOfArtifacts.add(artifactDAO
-                    .getArtifact(order.getArtifactID())
-                    .getTitle());
+            Artifact artifact = artifactDAO.getArtifact(order.getArtifactID());
+            if (order.isUsed()) {
+                usedArtifacts.add(artifact.getTitle());
+            } else {
+                namesOfArtifacts.add(artifact.getTitle());
+            }
         }
-        view.showWallet(wallet.getCurrentState(), wallet.getTotalEarnings(), namesOfArtifacts);
+        view.showWallet(wallet.getCurrentState(), wallet.getTotalEarnings(), namesOfArtifacts, usedArtifacts);
     }
 
     private void buyArtifact() {
@@ -115,7 +125,7 @@ public class CodecoolerController {
     }
 
     private void addContributionToArtifact() throws SQLException {
-        Artifact artifact = null;
+        Artifact artifact;
         long currentState = wallet.getCurrentState();
         if (teamsDAO.checkIfUserIsInTeam(codecooler)) {
             Team team = teamsDAO.getUserTeam(codecooler);
@@ -128,7 +138,7 @@ public class CodecoolerController {
                     List<TeamOrder> teamOrders = orderDAO.getAllOrdersByTeam(team);
                     TeamOrder existingOrder = null;
                     for (TeamOrder teamOrder : teamOrders) {
-                        if (teamOrder.getArtifactID() == artifact.getId()) {
+                        if (teamOrder.getArtifactID() == artifact.getId() && !teamOrder.isUsed()) {
                             existingOrder = teamOrder;
                         }
                     }
@@ -140,6 +150,9 @@ public class CodecoolerController {
                         existingOrder.setCollectedMoney(existingOrder.getCollectedMoney() + contribution);
                         orderDAO.updateOrder(existingOrder);
                     } else {
+                        if (contribution > artifact.getPrice()) {
+                            contribution = artifact.getPrice();
+                        }
                         TeamOrder newOrder = new TeamOrder(artifact.getId(), team.getId(), false, contribution);
                         orderDAO.createOrder(newOrder);
                     }
@@ -159,11 +172,11 @@ public class CodecoolerController {
         for (Artifact artifact : artifactDAO.getAllArtifacts()) {
             if (artifact.getCategory() == category) {
                 artifacts.add(artifact);
-                String string = artifact.getTitle() + "@" + artifact.getPrice();
+                String string = artifact.getTitle() + "@" + artifact.getDescription() + "@" + artifact.getPrice();
                 string += category.name().equals(ArtifactCategory.Magic.name()) ?
                         String.valueOf("@" + getCollectedMoney(artifact)) : "";
                 if (category.name().equals(ArtifactCategory.Magic.name()) && artifact.getPrice() == getCollectedMoney(artifact)) {
-                    string = artifact.getTitle() + "@" + artifact.getPrice() + "@" + "IN WALLET";
+                    string = artifact.getTitle() + "@" + artifact.getDescription() + "@" + artifact.getPrice() + "@" + "IN WALLET";
                 }
                 artifactsInfo.add(string);
             }
@@ -180,6 +193,11 @@ public class CodecoolerController {
                     if (chosenPosition <= artifacts.size()) {
                         chosenArtifact = artifacts.get(chosenPosition - 1);
                         optionIsChosen = true;
+                        String[] chosenArtifactInfo = artifactsInfo.get(chosenPosition - 1).split("@");
+                        if (chosenArtifactInfo.length > 3 && chosenArtifactInfo[3].equals("IN WALLET")) {
+                            optionIsChosen = false;
+                            chosenArtifact = null;
+                        }
                     }
                 }
             }
@@ -190,8 +208,8 @@ public class CodecoolerController {
     private int getCollectedMoney(Artifact artifact) {
         List<TeamOrder> orders = orderDAO.getAllOrdersByTeam(teamsDAO.getUserTeam(codecooler));
         for (TeamOrder order : orders) {
-            if (order.getArtifactID() == artifact.getId()) {
-                return order.getCollectedMoney();
+            if (order.getArtifactID() == artifact.getId() && !order.isUsed()) {
+                    return order.getCollectedMoney();
             }
         }
         return 0;

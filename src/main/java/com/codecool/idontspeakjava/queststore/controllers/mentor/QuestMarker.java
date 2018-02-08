@@ -1,8 +1,9 @@
 package com.codecool.idontspeakjava.queststore.controllers.mentor;
 
-import com.codecool.idontspeakjava.queststore.database.QuestsDAO;
-import com.codecool.idontspeakjava.queststore.database.UserDAO;
 import com.codecool.idontspeakjava.queststore.database.WalletsDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteQuestsDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteWalletsDAO;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
 import com.codecool.idontspeakjava.queststore.models.Quest;
 import com.codecool.idontspeakjava.queststore.models.User;
@@ -26,8 +27,8 @@ public class QuestMarker {
 
     QuestMarker(MentorView view) {
         this.view = view;
-        quests = new QuestsDAO().getAllQuests();
-        codecoolers = new UserDAO().getUsersByPermission(Permissions.Student);
+        quests = new SQLiteQuestsDAO().getAllQuests();
+        codecoolers = new SQLiteUserDAO().getUsersByPermission(Permissions.Student);
     }
 
     void markQuest() {
@@ -66,17 +67,27 @@ public class QuestMarker {
         }
     }
 
-    private ArrayList<String> createQuestsToPrint() {
-        ArrayList<String> questsToPrint = new ArrayList<>();
-        for (Quest quest : quests) {
-            questsToPrint.add(String.format("%s - reward : %d", quest.getTitle(), quest.getReward()));
+    private List<String[]> createQuestsToPrint() {
+        final int INDEX = 0;
+        final int TITLE = 1;
+        final int REWARD = 2;
+        final int ARRAY_SIZE = 3;
+
+        List<String[]> questsToPrint = new ArrayList<>();
+
+        for (Quest q : quests) {
+            String[] arrayWithQuest = new String[ARRAY_SIZE];
+            arrayWithQuest[INDEX] = "";
+            arrayWithQuest[TITLE] = q.getTitle();
+            arrayWithQuest[REWARD] = String.valueOf(q.getReward());
+            questsToPrint.add(arrayWithQuest);
         }
         return questsToPrint;
     }
 
     private void addCoinsFromQuest() {
         int reward = selectedQuest.getReward();
-        WalletsDAO walletsDAO = new WalletsDAO();
+        WalletsDAO walletsDAO = new SQLiteWalletsDAO();
         Wallet wallet = walletsDAO.getWalletByUserID(selectedUser.getId());
 
         long currentCoins = wallet.getCurrentState();
@@ -89,7 +100,6 @@ public class QuestMarker {
     }
 
     private List<String> getUsersFullNames() {
-        return codecoolers.stream().map(codecooler -> String.format(
-                "%s %s", codecooler.getFirstName(), codecooler.getLastName())).collect(Collectors.toList());
+        return codecoolers.stream().map(User::getFullName).collect(Collectors.toList());
     }
 }

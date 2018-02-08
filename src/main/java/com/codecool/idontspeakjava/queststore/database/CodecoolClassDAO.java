@@ -2,192 +2,32 @@ package com.codecool.idontspeakjava.queststore.database;
 
 import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
 import com.codecool.idontspeakjava.queststore.models.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-public class CodecoolClassDAO extends AbstractDAO {
+public interface CodecoolClassDAO {
+    void createCodecoolClass(CodecoolClass codecoolClass);
 
-    public static final Logger log = LoggerFactory.getLogger(CodecoolClassDAO.class);
+    CodecoolClass getCodecoolClass(String name);
 
+    List<CodecoolClass> getAllCodecoolClasses();
 
-    public void createCodecoolClass(CodecoolClass codecoolClass) {
-        String query = "INSERT INTO classes(name) VALUES(?)";
+    void updateCodecoolClass(CodecoolClass codecoolClass);
 
+    void deleteCodecoolClass(CodecoolClass codecoolClass);
 
-        try {
-            if (!checkIfClassExists(codecoolClass.getName())) {
-                PreparedStatement preparedStatement = getConnection().prepareStatement(query);
-                preparedStatement.setString(1, codecoolClass.getName());
+    void addUserToCodecoolClass(User user, CodecoolClass codecoolClass);
 
-                preparedStatement.executeUpdate();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+    CodecoolClass getUserCodecoolClass(User user);
 
-    public CodecoolClass getCodecoolClass(String name) {
-        String query = "SELECT * FROM classes WHERE name = ?";
-        CodecoolClass codecoolClass = null;
-        try {
-            if (checkIfClassExists(name)) {
-                PreparedStatement preparedStatement = getConnection().prepareStatement(query);
-                preparedStatement.setString(1, name);
+    void removeUserFromCodecoolClass(User user);
 
-                ResultSet resultSet = preparedStatement.executeQuery();
+    boolean checkIfClassExists(int id) throws SQLException;
 
-                codecoolClass = new CodecoolClass(resultSet.getInt("id"), resultSet.getString("name"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return codecoolClass;
-    }
+    boolean checkIfClassExists(String name) throws SQLException;
 
-    public List<CodecoolClass> getAllCodecoolClasses() {
-        List<CodecoolClass> codecoolClasses = new ArrayList<>();
-        String query = "SELECT * FROM classes";
-        try {
-            ResultSet resultSet = getConnection().createStatement().executeQuery(query);
-            while (resultSet.next()) {
-                codecoolClasses.add(new CodecoolClass(resultSet.getInt("id"), resultSet.getString("name")));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return codecoolClasses;
-    }
+    boolean checkIfUserIsInClass(User user) throws SQLException;
 
-    public void updateCodecoolClass(CodecoolClass codecoolClass) {
-        String query = "UPDATE classes SET name = ? WHERE id  = ?";
-
-        try {
-            if (checkIfClassExists(codecoolClass.getId())) {
-                PreparedStatement preparedStatement = getConnection().prepareStatement(query);
-                preparedStatement.setString(1, codecoolClass.getName());
-                preparedStatement.setInt(2, codecoolClass.getId());
-
-                preparedStatement.executeUpdate();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void deleteCodecoolClass(CodecoolClass codecoolClass) {
-        String query = "DELETE FROM classes WHERE name = ?";
-        try {
-            PreparedStatement preparedStatement = getConnection().prepareStatement(query);
-            preparedStatement.setString(1, codecoolClass.getName());
-
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void addUserToCodecoolClass(User user, CodecoolClass codecoolClass) {
-        String query = "INSERT INTO users_in_classes(class_id, user_id) VALUES(?, ?)";
-
-        try {
-            if (checkIfClassExists(codecoolClass.getName()) && !checkIfUserIsInClass(user)) {
-
-                PreparedStatement preparedStatement = getConnection().prepareStatement(query);
-                preparedStatement.setInt(1, codecoolClass.getId());
-                preparedStatement.setInt(2, user.getId());
-
-                preparedStatement.executeUpdate();
-
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public CodecoolClass getUserCodecoolClass(User user) {
-        CodecoolClass codecoolClass = null;
-        String query = "SELECT * FROM classes\n" +
-                "INNER JOIN users_in_classes ON classes.id = users_in_classes.class_id\n" +
-                "WHERE users_in_classes.user_id = ?;";
-
-        try {
-            if (checkIfUserIsInClass(user)) {
-                PreparedStatement preparedStatement = getConnection().prepareStatement(query);
-                preparedStatement.setInt(1, user.getId());
-
-                ResultSet resultSet = preparedStatement.executeQuery();
-                codecoolClass = new CodecoolClass(resultSet.getInt("id"), resultSet.getString("name"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return codecoolClass;
-    }
-
-    public void removeUserFromCodecoolClass(User user) {
-        String query = String.format("DELETE FROM users_in_classes WHERE user_id = ?", user.getId());
-        try {
-            PreparedStatement preparedStatement = getConnection().prepareStatement(query);
-            preparedStatement.setInt(1, user.getId());
-
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public boolean checkIfClassExists(int id) throws SQLException {
-        String query = String.format("SELECT * FROM classes WHERE id=?;", id);
-        log.info(query);
-        ResultSet resultSet = getConnection()
-                .createStatement()
-                .executeQuery(query);
-
-        return resultSet.next();
-    }
-
-
-    public boolean checkIfClassExists(String name) throws SQLException {
-        String query = "SELECT * FROM classes WHERE name=?;";
-
-        PreparedStatement preparedStatement = getConnection().prepareStatement(query);
-        preparedStatement.setString(1, name);
-
-        ResultSet resultSet = preparedStatement.executeQuery();
-
-        return resultSet.next();
-    }
-
-    public boolean checkIfUserIsInClass(User user) throws SQLException {
-        String query = "SELECT * FROM users_in_classes WHERE user_id = ? ";
-
-        PreparedStatement preparedStatement = getConnection().prepareStatement(query);
-        preparedStatement.setInt(1, user.getId());
-
-        ResultSet resultSet = preparedStatement.executeQuery();
-
-        return resultSet.next();
-    }
-
-    public int getClassIDByName(String name) {
-        Integer result = null;
-        String query = "SELECT id FROM classes WHERE name = ?";
-
-        try {
-            PreparedStatement preparedStatement = getConnection().prepareStatement(query);
-            preparedStatement.setString(1, name);
-
-            result = preparedStatement.executeQuery().getInt("id");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
+    int getClassIDByName(String name);
 }

@@ -1,9 +1,9 @@
 package com.codecool.idontspeakjava.queststore.controllers.root;
 
-import com.codecool.idontspeakjava.queststore.views.RootView;
-import com.codecool.idontspeakjava.queststore.database.UserDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
 import com.codecool.idontspeakjava.queststore.models.User;
+import com.codecool.idontspeakjava.queststore.views.RootView;
 
 import java.sql.SQLException;
 
@@ -14,13 +14,14 @@ class MentorCreator{
     private static final String EXIT = "0";
 
     private RootView view;
+    private InputValidation validation;
     private String name;
     private String lastName;
     private String email;
-    private String hash = "";
 
     MentorCreator(RootView view){
         this.view = view;
+        validation = new InputValidation(view);
     }
 
     void createMentor(){
@@ -56,66 +57,40 @@ class MentorCreator{
         boolean attributeNotSet;
         switch (promptNumber) {
             case MENTOR_NAME:
-                attributeNotSet = setName(input);
-                break;
+                if(validation.checkName(input)){
+                    name = capitalizeFirstLetter(input);
+                    attributeNotSet = false;
+                    break;
+                }else{
+                    view.showWrongNameInput();
+                }
             case MENTOR_LAST_NAME:
-                attributeNotSet = setLastName(input);
-                break;
+                if(validation.checkName(input)){
+                    lastName = capitalizeFirstLetter(input);
+                    attributeNotSet = false;
+                    break;
+                }else{
+                    view.showWrongNameInput();
+                }
             case MENTOR_EMAIL:
-                attributeNotSet = setEmail(input);
-                break;
+                if(validation.checkEmail(input)){
+                    email = input;
+                    attributeNotSet = false;
+                    break;
+                }else{
+                    view.showWrongEmailInput();
+                }
             default:
                 attributeNotSet = false;
         }
         return attributeNotSet;
     }
 
-    private boolean setName(String input) {
-        boolean nameNotSet = true;
-        if (input.matches("[a-zA-Z]+")) {
-            name = capitalizeFirstLetter(input);
-            nameNotSet = false;
-        } else {
-            view.showWrongNameInput();
-        }
-        return nameNotSet;
-    }
-
-    private boolean setLastName(String input) {
-        boolean lastNameNotSet = true;
-        if (input.matches("[a-zA-Z]+")) {
-            lastName = capitalizeFirstLetter(input);
-            lastNameNotSet = false;
-        } else {
-            view.showWrongNameInput();
-        }
-        return lastNameNotSet;
-    }
-
-    private boolean setEmail(String input) {
-        boolean emailNotSet = true;
-        if (input.matches("[a-zA-Z@.]+")) {
-            try {
-                if (new UserDAO().checkIfUsersExists(input)) {
-                    view.showExistingValueWarning();
-                } else {
-                    email = input;
-                    emailNotSet = false;
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                view.showDatabaseError();
-            }
-        } else {
-            view.showWrongEmailInput();
-        }
-        return emailNotSet;
-    }
-
     private void addMentorToDatabase() {
+        String hash = "";
         User newMentor = new User(name, lastName, hash, email, Permissions.Mentor);
         try {
-            new UserDAO().createUser(newMentor);
+            new SQLiteUserDAO().createUser(newMentor);
             view.showMentorCreated();
         } catch (SQLException e) {
             e.printStackTrace();

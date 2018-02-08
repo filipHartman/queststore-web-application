@@ -1,6 +1,6 @@
 package com.codecool.idontspeakjava.queststore.models;
 
-public class User{
+public class User {
 
 
     private String firstName;
@@ -75,6 +75,9 @@ public class User{
         this.permission = permission;
     }
 
+    public String getFullName() {
+        return String.format("%s %s", firstName, lastName);
+    }
 
     public static final class Builder {
         private String firstName;

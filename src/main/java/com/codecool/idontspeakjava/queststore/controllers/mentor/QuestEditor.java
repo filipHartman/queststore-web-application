@@ -1,6 +1,6 @@
 package com.codecool.idontspeakjava.queststore.controllers.mentor;
 
-import com.codecool.idontspeakjava.queststore.database.QuestsDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteQuestsDAO;
 import com.codecool.idontspeakjava.queststore.models.Quest;
 import com.codecool.idontspeakjava.queststore.views.MentorView;
 
@@ -19,7 +19,7 @@ class QuestEditor extends Editor {
 
     QuestEditor(MentorView view) {
         super(view, "Quest");
-        quests = new QuestsDAO().getAllQuests();
+        quests = new SQLiteQuestsDAO().getAllQuests();
     }
 
     @Override
@@ -31,8 +31,8 @@ class QuestEditor extends Editor {
                 view.askForQuestTitle();
                 break;
             case EDIT_CATEGORY:
-                view.askForQuestCategory();
                 view.showCategory(quest.getCategory().toString());
+                view.askForQuestCategory();
                 break;
             case EDIT_DESCRIPTION:
                 view.showDescription(quest.getDescription());

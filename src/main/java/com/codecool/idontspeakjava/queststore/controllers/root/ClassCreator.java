@@ -1,19 +1,19 @@
 package com.codecool.idontspeakjava.queststore.controllers.root;
 
-import com.codecool.idontspeakjava.queststore.views.RootView;
-import com.codecool.idontspeakjava.queststore.database.CodecoolClassDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteCodecoolClassDAO;
 import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
-
-import java.sql.SQLException;
+import com.codecool.idontspeakjava.queststore.views.RootView;
 
 class ClassCreator {
     private static final String EXIT = "0";
 
     private String className;
     private RootView view;
+    private InputValidation validation;
 
     ClassCreator(RootView view) {
         this.view = view;
+        validation = new InputValidation(view);
     }
 
     void createClass() {
@@ -26,7 +26,7 @@ class ClassCreator {
                 loopContinuation = false;
             } else {
                 if(!setName(input)){
-                    new CodecoolClassDAO().createCodecoolClass(new CodecoolClass(className));
+                    new SQLiteCodecoolClassDAO().createCodecoolClass(new CodecoolClass(className));
                     loopContinuation = false;
                     view.showClassCreateComplete();
                 }
@@ -36,18 +36,9 @@ class ClassCreator {
 
     private boolean setName(String input){
         boolean nameNotSet = true;
-        if (input.matches("[a-zA-Z0-9,. ]+")) {
-            try{
-                if(new CodecoolClassDAO().checkIfClassExists(input)){
-                    view.showExistingValueWarning();
-                }else{
-                    className = input;
-                    nameNotSet = false;
-                }
-            }catch (SQLException e) {
-                e.printStackTrace();
-                view.showDatabaseError();
-            }
+        if (validation.checkClassName(input)) {
+            className = input;
+            nameNotSet = false;
         }else{
             view.showWrongClassNameInput();
         }

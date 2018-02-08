@@ -1,13 +1,16 @@
 package com.codecool.idontspeakjava.queststore.controllers.root;
 
-import com.codecool.idontspeakjava.queststore.views.RootView;
-import com.codecool.idontspeakjava.queststore.models.User;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteCodecoolClassDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
 import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
-import com.codecool.idontspeakjava.queststore.database.UserDAO;
-import com.codecool.idontspeakjava.queststore.database.CodecoolClassDAO;
+import com.codecool.idontspeakjava.queststore.models.User;
+import com.codecool.idontspeakjava.queststore.views.RootView;
+
+import com.codecool.idontspeakjava.queststore.models.Permissions;
 
 import java.sql.SQLException;
-import java.lang.NullPointerException;
+import java.util.ArrayList;
+import java.util.List;
 
 class MentorData{
     private static final String EXIT = "0";
@@ -32,7 +35,8 @@ class MentorData{
                 loopContinuation = false;
             }else if(!selectMentor(input)){
                 getMentorClass(selectedMentor);
-                view.showMentorInfo(selectedMentor, mentorClass);
+                List<User> mentorStudents = getMentorStudents();
+                view.showMentorInfo(selectedMentor, mentorClass, mentorStudents);
                 loopContinuation = false;
                 }
             }
@@ -41,8 +45,8 @@ class MentorData{
     private boolean selectMentor(String input){
         boolean mentorNotSelected = true;
         try{
-            if(new UserDAO().checkIfUsersExists(input)) {
-                selectedMentor = new UserDAO().getUserByEmail(input);
+            if (new SQLiteUserDAO().checkIfUsersExists(input)) {
+                selectedMentor = new SQLiteUserDAO().getUserByEmail(input);
                 mentorNotSelected = false;
             }else{
                 view.showWrongEmailInput();
@@ -56,10 +60,23 @@ class MentorData{
 
     private void getMentorClass(User mentor){
         try{
-            mentorClass = new CodecoolClassDAO().getUserCodecoolClass(selectedMentor);
+            mentorClass = new SQLiteCodecoolClassDAO().getUserCodecoolClass(selectedMentor);
         }catch(NullPointerException e){
             e.printStackTrace();
             view.showMentorNotAssignToClass();
         }
+    }
+
+    private List<User> getMentorStudents(){
+        List<User> allStudents = new SQLiteUserDAO().getUsersByPermission(Permissions.Student);
+        List<User> mentorStudents = new ArrayList<User>();
+        
+        for (User pupil : allStudents){
+            CodecoolClass pupilClass = new SQLiteCodecoolClassDAO().getUserCodecoolClass(pupil);
+            if(mentorClass.getId() == pupilClass.getId()){
+                mentorStudents.add(pupil);
+            }
+        }
+        return mentorStudents;
     }
 }

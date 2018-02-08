@@ -1,10 +1,8 @@
 package com.codecool.idontspeakjava.queststore.controllers.root;
 
-import com.codecool.idontspeakjava.queststore.views.RootView;
-import com.codecool.idontspeakjava.queststore.database.ExperienceLevelDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteExperienceLevelDAO;
 import com.codecool.idontspeakjava.queststore.models.ExperienceLevel;
-
-import java.sql.SQLException;
+import com.codecool.idontspeakjava.queststore.views.RootView;
 
 class ExpLevel{
     private static final String EXIT = "0";
@@ -14,9 +12,11 @@ class ExpLevel{
     private RootView view;
     private long threshold;
     private String lvlName;
+    private InputValidation validation;
 
     ExpLevel(RootView view){
         this.view = view;
+        validation = new InputValidation(view);
     }
 
     void CreateExpLvl(){
@@ -39,7 +39,7 @@ class ExpLevel{
                 userInput++;
             }
         }if(userInput == prompt){
-            new ExperienceLevelDAO().createExperienceLevel(new ExperienceLevel(lvlName, threshold));
+            new SQLiteExperienceLevelDAO().createExperienceLevel(new ExperienceLevel(lvlName, threshold));
             view.showExpLvlCreated();
         }else{
             view.showOperationCancelled();
@@ -72,18 +72,9 @@ class ExpLevel{
 
     private boolean setName(String input){
         boolean nameNotSet = true;
-        if (input.matches("[a-zA-Z0-9,. ]+")){
-            try{
-                if (!new ExperienceLevelDAO().checkIfExperienceLevelExists(input)){
-                    lvlName = input;
-                    nameNotSet = false;
-                }else{
-                    view.showExistingValueWarning();
-                }
-            }catch(SQLException e){
-                e.printStackTrace();
-                view.showDatabaseError();
-            }
+        if (validation.checkExpLvlName(input)){
+            lvlName = input;
+            nameNotSet = false;
         }else{
             view.showWrongExpLvlInput();
         }
@@ -92,11 +83,9 @@ class ExpLevel{
 
     private boolean setThreshold(String input){
         boolean thresholdNotSet = true;
-        if (input.matches("[0-9]+")){
-            threshold = new Long(input).longValue();
+        if (validation.setThreshold(input)){
+            threshold = Long.valueOf(input).longValue();
             thresholdNotSet = false;
-        }else{
-            view.WrongThresholdInput();
         }
         return thresholdNotSet;
     }

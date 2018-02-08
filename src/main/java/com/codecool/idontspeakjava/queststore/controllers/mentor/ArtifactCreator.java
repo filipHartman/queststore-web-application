@@ -1,6 +1,6 @@
 package com.codecool.idontspeakjava.queststore.controllers.mentor;
 
-import com.codecool.idontspeakjava.queststore.database.ArtifactsDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteArtifactsDAO;
 import com.codecool.idontspeakjava.queststore.models.Artifact;
 import com.codecool.idontspeakjava.queststore.models.ArtifactCategory;
 import com.codecool.idontspeakjava.queststore.models.DummyItem;
@@ -32,7 +32,7 @@ class ArtifactCreator extends Creator {
                 temporaryArtifact.getDescription(),
                 temporaryArtifact.getRewardOrPrice());
 
-        new ArtifactsDAO().createArtifact(artifact);
+        new SQLiteArtifactsDAO().createArtifact(artifact);
         view.showArtifactCreated();
     }
 
@@ -77,7 +77,7 @@ class ArtifactCreator extends Creator {
     }
 
     private List<String> getArtifactsTitles() {
-        List<Artifact> artifacts = new ArtifactsDAO().getAllArtifacts();
+        List<Artifact> artifacts = new SQLiteArtifactsDAO().getAllArtifacts();
         return artifacts.stream().map(Artifact::getTitle).collect(Collectors.toList());
     }
 }
