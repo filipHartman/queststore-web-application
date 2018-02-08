@@ -109,4 +109,34 @@ public class ValidatorTest {
     public void checkIfCategoryIsValid_CategoryIsEmptyString_ReturnFalse() {
         assertFalse(new Validator().checkIfCategoryIsValid(""));
     }
+
+    @Test
+    public void checkIfSelectFromListIsInvalid_InputIsLetter_ReturnTrue() {
+        List<Integer> list = Arrays.asList(1, 2, 3);
+        assertTrue(new Validator().isSelectFromListInvalid(list, "c"));
+    }
+
+    @Test
+    public void checkIfSelectFromListIsInvalid_InputIsSpecialChar_ReturnTrue() {
+        List<Integer> list = Arrays.asList(1, 2, 3);
+        assertTrue(new Validator().isSelectFromListInvalid(list, "@"));
+    }
+
+    @Test
+    public void checkIfSelectFromListIsInvalid_InputIsEmpty_ReturnTrue() {
+        List<Integer> list = Arrays.asList(1, 2, 3);
+        assertTrue(new Validator().isSelectFromListInvalid(list, ""));
+    }
+
+    @Test
+    public void checkIfSelectFromListIsInvalid_DigitInListRange_ReturnFalse() {
+        List<Integer> list = Arrays.asList(1, 2, 3);
+        assertFalse(new Validator().isSelectFromListInvalid(list, "1"));
+    }
+
+    @Test
+    public void checkIfSelectFromListIsInvalid_DigitOutOfListRange_ReturnTrue() {
+        List<Integer> list = Arrays.asList(1, 2, 3);
+        assertTrue(new Validator().isSelectFromListInvalid(list, "5"));
+    }
 }
