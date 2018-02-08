@@ -150,6 +150,9 @@ public class CodecoolerController {
                         existingOrder.setCollectedMoney(existingOrder.getCollectedMoney() + contribution);
                         orderDAO.updateOrder(existingOrder);
                     } else {
+                        if (contribution > artifact.getPrice()) {
+                            contribution = artifact.getPrice();
+                        }
                         TeamOrder newOrder = new TeamOrder(artifact.getId(), team.getId(), false, contribution);
                         orderDAO.createOrder(newOrder);
                     }
@@ -169,11 +172,11 @@ public class CodecoolerController {
         for (Artifact artifact : artifactDAO.getAllArtifacts()) {
             if (artifact.getCategory() == category) {
                 artifacts.add(artifact);
-                String string = artifact.getTitle() + "@" + artifact.getPrice();
+                String string = artifact.getTitle() + "@" + artifact.getDescription() + "@" + artifact.getPrice();
                 string += category.name().equals(ArtifactCategory.Magic.name()) ?
                         String.valueOf("@" + getCollectedMoney(artifact)) : "";
                 if (category.name().equals(ArtifactCategory.Magic.name()) && artifact.getPrice() == getCollectedMoney(artifact)) {
-                    string = artifact.getTitle() + "@" + artifact.getPrice() + "@" + "IN WALLET";
+                    string = artifact.getTitle() + "@" + artifact.getDescription() + "@" + artifact.getPrice() + "@" + "IN WALLET";
                 }
                 artifactsInfo.add(string);
             }
@@ -190,8 +193,10 @@ public class CodecoolerController {
                     if (chosenPosition <= artifacts.size()) {
                         chosenArtifact = artifacts.get(chosenPosition - 1);
                         optionIsChosen = true;
-                        if (artifactsInfo.get(artifacts.indexOf(chosenArtifact)).split("@")[2].equals("IN WALLET")) {
+                        String[] chosenArtifactInfo = artifactsInfo.get(chosenPosition - 1).split("@");
+                        if (chosenArtifactInfo.length > 3 && chosenArtifactInfo[3].equals("IN WALLET")) {
                             optionIsChosen = false;
+                            chosenArtifact = null;
                         }
                     }
                 }
