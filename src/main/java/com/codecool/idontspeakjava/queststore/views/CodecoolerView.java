@@ -84,7 +84,7 @@ public class CodecoolerView extends UserView{
             String title = questInfo[0], reward = questInfo[1], description = questInfo[2];
             System.out.println(String.format(
                         "%s%s     %sReward: %s%scc\n%s%s\n",
-                    Colors.BLUE_BOLD_BRIGHT, title, Colors.BLUE_BOLD_BRIGHT, Colors.YELLOW_BOLD_BRIGHT, reward,
+                    Colors.BLUE_BOLD_BRIGHT, title, Colors.BLUE_BRIGHT, Colors.YELLOW_BOLD_BRIGHT, reward,
                     Colors.RESET, description));
         }
         System.out.println("\nPress enter to continue...");
