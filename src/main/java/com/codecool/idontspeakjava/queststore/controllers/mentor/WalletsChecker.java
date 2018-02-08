@@ -10,6 +10,7 @@ import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.models.Wallet;
 import com.codecool.idontspeakjava.queststore.views.MentorView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,17 +60,27 @@ class WalletsChecker {
         String currentCoins = String.valueOf(userWallet.getCurrentState());
         String allEarnings = String.valueOf(userWallet.getTotalEarnings());
 
-        List<String> ordersToPrint = createInfoAboutOrders(Utilities.createOrders(user));
+        List<String[]> ordersToPrint = createInfoAboutOrders(Utilities.createOrders(user));
         view.printUserWallet(fullName, currentCoins, allEarnings, ordersToPrint);
     }
 
-    private List<String> createInfoAboutOrders(List<Order> orders) {
+    private List<String[]> createInfoAboutOrders(List<Order> orders) {
+        final int TITLE = 0;
+        final int IS_USED = 1;
+        final int CATEGORY = 2;
+        final int ARRAY_SIZE = 3;
+
         SQLiteArtifactsDAO dao = new SQLiteArtifactsDAO();
-        return orders.stream().map(
-                order -> String.format("%s - Is %s - %s",
-                        dao.getArtifact(order.getArtifactID()).getTitle(),
-                        order.isUsed() ? "used" : "not used",
-                        order instanceof TeamOrder ? "magic artifact" : "normal artifact")).collect(Collectors.toList());
+        List<String[]> ordersToPrint = new ArrayList<>();
+
+        for (Order o : orders) {
+            String[] arrayWithOrder = new String[ARRAY_SIZE];
+            arrayWithOrder[TITLE] = dao.getArtifact(o.getArtifactID()).getTitle();
+            arrayWithOrder[IS_USED] = o.isUsed() ? "Used" : "Not used";
+            arrayWithOrder[CATEGORY] = o instanceof TeamOrder ? "Magic" : "Basic";
+            ordersToPrint.add(arrayWithOrder);
+        }
+        return ordersToPrint;
     }
 
     private List<String> getUserFullNames() {
