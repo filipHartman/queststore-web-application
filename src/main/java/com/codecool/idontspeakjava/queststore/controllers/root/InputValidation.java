@@ -19,20 +19,8 @@ class InputValidation{
         boolean correctName = false;
         if (input.matches("[a-zA-Z]+")) {
             correctName = true;
-        } else {
-            view.showWrongNameInput();
         }
         return correctName;
-    }
-
-    public boolean checkLastName(String input) {
-        boolean correctLastName = false;
-        if (input.matches("[a-zA-Z]+")) {
-            correctLastName = true;
-        } else {
-            view.showWrongNameInput();
-        }
-        return correctLastName;
     }
 
     public boolean checkEmail(String input) {
@@ -48,8 +36,6 @@ class InputValidation{
                 e.printStackTrace();
                 view.showDatabaseError();
             }
-        } else {
-            view.showWrongEmailInput();
         }
         return correctEmail;
     }
@@ -67,8 +53,6 @@ class InputValidation{
                 e.printStackTrace();
                 view.showDatabaseError();
             }
-        }else{
-            view.showWrongClassNameInput();
         }
         return correctClassName;
     }
@@ -86,16 +70,21 @@ class InputValidation{
                 e.printStackTrace();
                 view.showDatabaseError();
             }
-        }else{
-            view.showWrongExpLvlInput();
         }
         return correctExpLvlName;
     }
 
     public boolean setThreshold(String input){
         boolean correctThreshold = false;
-        if (input.matches("[0-9]+")){
-            correctThreshold = true;
+        if (input.matches("\\d+")){
+            try{
+                if (Long.valueOf(input).longValue() <= Long.MAX_VALUE) {
+                    correctThreshold = true;
+                }
+            }catch(NumberFormatException e){
+                e.printStackTrace();
+                view.WrongThresholdInput();
+            }
         }else{
             view.WrongThresholdInput();
         }

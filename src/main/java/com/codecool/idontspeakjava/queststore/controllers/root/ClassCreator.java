@@ -39,6 +39,8 @@ class ClassCreator {
         if (validation.checkClassName(input)) {
             className = input;
             nameNotSet = false;
+        }else{
+            view.showWrongClassNameInput();
         }
         return nameNotSet;
     }

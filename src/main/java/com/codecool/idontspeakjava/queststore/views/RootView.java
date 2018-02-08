@@ -206,7 +206,7 @@ public class RootView extends UserView{
 
     public void WrongThresholdInput(){
         clearScreen();
-        System.out.println(String.format("%sWrong input. You can use only numbers.\n", Colors.RED));
+        System.out.println(String.format("%sWrong input. Number is to big or in bad format.\n", Colors.RED));
         continuePrompt();
     }
 
