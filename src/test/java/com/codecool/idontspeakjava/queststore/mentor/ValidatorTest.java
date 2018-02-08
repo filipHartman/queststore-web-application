@@ -63,4 +63,34 @@ public class ValidatorTest {
         List<String> titles = Arrays.asList("Title", "Title 2", "Title 3");
         assertTrue(new Validator().checkIfTitleIsValid("Title 4", titles));
     }
+
+    @Test
+    public void checkIfCategoryIsValid_CategoryIsBasic_ReturnTrue() {
+        assertTrue(new Validator().checkIfCategoryIsValid(Validator.BASIC_CATEGORY));
+    }
+
+    @Test
+    public void checkIfCategoryIsValid_CategoryIsMagic_ReturnTrue() {
+        assertTrue(new Validator().checkIfCategoryIsValid(Validator.EXTRA_CATEGORY));
+    }
+
+    @Test
+    public void checkIfCategoryIsValid_CategoryIsNumberHigherThanTwo_ReturnFalse() {
+        assertFalse(new Validator().checkIfCategoryIsValid("3"));
+    }
+
+    @Test
+    public void checkIfCategoryIsValid_CategoryIsALetter_ReturnFalse() {
+        assertFalse(new Validator().checkIfCategoryIsValid("D"));
+    }
+
+    @Test
+    public void checkIfCategoryIsValid_CategoryIsASpecialChar_ReturnFalse() {
+        assertFalse(new Validator().checkIfCategoryIsValid("@"));
+    }
+
+    @Test
+    public void checkIfCategoryIsValid_CategoryIsEmptyString_ReturnFalse() {
+        assertFalse(new Validator().checkIfCategoryIsValid(""));
+    }
 }
