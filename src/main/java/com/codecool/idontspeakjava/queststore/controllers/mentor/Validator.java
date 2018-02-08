@@ -6,7 +6,7 @@ import java.util.List;
 public class Validator {
 
     public final static String BASIC_CATEGORY = "1";
-    private final static String EXTRA_CATEGORY = "2";
+    public final static String EXTRA_CATEGORY = "2";
 
     private static final String EMAIL_REGEX = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:" +
             "[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(" +
@@ -25,7 +25,7 @@ public class Validator {
     }
 
     public boolean checkIfDescriptionIsValid(String input) {
-        return input.matches("[a-zA-Z1-9,.! ]+");
+        return input.matches("[a-zA-Z1-9,. ]+");
     }
 
     public boolean checkIfTitleIsValid(String input, List<String> titles) {
