@@ -150,6 +150,9 @@ public class CodecoolerController {
                         existingOrder.setCollectedMoney(existingOrder.getCollectedMoney() + contribution);
                         orderDAO.updateOrder(existingOrder);
                     } else {
+                        if (contribution > artifact.getPrice()) {
+                            contribution = artifact.getPrice();
+                        }
                         TeamOrder newOrder = new TeamOrder(artifact.getId(), team.getId(), false, contribution);
                         orderDAO.createOrder(newOrder);
                     }
@@ -190,8 +193,10 @@ public class CodecoolerController {
                     if (chosenPosition <= artifacts.size()) {
                         chosenArtifact = artifacts.get(chosenPosition - 1);
                         optionIsChosen = true;
-                        if (artifactsInfo.get(artifacts.indexOf(chosenArtifact)).split("@")[2].equals("IN WALLET")) {
+                        String[] chosenArtifactInfo = artifactsInfo.get(chosenPosition - 1).split("@");
+                        if (chosenArtifactInfo.length > 2 && chosenArtifactInfo[2].equals("IN WALLET")) {
                             optionIsChosen = false;
+                            chosenArtifact = null;
                         }
                     }
                 }
