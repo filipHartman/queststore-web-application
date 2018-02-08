@@ -6,7 +6,11 @@ import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.views.RootView;
 
+import com.codecool.idontspeakjava.queststore.models.Permissions;
+
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 class MentorData{
     private static final String EXIT = "0";
@@ -31,7 +35,8 @@ class MentorData{
                 loopContinuation = false;
             }else if(!selectMentor(input)){
                 getMentorClass(selectedMentor);
-                view.showMentorInfo(selectedMentor, mentorClass);
+                List<User> mentorStudents = getMentorStudents();
+                view.showMentorInfo(selectedMentor, mentorClass, mentorStudents);
                 loopContinuation = false;
                 }
             }
@@ -60,5 +65,18 @@ class MentorData{
             e.printStackTrace();
             view.showMentorNotAssignToClass();
         }
+    }
+
+    private List<User> getMentorStudents(){
+        List<User> allStudents = new SQLiteUserDAO().getUsersByPermission(Permissions.Student);
+        List<User> mentorStudents = new ArrayList<User>();
+        
+        for (User pupil : allStudents){
+            CodecoolClass pupilClass = new SQLiteCodecoolClassDAO().getUserCodecoolClass(pupil);
+            if(mentorClass.getId() == pupilClass.getId()){
+                mentorStudents.add(pupil);
+            }
+        }
+        return mentorStudents;
     }
 }
