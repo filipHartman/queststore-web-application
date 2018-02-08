@@ -30,8 +30,8 @@ class ArtifactEditor extends Editor {
                 view.askForArtifactTitle();
                 break;
             case EDIT_CATEGORY:
-                view.askForArtifactCategory();
                 view.showCategory(artifact.getCategory().toString());
+                view.askForArtifactCategory();
                 break;
             case EDIT_DESCRIPTION:
                 view.showDescription(artifact.getDescription());

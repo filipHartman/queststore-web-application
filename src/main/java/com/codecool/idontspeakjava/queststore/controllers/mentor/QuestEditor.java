@@ -31,8 +31,8 @@ class QuestEditor extends Editor {
                 view.askForQuestTitle();
                 break;
             case EDIT_CATEGORY:
-                view.askForQuestCategory();
                 view.showCategory(quest.getCategory().toString());
+                view.askForQuestCategory();
                 break;
             case EDIT_DESCRIPTION:
                 view.showDescription(quest.getDescription());
