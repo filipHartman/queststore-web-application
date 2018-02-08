@@ -7,36 +7,45 @@ public class LoginView extends UserView {
     private static final Console console = System.console();
 
     public void showGreeting() {
-        System.out.println(String.format("%sWelcome to %sQuest Store 1.0-SNAPSHOT" +
-                "\n%sType 0 or nothing to exit.", Colors.GREEN, Colors.YELLOW, Colors.CYAN_BOLD));
+        System.out.print(Colors.YELLOW);
+        printTable(new String[][]{{"Welcome to Quest Store 1.0-SNAPSHOT"}});
+        System.out.print(Colors.CYAN_BOLD);
+        printTable(new String[][]{{"Enter 0 or hit enter to exit"}});
     }
 
     public void showBadCredentials() {
         clearScreen();
-        System.out.println(String.format("%sYou've typed bad credentials !", Colors.RED));
+        System.out.print(Colors.RED);
+        printTable(new String[][]{{"You have entered invalid credentials"}});
         super.getUserInput();
     }
 
     public String getUserLogin() {
-        System.out.print(String.format("%sYour email: %s", Colors.BLUE, Colors.RESET));
+        System.out.print(Colors.BLUE_BRIGHT);
+        printTable(new String[][]{{"Enter your email"}});
         return getUserInput();
     }
 
     public String getUserPassword() {
-        return String.valueOf(console.readPassword(String.format("%sYour password: %s", Colors.BLUE, Colors.RESET)));
+        System.out.print(Colors.BLUE_BRIGHT);
+        printTable(new String[][]{{"Enter your password"}});
+        return String.valueOf(console.readPassword());
     }
 
     public String getNewUserPassword() {
-        System.out.println(String.format("%sPassword requirments:%s \n" +
-                        "%s-%s Min. 8-char length\n" +
-                        "%s-%s At least one of the following: diggit, upper case, lower case, special character"
-                , Colors.GREEN, Colors.RESET, Colors.BLUE, Colors.PURPLE, Colors.BLUE, Colors.PURPLE));
-        return String.valueOf(console.readPassword(String.valueOf("%sEnter new password:%s "), Colors.GREEN, Colors.RESET));
+        System.out.print(Colors.GREEN);
+        printTable(new String[][]{{"Enter your new password. Requirements are :"}});
+        System.out.print(Colors.BLUE_BRIGHT);
+        printTable(new String[][]{{"Minimum 8 characters"}});
+        System.out.print(Colors.PURPLE_BRIGHT);
+        printTable(new String[][]{{"At least one : digit, upper and lower case letters and special character"}});
+        return String.valueOf(console.readPassword());
     }
 
     public void showNewPasswordIsIncorrect() {
         clearScreen();
-        System.out.println(String.format("%sYour new password does not match requirements !%s", Colors.RED, Colors.RESET));
+        System.out.print(Colors.RED);
+        printTable(new String[][]{{"Your new password does not match requirements !"}});
         getUserInput();
     }
 }
