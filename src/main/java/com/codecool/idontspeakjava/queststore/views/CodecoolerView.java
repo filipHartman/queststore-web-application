@@ -52,18 +52,19 @@ public class CodecoolerView extends UserView{
     }
 
     public void showBuyArtifactMenu(ArrayList<String> artifactsInfo, long balance){
-        String category = (artifactsInfo.get(0).split("@").length > 2) ? "MAGIC" : "BASIC";
+        String category = (artifactsInfo.get(0).split("@").length > 3) ? "MAGIC" : "BASIC";
         System.out.println(String.format(
                     "%s%s%s ARTIFACTS SHOP         %sYOUR MONEY: %s%scc\n%s",
                 CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, category, Colors.BLUE_BOLD_BRIGHT, Colors.YELLOW_BOLD_BRIGHT,
                 balance, Colors.RESET));
         for (String artifact : artifactsInfo) {
             String title = category.equals("MAGIC") ? Colors.RED_BOLD_BRIGHT + artifact.split("@")[0] : artifact.split("@")[0];
-            String price = artifact.split("@")[1];
+            String description = Colors.RESET + artifact.split("@")[1];
+            String price = artifact.split("@")[2];
             String collected = category.equals("MAGIC") ?
-                    artifact.split("@")[2] + Colors.RESET + "/" + Colors.YELLOW_BOLD_BRIGHT : "";
+                    artifact.split("@")[3] + Colors.RESET + "/" + Colors.YELLOW_BOLD_BRIGHT : "";
             int index = artifactsInfo.indexOf(artifact);
-            String row = "%s. %s%s   %s%s%scc%s";
+            String row = "%s. %s%s      %s   %s%s%scc%s";
             if (collected.equals("IN WALLET" + Colors.RESET + "/" + Colors.YELLOW_BOLD_BRIGHT)) {
                 collected = "IN WALLET" + Colors.RESET;
                 row = "%s. %s%s   " + Colors.GREEN_BOLD_BRIGHT + collected;
@@ -71,7 +72,7 @@ public class CodecoolerView extends UserView{
             }
             System.out.println(String.format(
                         row,
-                    index + 1, Colors.WHITE_BOLD, title, Colors.YELLOW_BOLD_BRIGHT, collected, price, Colors.RESET));
+                    index + 1, Colors.WHITE_BOLD, title, description, Colors.YELLOW_BOLD_BRIGHT, collected, price, Colors.RESET));
         }
         System.out.println("\n\n0 - Back");
     }

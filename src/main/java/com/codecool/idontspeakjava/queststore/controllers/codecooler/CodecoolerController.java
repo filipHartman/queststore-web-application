@@ -172,11 +172,11 @@ public class CodecoolerController {
         for (Artifact artifact : artifactDAO.getAllArtifacts()) {
             if (artifact.getCategory() == category) {
                 artifacts.add(artifact);
-                String string = artifact.getTitle() + "@" + artifact.getPrice();
+                String string = artifact.getTitle() + "@" + artifact.getDescription() + "@" + artifact.getPrice();
                 string += category.name().equals(ArtifactCategory.Magic.name()) ?
                         String.valueOf("@" + getCollectedMoney(artifact)) : "";
                 if (category.name().equals(ArtifactCategory.Magic.name()) && artifact.getPrice() == getCollectedMoney(artifact)) {
-                    string = artifact.getTitle() + "@" + artifact.getPrice() + "@" + "IN WALLET";
+                    string = artifact.getTitle() + "@" + artifact.getDescription() + "@" + artifact.getPrice() + "@" + "IN WALLET";
                 }
                 artifactsInfo.add(string);
             }
@@ -194,7 +194,7 @@ public class CodecoolerController {
                         chosenArtifact = artifacts.get(chosenPosition - 1);
                         optionIsChosen = true;
                         String[] chosenArtifactInfo = artifactsInfo.get(chosenPosition - 1).split("@");
-                        if (chosenArtifactInfo.length > 2 && chosenArtifactInfo[2].equals("IN WALLET")) {
+                        if (chosenArtifactInfo.length > 3 && chosenArtifactInfo[3].equals("IN WALLET")) {
                             optionIsChosen = false;
                             chosenArtifact = null;
                         }
