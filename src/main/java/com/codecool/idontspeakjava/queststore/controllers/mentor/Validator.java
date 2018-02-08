@@ -15,36 +15,25 @@ public class Validator {
             "\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
 
     public boolean checkIfIsPositiveInteger(String input) {
-        boolean priceIsValid = false;
+        boolean inputIsValid = false;
         if (input.matches("\\d+")) {
             if (Integer.valueOf(input) > 0) {
-                priceIsValid = true;
+                inputIsValid = true;
             }
         }
-        return priceIsValid;
+        return inputIsValid;
     }
 
     public boolean checkIfDescriptionIsValid(String input) {
-        boolean descriptionIsValid = false;
-        if (input.matches("[a-zA-Z1-9,.! ]+")) {
-            descriptionIsValid = true;
-        }
-        return descriptionIsValid;
+        return input.matches("[a-zA-Z1-9,.! ]+");
     }
 
     public boolean checkIfTitleIsValid(String input, List<String> titles) {
-        boolean titleIsValid = false;
-        if (input.matches("[a-zA-Z1-9 ]+")) {
-            if (!titles.contains(input)) {
-                titleIsValid = true;
-            }
-        }
-        return titleIsValid;
+        return input.matches("[a-zA-Z1-9 ]+") && !titles.contains(input);
     }
 
     public boolean checkIfCategoryIsValid(String input) {
-        String[] validInputs = {BASIC_CATEGORY, EXTRA_CATEGORY};
-        return Arrays.asList(validInputs).contains(input);
+        return Arrays.asList(new String[]{BASIC_CATEGORY, EXTRA_CATEGORY}).contains(input);
     }
 
     public boolean isSelectFromListInvalid(List collection, String input) {
@@ -58,20 +47,10 @@ public class Validator {
     }
 
     public boolean checkIfNameIsValid(String input) {
-        boolean nameIsValid = false;
-        if (input.matches("[a-zA-Z]+")) {
-            nameIsValid = true;
-        }
-        return nameIsValid;
+        return input.matches("[a-zA-Z]+");
     }
 
     public boolean checkIfEmailIsValid(String input, List<String> emails) {
-        boolean emailIsValid = false;
-        if (input.matches(EMAIL_REGEX)) {
-            if (!emails.contains(input)) {
-                emailIsValid = true;
-            }
-        }
-        return emailIsValid;
+        return input.matches(EMAIL_REGEX) && !emails.contains(input);
     }
 }
