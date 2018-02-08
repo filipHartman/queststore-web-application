@@ -6,6 +6,8 @@ import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
 import com.codecool.idontspeakjava.queststore.models.User;
 
+import java.util.List;
+
 public class RootView extends UserView{
 
 
@@ -33,28 +35,35 @@ public class RootView extends UserView{
         System.out.println(String.format("%sEnter mentor new email.\n", Colors.YELLOW_BOLD));
     }
 
-    public void showMentorInfo(User selectedMentor, CodecoolClass mentorClass){
+    public void showMentorInfo(User selectedMentor, CodecoolClass mentorClass, List<User> students){
         clearScreen();
-            try{
-        System.out.println(String.format("%sMentor id: " + selectedMentor.getId(), Colors.CYAN));
-        System.out.println(String.format("%sMentor first name: " + selectedMentor.getFirstName(), Colors.CYAN));
-        System.out.println(String.format("%sMentor last name: " + selectedMentor.getLastName(), Colors.CYAN));
-        System.out.println(String.format("%sMentor email: " + selectedMentor.getEmail(), Colors.CYAN));
-        System.out.println(String.format("Mentor class: " + mentorClass.getName() + "\n"));
-            }catch(NullPointerException e){
-                showMentorNotAssignToClass();
+        try{
+            System.out.println(String.format("%sMentor id: " + selectedMentor.getId(), Colors.CYAN));
+            System.out.println(String.format("%sMentor first name: " + selectedMentor.getFirstName(), Colors.CYAN));
+            System.out.println(String.format("%sMentor last name: " + selectedMentor.getLastName(), Colors.CYAN));
+            System.out.println(String.format("%sMentor email: " + selectedMentor.getEmail(), Colors.CYAN));
+            System.out.println(String.format("Mentor class: " + mentorClass.getName()));
+            System.out.println(String.format("%sMentor students:\n", Colors.CYAN));
+            System.out.println(String.format("Name    Lastname    email\n", Colors.CYAN));
+            System.out.println(String.format("%s----------------------------------\n", Colors.CYAN));
+            for(User pupil : students){
+                System.out.println(String.format("%s\t%s\t%s\n", pupil.getFirstName(), pupil.getLastName(), pupil.getEmail()));
             }
-            continuePrompt();
+        }catch(NullPointerException e){
+            showMentorNotAssignToClass();
+        }
+        continuePrompt();
     }
 
     public void showMainMenu(){
         System.out.println(String.format("%sSelect what to do:\n" +
                     "1. Create mentor\n" +
-                    "2. Create Codecool Class\n" +
-                    "3. Assign Mentor To Class\n" +
-                    "4. Edit Mentor\n" +
-                    "5. Show Mentor\n" +
-                    "6. Create Experience Level\n" +
+                    "2. Remove mentor\n" +
+                    "3. Create Codecool Class\n" +
+                    "4. Assign Mentor To Class\n" +
+                    "5. Edit Mentor\n" +
+                    "6. Show Mentor\n" +
+                    "7. Create Experience Level\n" +
                     "0. Exit the program\n", Colors.GREEN_BOLD));
 
     }
