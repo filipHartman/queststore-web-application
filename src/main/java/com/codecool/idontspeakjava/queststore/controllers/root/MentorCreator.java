@@ -18,7 +18,6 @@ class MentorCreator{
     private String name;
     private String lastName;
     private String email;
-    private String hash = "";
 
     MentorCreator(RootView view){
         this.view = view;
@@ -58,47 +57,37 @@ class MentorCreator{
         boolean attributeNotSet;
         switch (promptNumber) {
             case MENTOR_NAME:
-                attributeNotSet = setName(input);
-                break;
+                if(validation.checkName(input)){
+                    name = capitalizeFirstLetter(input);
+                    attributeNotSet = false;
+                    break;
+                }else{
+                    view.showWrongNameInput();
+                }
             case MENTOR_LAST_NAME:
-                attributeNotSet = setLastName(input);
-                break;
+                if(validation.checkName(input)){
+                    lastName = capitalizeFirstLetter(input);
+                    attributeNotSet = false;
+                    break;
+                }else{
+                    view.showWrongNameInput();
+                }
             case MENTOR_EMAIL:
-                attributeNotSet = setEmail(input);
-                break;
+                if(validation.checkEmail(input)){
+                    email = input;
+                    attributeNotSet = false;
+                    break;
+                }else{
+                    view.showWrongEmailInput();
+                }
             default:
                 attributeNotSet = false;
         }
         return attributeNotSet;
     }
 
-    private boolean setName(String input) {
-        boolean nameNotSet = true;
-        if(validation.checkName(input)){
-            name = capitalizeFirstLetter(input);
-            nameNotSet = false;
-        }
-        return nameNotSet;
-    }
-
-    private boolean setLastName(String input) {
-        boolean lastNameNotSet = true;
-        if (validation.checkEmail(input)) {
-            lastNameNotSet = false;
-        }
-        return lastNameNotSet;
-    }
-
-    private boolean setEmail(String input) {
-        boolean emailNotSet = true;
-        if(validation.checkEmail(input)) {
-            email = input;
-            emailNotSet = false;
-        }
-        return emailNotSet;
-    }
-
     private void addMentorToDatabase() {
+        String hash = "";
         User newMentor = new User(name, lastName, hash, email, Permissions.Mentor);
         try {
             new SQLiteUserDAO().createUser(newMentor);
