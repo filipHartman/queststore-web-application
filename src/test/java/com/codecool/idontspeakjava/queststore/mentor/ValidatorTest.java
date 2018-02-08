@@ -12,54 +12,54 @@ import static org.junit.Assert.assertTrue;
 public class ValidatorTest {
 
     @Test
-    public void checkIfIsPositiveIntegerShouldReturnFalseWhenInputIsText() {
+    public void checkIfIsPositiveInteger_InputHaveOnlyLetters_ReturnFalse() {
         assertFalse(new Validator().checkIfIsPositiveInteger("Krowa"));
     }
 
     @Test
-    public void checkIfIsPositiveIntegerShouldReturnFalseWhenInputIsFloat() {
+    public void checkIfIsPositiveInteger_InputIsFloat_ReturnFalse() {
         assertFalse(new Validator().checkIfIsPositiveInteger("1.2"));
     }
 
     @Test
-    public void checkIfIsPositiveIntegerShouldReturnFalseWhenInputIsZero() {
+    public void checkIfIsPositiveInteger_InputIsZero_ReturnFalse() {
         assertFalse(new Validator().checkIfIsPositiveInteger("0"));
     }
 
     @Test
-    public void checkIfIsPositiveIntegerShouldReturnFalseWhenInputIsBelowZero() {
+    public void checkIfIsPositiveInteger_InputBelowZero_ReturnFalse() {
         assertFalse(new Validator().checkIfIsPositiveInteger("-5"));
     }
 
     @Test
-    public void checkIfIsPositiveIntegerShouldReturnTrueWhenInputIsAnIntegerAboveZero() {
+    public void checkIfIsPositiveInteger_InputIsIntegerAboveZero_ReturnTrue() {
         assertTrue(new Validator().checkIfIsPositiveInteger("5"));
     }
 
     @Test
-    public void checkIfDescriptionIsValidShouldReturnFalseWhenHaveCharacterOtherThanDotSpaceDigitsLettersOrComma() {
+    public void checkIfDescriptionIsValid_HaveCharsBesideSpaceDigitLetterDotComma_ReturnFalse() {
         assertFalse(new Validator().checkIfDescriptionIsValid("Ultra super, test % .."));
     }
 
     @Test
-    public void checkIfDescriptionIsValidShouldReturnTrueWhenDescriptionDontHaveOtherCharsThanDotSpaceOrComma() {
+    public void checkIfDescriptionIsValid_DoNotHaveCharsBesideSpaceDigitLetterDotComma_ReturnTrue() {
         assertTrue(new Validator().checkIfDescriptionIsValid("This is, a, correct description. Probably."));
     }
 
     @Test
-    public void checkIfTitleIsValidShouldReturnFalseWhenHaveCharsOtherThanLetters() {
+    public void checkIfTitleIsValid_HaveCharsOtherThanLettersOrSpace_ReturnFalse() {
         List<String> titles = Arrays.asList("Title", "Title 2", "Title 3");
         assertFalse(new Validator().checkIfTitleIsValid("Title 4 !", titles));
     }
 
     @Test
-    public void checkIfTitleIsValidShouldReturnFalseWhenTitleExists() {
+    public void checkIfTitleIsValid_TitleExists_ReturnFalse() {
         List<String> titles = Arrays.asList("Title", "Title 2", "Title 3");
         assertFalse(new Validator().checkIfTitleIsValid("Title 2", titles));
     }
 
     @Test
-    public void checkIfTitleIsValidShouldReturnTrueWhenHaveLettersNumbersSpacesAndIsUnique() {
+    public void checkIfTitleIsValid_HaveLettersOrSpaceAndIsUnique_ReturnTrue() {
         List<String> titles = Arrays.asList("Title", "Title 2", "Title 3");
         assertTrue(new Validator().checkIfTitleIsValid("Title 4", titles));
     }
