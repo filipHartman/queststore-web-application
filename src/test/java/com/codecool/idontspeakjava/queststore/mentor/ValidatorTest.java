@@ -164,4 +164,46 @@ public class ValidatorTest {
     public void checkIfNameIsValid_HaveLettersAndDigits_ReturnFalse() {
         assertFalse(new Validator().checkIfNameIsValid("Jacek2"));
     }
+
+    @Test
+    public void checkIfEmailIsValid_IsEmpty_ReturnFalse() {
+        List<String> emails = Arrays.asList("email@domain.com", "better.email@domain.com", "super3email@email.org");
+        assertFalse(new Validator().checkIfEmailIsValid("", emails));
+    }
+
+    @Test
+    public void checkIfEmailIsValid_DoesNotHaveADomain_ReturnFalse() {
+        List<String> emails = Arrays.asList("email@domain.com", "better.email@domain.com", "super3email@email.org");
+        assertFalse(new Validator().checkIfEmailIsValid("jacek@", emails));
+    }
+
+    @Test
+    public void checkIfEmailIsValid_DoesNotHaveAtSign_ReturnFalse() {
+        List<String> emails = Arrays.asList("email@domain.com", "better.email@domain.com", "super3email@email.org");
+        assertFalse(new Validator().checkIfEmailIsValid("jacekgmail.com", emails));
+    }
+
+    @Test
+    public void checkIfEmailIsValid_DoesNotHaveLocalPart_ReturnFalse() {
+        List<String> emails = Arrays.asList("email@domain.com", "better.email@domain.com", "super3email@email.org");
+        assertFalse(new Validator().checkIfEmailIsValid("@domain.com", emails));
+    }
+
+    @Test
+    public void checkIfEmailIsValid_DomainDoesNotHaveADot_ReturnFalse() {
+        List<String> emails = Arrays.asList("email@domain.com", "better.email@domain.com", "super3email@email.org");
+        assertFalse(new Validator().checkIfEmailIsValid("email@domaincom", emails));
+    }
+
+    @Test
+    public void checkIfEmailIsValid_HaveLocalPartDomainAtSignAndIsUnique_ReturnTrue() {
+        List<String> emails = Arrays.asList("email@domain.com", "better.email@domain.com", "super3email@email.org");
+        assertTrue(new Validator().checkIfEmailIsValid("jacek@gmail.com", emails));
+    }
+
+    @Test
+    public void checkIfEmailIsValid_HaveLocalPartDomainAtSignAndIsNotUnique_ReturnFalse() {
+        List<String> emails = Arrays.asList("email@domain.com", "better.email@domain.com", "super3email@email.org");
+        assertFalse(new Validator().checkIfEmailIsValid("email@domain.com", emails));
+    }
 }
