@@ -25,7 +25,7 @@ public class Validator {
     }
 
     public boolean checkIfDescriptionIsValid(String input) {
-        return input.matches("[a-zA-Z1-9,.! ]+");
+        return input.matches("[a-zA-Z1-9,. ]+");
     }
 
     public boolean checkIfTitleIsValid(String input, List<String> titles) {
