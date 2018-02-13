@@ -8,22 +8,22 @@ public class CodecoolerView extends UserView{
     public void showMainMenu(String userName, String rank) {
         System.out.println(String.format(
                     "%s%sQUESTSTORE\n\n%sNAME: %s              RANK: %s%s\n\n" +
-                    "1 - See your wallet\n" +
-                    "2 - Buy an artifact\n" +
-                    "3 - Buy an artifact for team\n" +
-                            "4 - See available quests\n" +
-                            "5 - Manage your team\n\n\n" +
-                    "0 - Exit the program\n",
+                    "1. See your wallet\n" +
+                    "2. Buy an artifact\n" +
+                    "3. Buy an artifact for team\n" +
+                            "4. See available quests\n" +
+                            "5. Manage your team\n\n\n" +
+                    "0. Exit the program\n",
                 CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, Colors.BLUE_BOLD_BRIGHT, userName, rank, Colors.RESET));
     }
 
     public void showManageTeamMenu(String userName, String team) {
         System.out.println(String.format(
                 "%s%sQUESTSTORE\n\n%sNAME: %s              TEAM: %s%s\n\n" +
-                        "1 - Create new team\n" +
-                        "2 - Join to existing team\n" +
-                        "3 - Leave your team\n\n\n" +
-                        "0 - Back to main menu\n",
+                        "1. Create new team\n" +
+                        "2. Join to existing team\n" +
+                        "3. Leave your team\n\n\n" +
+                        "0. Back to main menu\n",
                 CLEAR_CONSOLE, Colors.GREEN_BOLD_BRIGHT, Colors.BLUE_BOLD_BRIGHT, userName, team, Colors.RESET));
     }
 
@@ -47,8 +47,7 @@ public class CodecoolerView extends UserView{
                 System.out.print(String.format("| %s%s%s ", Colors.WHITE_BOLD, artifact, Colors.RESET));
             }
         }
-        System.out.println("\n\nPress enter to continue...");
-        getUserInput();
+        continuePrompt();
     }
 
     public void showBuyArtifactMenu(ArrayList<String> artifactsInfo, long balance){
@@ -79,6 +78,23 @@ public class CodecoolerView extends UserView{
         System.out.println("\n\n0 - Back");
     }
 
+    public void showQuests(ArrayList<String> quests){
+        System.out.println(CLEAR_CONSOLE + Colors.GREEN_BOLD_BRIGHT + "\nTAVERN\n" + Colors.RESET);
+        String[] questInfo;
+        ArrayList<Integer> maxLengths = getMaxStringsLength(quests);
+        for (String quest : quests){
+            questInfo = quest.split("@");
+            String title = questInfo[0] + getSpaces(maxLengths.get(0) - questInfo[0].length());
+            String reward = questInfo[1];
+            String description = questInfo[2] + getSpaces(maxLengths.get(2) - questInfo[2].length());
+            System.out.println(String.format(
+                    "%s%s " + getSpaces(maxLengths.get(2) - title.length()) + " %sReward: %s%scc\n%s%s\n",
+                    Colors.BLUE_BOLD_BRIGHT, title, Colors.BLUE_BRIGHT, Colors.YELLOW_BOLD_BRIGHT, reward,
+                    Colors.RESET, description));
+        }
+        continuePrompt();
+    }
+
     private ArrayList<Integer> getMaxStringsLength(ArrayList<String> strings) {
         int maxFirst = 0;
         int maxSecond = 0;
@@ -99,27 +115,9 @@ public class CodecoolerView extends UserView{
         return new String(new char[amount]).replace("\0", " ");
     }
 
-    public void showQuests(ArrayList<String> quests){
-        System.out.println(CLEAR_CONSOLE + Colors.GREEN_BOLD_BRIGHT + "\nTAVERN\n" + Colors.RESET);
-        String[] questInfo;
-        ArrayList<Integer> maxLengths = getMaxStringsLength(quests);
-        for (String quest : quests){
-            questInfo = quest.split("@");
-            String title = questInfo[0] + getSpaces(maxLengths.get(0) - questInfo[0].length());
-            String reward = questInfo[1];
-            String description = questInfo[2] + getSpaces(maxLengths.get(2) - questInfo[2].length());
-            System.out.println(String.format(
-                        "%s%s " + getSpaces(maxLengths.get(2) - title.length()) + " %sReward: %s%scc\n%s%s\n",
-                    Colors.BLUE_BOLD_BRIGHT, title, Colors.BLUE_BRIGHT, Colors.YELLOW_BOLD_BRIGHT, reward,
-                    Colors.RESET, description));
-        }
-        System.out.println("\nPress enter to continue...");
-        getUserInput();
-    }
-
     public void notEnoughCoolcoins(){
-        System.out.println(CLEAR_CONSOLE + "Not enough coolcoins\nPress enter to continue...");
-        getUserInput();
+        System.out.println(CLEAR_CONSOLE + "Not enough coolcoins");
+        continuePrompt();
     }
 
     public int askForContribution(){
@@ -184,5 +182,12 @@ public class CodecoolerView extends UserView{
         System.out.printf("%sYou've been added to %s %s %s team successfully!\n",
                 Colors.YELLOW, Colors.GREEN_BOLD, teamName, Colors.YELLOW);
         continuePrompt();
+    }
+
+    @Override
+    public void continuePrompt() {
+        System.out.print(Colors.PURPLE_BOLD + "\n");
+        printTable(new String[][]{{"Hit enter to continue"}});
+        getUserInput();
     }
 }
