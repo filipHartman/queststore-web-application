@@ -34,7 +34,7 @@ class MentorData{
                 view.showOperationCancelled();
                 loopContinuation = false;
             }else if(!selectMentor(input)){
-                getMentorClass(selectedMentor);
+                getMentorClass();
                 List<User> mentorStudents = getMentorStudents();
                 view.showMentorInfo(selectedMentor, mentorClass, mentorStudents);
                 loopContinuation = false;
@@ -58,7 +58,7 @@ class MentorData{
         return mentorNotSelected;
     }
 
-    private void getMentorClass(User mentor){
+    private void getMentorClass(){
         try{
             mentorClass = new SQLiteCodecoolClassDAO().getUserCodecoolClass(selectedMentor);
         }catch(NullPointerException e){
@@ -68,14 +68,21 @@ class MentorData{
     }
 
     private List<User> getMentorStudents(){
+        CodecoolClass pupilClass;
         List<User> allStudents = new SQLiteUserDAO().getUsersByPermission(Permissions.Student);
         List<User> mentorStudents = new ArrayList<User>();
-        
-        for (User pupil : allStudents){
-            CodecoolClass pupilClass = new SQLiteCodecoolClassDAO().getUserCodecoolClass(pupil);
-            if(mentorClass.getId() == pupilClass.getId()){
-                mentorStudents.add(pupil);
+
+        try{
+            for (User pupil : allStudents) {
+                pupilClass = new SQLiteCodecoolClassDAO().getUserCodecoolClass(pupil);
+                if(pupilClass == null) continue;
+                else if (mentorClass.getId() == pupilClass.getId()){
+                    mentorStudents.add(pupil);
+                }
             }
+        }catch(NullPointerException e){
+            e.printStackTrace();
+            view.showDatabaseError();
         }
         return mentorStudents;
     }
