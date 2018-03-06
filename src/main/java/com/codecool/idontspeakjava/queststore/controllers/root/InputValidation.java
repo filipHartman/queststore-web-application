@@ -74,7 +74,7 @@ class InputValidation{
         return correctExpLvlName;
     }
 
-    public boolean setThreshold(String input){
+    public boolean checkThresholdInput(String input){
         boolean correctThreshold = false;
         if (input.matches("\\d+")){
             try{
