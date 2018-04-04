@@ -1,0 +1,11 @@
+label{
+    display: block;
+}
+
+.radio{
+    backface-visibility: hidden;
+}
+
+input[type=submit]{
+     margin-top: 20px;
+}
