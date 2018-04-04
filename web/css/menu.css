@@ -21,4 +21,11 @@ li {
     text-decoration: none;
 }
 
+.menu-option a {
+    display: block;
+}
+
+.menu-option a:hover {
+    background-color: gray;
+}
 
