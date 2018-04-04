@@ -50,6 +50,7 @@ public class SQLiteUserDAO extends AbstractDAO implements com.codecool.idontspea
                 PreparedStatement preparedStatement = getConnection().prepareStatement(query);
                 preparedStatement.setString(1, email);
 
+
                 ResultSet resultSet = preparedStatement.executeQuery();
                 user = new User.Builder()
                         .setId(resultSet.getInt("id"))
