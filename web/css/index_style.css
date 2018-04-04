@@ -33,7 +33,7 @@ body{
 .main-content {
     width: 100%;
     height: auto;
-    min-height: 70%;
+    min-height: 70vh;
 
     margin: 1%;
     background-color: tomato;
