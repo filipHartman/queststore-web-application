@@ -7,15 +7,21 @@
 </head>
 <body>
 <div class="radio student-radio">
-    <label>
-        <input type="radio" name="student"> Marta Stąporek
-    </label>
-    <label>
-        <input type="radio" name="student"> Filip Hartman
-    </label>
-    <label>
-        <input type="radio" name="student"> Anna Leśniak
-    </label>
+    <fieldset>
+        <legend>Choose student</legend>
+        <form>
+        <label>
+            <input type="radio" name="student" required> Marta Stąporek
+        </label>
+        <label>
+            <input type="radio" name="student"> Filip Hartman
+        </label>
+        <label>
+            <input type="radio" name="student"> Anna Leśniak
+        </label>
+        <input type="submit" value="Choose">
+        </form>
+    </fieldset>
 </div>
 
 </body>

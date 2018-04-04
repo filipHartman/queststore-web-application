@@ -7,15 +7,21 @@
 </head>
 <body>
 <div class="radio quest-radio">
-    <label>
-        <input type="radio" name="quest"> Master the mornings 300
-    </label>
-    <label>
-        <input type="radio" name="quest"> Achiever 1000
-    </label>
-    <label>
-        <input type="radio" name="quest"> Fast as an unicorn 500
-    </label>
+    <fieldset>
+        <legend>Choose quest</legend>
+        <form>
+        <label>
+            <input type="radio" name="quest" required> Master the mornings 300
+        </label>
+        <label>
+            <input type="radio" name="quest"> Achiever 1000
+        </label>
+        <label>
+            <input type="radio" name="quest"> Fast as an unicorn 500
+        </label>
+        <input type="submit" value="Choose">
+        </form>
+    </fieldset>
 
 </div>
 

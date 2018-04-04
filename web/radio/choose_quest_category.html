@@ -7,12 +7,18 @@
 </head>
 <body>
 <div class="radio quest-category-radio">
-    <label>
-        <input type="radio" name="quest-category"> Basic
-    </label>
-    <label>
-        <input type="radio" name="quest-category"> Extra
-    </label>
+    <fieldset>
+        <legend>Choose quest category</legend>
+        <form>
+        <label>
+            <input type="radio" name="quest-category" required> Basic
+        </label>
+        <label>
+            <input type="radio" name="quest-category"> Extra
+        </label>
+        <input type="submit" value="Choose">
+        </form>
+    </fieldset>
 
 </div>
 
