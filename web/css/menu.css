@@ -1,12 +1,16 @@
 .menu {
     background-color: #111; /* Black */
-
     display: flex;
     height: 100%;
     width: 100%;
 }
 
+nav {
+    width: 100%;
+}
+
 .menu li {
+    width: 100%;
     list-style-type: none;
 }
 
