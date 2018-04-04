@@ -9,6 +9,7 @@
     <meta name="author" content="uMnieDziała">
 
     <link rel="stylesheet" href="css/index_style.css">
+    <link rel="stylesheet" href="css/form.css">
 </head>
 <body>
 <div class="main-container">
@@ -17,11 +18,21 @@
     </div>
 
     <div class="main-content">
-        <div class="login-form"><p>example block</p></div>
+        <div class="form-style">
+            <form method="post">
+                <fieldset>
+                    <legend>Log in</legend>
+                    <label><span>Email </span><input type="email" class="input-field" name="email" value="jan.nowak@gmail.com" required/></label>
+                    <label><span>Password </span><input type="text" class="input-field" name="last-name" value="Nowak" required/></label>
+                    <label><input type="submit" value="Log in" /></label>
+                    <label><input type="reset" value="Reset" /></label>
+                </fieldset>
+            </form>
+        </div>
     </div>
 
     <div class="main-footer">
-        <footer></footer>
+        <footer><p>footer</p></footer>
     </div>
 
 </div>
