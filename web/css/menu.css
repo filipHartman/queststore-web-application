@@ -1,36 +1,42 @@
 .menu {
-    /* Full-height: remove this if you want "auto" height */
-    width: 300px; /* Set the width of the sidebar */
-    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-    z-index: 1; /* Stay on top */
-    top: 0; /* Stay at the top */
-    left: 0;
-
     background-color: #111; /* Black */
+
+    display: flex;
+    height: 100%;
+    width: 100%;
 }
 
-li {
+.menu li {
     list-style-type: none;
-    margin: 0;
-    height: 40px;
 }
 
 .menu ul {
-    padding-left: 0;
+    padding: inherit;
+    margin: inherit;
     height: 100%;
+
 }
-.menu a {
-    margin-top: 10px;
+.menu-option {
+    border: 1px solid white;
+    background-color: maroon;
     color: azure;
     text-decoration: none;
-    display: block;
-    padding-top: 15px;
-    padding-left: 40px;
+
+    height: auto;
+    width: 100%;
+    padding: 1em;
+    margin: 0;
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+
+    word-break: break-all;
 
 }
 
 .menu a:hover {
     background-color: gray;
-    height: 40px;
 }
 
