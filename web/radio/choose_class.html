@@ -7,15 +7,21 @@
 </head>
 <body>
 <div class="radio class-radio">
-    <label>
-        <input type="radio" name="class"> 2017-1
-    </label>
-    <label>
-        <input type="radio" name="class"> 2017-2
-    </label>
-    <label>
-        <input type="radio" name="class"> 2018-1
-    </label>
+    <fieldset>
+        <legend>Choose class</legend>
+        <form>
+        <label>
+            <input type="radio" name="class" required> 2017-1
+        </label>
+        <label>
+            <input type="radio" name="class"> 2017-2
+        </label>
+        <label>
+            <input type="radio" name="class"> 2018-1
+        </label>
+            <input type="submit" value="Choose">
+        </form>
+    </fieldset>
 </div>
 
 </body>
