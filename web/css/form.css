@@ -1,0 +1,66 @@
+body {
+    background-color: #222e50;
+}
+
+.form-style label{
+    display:block;
+    margin-bottom: 10px;
+}
+.form-style label span{
+    float: left;
+    width: 130px;
+    color: #222e50;
+    font-weight: bold;
+    font-size: 16px;
+}
+.form-style fieldset{
+    background-color: #f4f9f9;
+    border: 1px solid #f4f9f9;
+    padding: 20px;
+    margin: auto;
+
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+
+    box-shadow: inset 0px 0px 15px #f4f9f9;
+    -moz-box-shadow: inset 0px 0px 15px #f4f9f9;
+    -webkit-box-shadow: inset 0px 0px 15px #f4f9f9;
+}
+
+.form-style input[type=text],
+.form-style input[type=email] {
+    color: #197bbd;
+    background-color: #f4f9f9;
+    width:50%;
+    font-size: 16px;
+    border: 1px solid #197bbd;
+    padding: 5px 8px 5px 8px;
+
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+
+    box-shadow: inset 1px 1px 4px #197bbd;
+    -moz-box-shadow: inset 1px 1px 4px #197bbd;
+    -webkit-box-shadow: inset 1px 1px 4px #197bbd;
+}
+
+.form-style input[type=submit] {
+    color: #222e50;
+    width: 100px;
+    heigth: 100px;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 7px 15px;
+
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+
+    box-shadow: inset -1px -1px 3px #197bbd;
+    -moz-box-shadow: inset -1px -1px 3px #197bbd;
+    -webkit-box-shadow: inset -1px -1px 3px #197bbd;
+
+    background:-moz-linear-gradient(#f4f9f9, #fe5f55);
+}
