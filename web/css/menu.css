@@ -1,31 +1,31 @@
 .menu {
-    height: 100%; /* Full-height: remove this if you want "auto" height */
-    width: 300px; /* Set the width of the sidebar */
-    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-    z-index: 1; /* Stay on top */
-    top: 0; /* Stay at the top */
-    left: 0;
+    height: 100%;
+    width: 300px;
     background-color: #111; /* Black */
-    overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 20px;
 }
 
 li {
     list-style-type: none;
     margin: 0;
-    padding: 20px;
+    height: 40px;
 }
 
+.menu ul {
+    padding-left: 0;
+    height: 100%;
+}
 .menu a {
-    color: white;
+    margin-top: 10px;
+    color: azure;
     text-decoration: none;
-}
-
-.menu-option a {
     display: block;
+    padding-top: 15px;
+    padding-left: 40px;
+
 }
 
-.menu-option a:hover {
+.menu a:hover {
     background-color: gray;
+    height: 40px;
 }
 
