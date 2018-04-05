@@ -29,7 +29,9 @@ body {
 }
 
 .form-style input[type=text],
-.form-style input[type=email] {
+.form-style input[type=email],
+.form-style input[type=password],
+.form-style input[type=number] {
     color: #197bbd;
     background-color: #f4f9f9;
     width:50%;
