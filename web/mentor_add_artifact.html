@@ -31,7 +31,20 @@
 
     <div class="main-content">
         <div class="navigation" id="navigation"></div>
-        <div class="content" id="content"></div>
+        <div class="content" id="content">
+            <div class="form-style">
+                <form method="post" onsubmit="alertSuccess()" action="mentor-home.html">
+                    <fieldset>
+                        <legend>Add new artifact</legend>
+                        <label><span>Title </span><input type="text" class="input-field" name="title" placeholder="Combat training" required/></label>
+                        <label><span>Description </span><input type="text" class="input-field" name="description" placeholder="Private mentoring" required/></label>
+                        <label><span>Price </span><input type="number" class="input-field" name="price" min="0" placeholder="50" required/></label>
+                        <label><input type="submit" value="Add artifact" /></label>
+                    </fieldset>
+                </form>
+            </div>
+
+        </div>
         <div class="content-margin"></div>
     </div>
 
