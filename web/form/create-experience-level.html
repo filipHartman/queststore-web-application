@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <title>Create experience level</title>
     <link rel="stylesheet" type="text/css" href="../css/form.css">
+    <script type="text/javascript" src="js/operation-successful.js"> </script>
 </head>
 <body>
 <div class="form-style">
-    <form method="post" action="admin_home.html">
+    <form method="post" onsubmit="alertSuccess()" action="admin_home.html">
         <fieldset>
             <legend>Create experience level</legend>
             <label><span>Level name </span><input type="text" class="input-field" name="name" placeholder="Master" required/></label>

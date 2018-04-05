@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <title>Choose quest</title>
     <link rel="stylesheet" type="text/css" href="../css/radio.css">
+    <script type="text/javascript" src="js/operation-successful.js"> </script>
 </head>
 <body>
 <div class="radio quest-radio">
     <fieldset>
         <legend>Choose quest</legend>
-        <form>
+        <form method="post" onsubmit="alertSuccess()" action="mentor-home.html">
         <label>
             <input type="radio" name="quest" required> Master the mornings 300
         </label>

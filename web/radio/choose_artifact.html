@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <title>Choose artifact</title>
     <link rel="stylesheet" type="text/css" href="../css/radio.css">
+    <script type="text/javascript" src="js/operation-successful.js"> </script>
 </head>
 <body>
 <div class="radio artifact-radio">
     <fieldset>
         <legend>Choose artifact </legend>
-        <form>
+        <form method="post" onsubmit="alertSuccess()" action="mentor-home.html">
         <label>
             <input type="radio" name="artifact" required> Sanctuary 1000
         </label>

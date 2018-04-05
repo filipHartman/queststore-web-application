@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <title>Edit mentor's email</title>
     <link rel="stylesheet" type="text/css" href="../css/form.css">
+    <script type="text/javascript" src="js/operation-successful.js"> </script>
 </head>
 <body>
 
 <div class="form-style">
-    <form method="post" action="admin_home.html">
+    <form method="post" onsubmit="alertSuccess()" action="admin_home.html">
         <fieldset>
             <legend>Edit mentor's email</legend>
             <label><span>Enter new email </span><input type="email" class="input-field" name="email" placeholder="jan.nowak@gmail.com" required/></label>
-            <label><input type="submit" value="Submit" /></label>
+            <label><input type="submit" value="Submit"/></label>
         </fieldset>
     </form>
 </div>

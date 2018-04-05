@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <title>Choose class</title>
     <link rel="stylesheet" type="text/css" href="../css/radio.css">
+    <script type="text/javascript" src="js/operation-successful.js"> </script>
 </head>
 <body>
 <div class="radio class-radio">
     <fieldset>
         <legend>Choose class</legend>
-        <form>
+        <form method="post" onsubmit="alertSuccess()" action="admin_home.html">
         <label>
             <input type="radio" name="class" required> 2017-1
         </label>
@@ -19,7 +20,7 @@
         <label>
             <input type="radio" name="class"> 2018-1
         </label>
-            <input type="button" value="Choose" onclick="location.href='admin_home.html';">
+            <input type="submit" value="Choose">
         </form>
     </fieldset>
 </div>
