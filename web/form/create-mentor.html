@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <title>Create mentor's account</title>
     <link rel="stylesheet" type="text/css" href="../css/form.css">
+    <script type="text/javascript" src="js/operation-successful.js"> </script>
 </head>
 <body>
 
 <div class="form-style">
-    <form method="post" action="admin_home.html">
+    <form method="post" onsubmit="alertSuccess()" action="admin_home.html">
         <fieldset>
             <legend>Create mentor's account</legend>
             <label><span>First name </span><input type="text" class="input-field" name="first-name" placeholder="Jan" required/></label>
