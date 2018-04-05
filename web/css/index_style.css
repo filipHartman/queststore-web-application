@@ -47,7 +47,8 @@ body{
 
 .navigation {
     height: auto;
-    width: 20%;
+    min-height: 70vh;
+    max-width: 20%;
 
     background-color: gold;
 
@@ -62,6 +63,7 @@ body{
 
 .content {
     height: auto;
+    min-height: 70vh;
     width: 50%;
 
     background-color: purple;
@@ -93,7 +95,6 @@ body{
     .content {
         width: 50%;
         padding-right: 0%;
-
     }
 }
 

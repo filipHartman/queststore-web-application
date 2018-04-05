@@ -1,6 +1,9 @@
 body {
     background-color: #222e50;
 }
+.form-style{
+    width: auto;
+}
 
 .form-style label{
     display:block;
@@ -48,7 +51,7 @@ body {
 
 .form-style input[type=submit] {
     color: #222e50;
-    width: 100px;
+    width: auto;
     heigth: 100px;
     font-size: 20px;
     font-weight: bold;
@@ -63,4 +66,10 @@ body {
     -webkit-box-shadow: inset -1px -1px 3px #197bbd;
 
     background:-moz-linear-gradient(#f4f9f9, #fe5f55);
+}
+
+
+
+body {
+    background-color: #222e50;
 }
