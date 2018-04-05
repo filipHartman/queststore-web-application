@@ -5,7 +5,7 @@ body{
     width: auto;
     font-family: 'Basic', sans-serif;
     font-size: large;
-    word-break: normal;
+    text-wrap: avoid;
 }
 .main-container{
     width: auto;
