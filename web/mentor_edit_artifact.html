@@ -9,7 +9,7 @@
     <meta name="author" content="uMnieDziała">
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="js/mentor-menu.js"></script>
-    <script src="js/mentor-edit-artifact.js"></script>
+    <script src="js/operation-successful.js"></script>
 
     <link rel="stylesheet" href="css/index_style.css">
     <link rel="stylesheet" href="css/menu.css">
@@ -31,7 +31,25 @@
 
     <div class="main-content">
         <div class="navigation" id="navigation"></div>
-        <div class="content" id="content"></div>
+        <div class="content" id="content">
+            <div class="form-style">
+                <form method="post" onsubmit="alertSuccess()" action="mentor-home.html">
+                    <fieldset>
+                        <legend>Edit artifact</legend>
+                        <label><span>Title </span><input type="text" class="input-field" name="title" placeholder="Combat training" required/></label>
+                        <label><span>Description </span><input type="text" class="input-field" name="description" placeholder="Private mentoring" required/></label>
+                        <label><span>Price </span><input type="number" class="input-field" name="reward" min="0" placeholder="50" required/></label>
+                        <label><span>Basic</span>
+                            <input type="radio" name="artifact-category" required>
+                        </label>
+                        <label><span>Magic</span>
+                            <input type="radio" name="artifact-category">
+                        </label>
+                        <label><input type="submit" value="Submit" /></label>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
         <div class="content-margin"></div>
     </div>
 

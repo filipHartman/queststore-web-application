@@ -9,7 +9,7 @@
     <meta name="author" content="uMnieDziała">
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="js/mentor-menu.js"></script>
-    <script src="js/mentor-choose-quest-to-edit.js"></script>
+    <script src="js/operation-successful.js"></script>
 
     <link rel="stylesheet" href="css/index_style.css">
     <link rel="stylesheet" href="css/menu.css">
@@ -31,7 +31,26 @@
 
     <div class="main-content">
         <div class="navigation" id="navigation"></div>
-        <div class="content" id="content"></div>
+        <div class="content" id="content">
+            <div class="radio quest-radio">
+                <fieldset>
+                    <legend>Choose quest</legend>
+                    <form method="post" action="mentor_edit_quest.html">
+                        <label>
+                            <input type="radio" name="quest" required> Master the mornings 300
+                        </label>
+                        <label>
+                            <input type="radio" name="quest"> Achiever 1000
+                        </label>
+                        <label>
+                            <input type="radio" name="quest"> Fast as an unicorn 500
+                        </label>
+                        <input type="submit" value="Choose">
+                    </form>
+                </fieldset>
+
+            </div>
+        </div>
         <div class="content-margin"></div>
     </div>
 

@@ -8,7 +8,8 @@
     <meta name="keywords" content="codecool, shop, store, school project, web">
     <meta name="author" content="uMnieDziała">
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="js/admin-edit-mentor-email.js"></script>
+    <script src="js/admin-menu.js"></script>
+    <script src="js/operation-successful.js"></script>
 
     <link rel="stylesheet" href="css/index_style.css">
     <link rel="stylesheet" href="css/menu.css">
@@ -30,7 +31,17 @@
 
     <div class="main-content">
         <div class="navigation" id="navigation"></div>
-        <div class="content" id="content"></div>
+        <div class="content" id="content">
+            <div class="form-style">
+                <form method="post" onsubmit="alertSuccess()" action="admin_home.html">
+                    <fieldset>
+                        <legend>Edit mentor's email</legend>
+                        <label><span>Enter new email </span><input type="email" class="input-field" name="email" placeholder="jan.nowak@gmail.com" required/></label>
+                        <label><input type="submit" value="Submit"/></label>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
         <div class="content-margin"></div>
     </div>
 

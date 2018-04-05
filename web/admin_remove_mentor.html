@@ -8,7 +8,8 @@
     <meta name="keywords" content="codecool, shop, store, school project, web">
     <meta name="author" content="uMnieDziała">
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="js/admin-choose-mentor-remove-mentor.js"></script>
+    <script src="js/admin-menu.js"></script>
+    <script src="js/operation-successful.js"></script>
 
     <link rel="stylesheet" href="css/index_style.css">
     <link rel="stylesheet" href="css/menu.css">
@@ -30,7 +31,26 @@
 
     <div class="main-content">
         <div class="navigation" id="navigation"></div>
-        <div class="content" id="content"></div>
+        <div class="content" id="content">
+            <body>
+            <div class="radio mentor-radio">
+                <fieldset>
+                    <legend>Choose mentor</legend>
+                    <form method="post" onsubmit="alertSuccess()" action="admin_home.html">
+                        <label>
+                            <input type="radio" name="mentor" required> Dominik Starzyk
+                        </label>
+                        <label>
+                            <input type="radio" name="mentor"> Konrad Gadzina
+                        </label>
+                        <label>
+                            <input type="radio" name="mentor"> Piotr Tomaszewski
+                        </label>
+                        <input type="submit" value="Choose">
+                    </form>
+                </fieldset>
+            </div>
+        </div>
         <div class="content-margin"></div>
     </div>
 
