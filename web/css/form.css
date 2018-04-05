@@ -7,6 +7,7 @@ body {
 }
 
 .form-style label{
+
     margin: 1em;
     display: flex;
     flex-direction: row;
@@ -19,7 +20,7 @@ body {
     font-size: medium;
 }
 .form-style fieldset{
-    background-color: #f4f9f9;
+    background-color: #767b91;
     border: 1px solid #f4f9f9;
     margin: auto;
     width: auto;
@@ -40,6 +41,7 @@ body {
     color: #197bbd;
     background-color: #f4f9f9;
     width:50%;
+    font-family: 'Basic', sans-serif;
     font-size: medium;
     border: 1px solid #197bbd;
     padding: 0.5em;
