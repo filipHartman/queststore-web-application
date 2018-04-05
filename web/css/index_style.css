@@ -135,7 +135,6 @@ body{
 
     display: flex;
     background-color: #fe5f55;
-    margin-top: 1%;
     flex-direction: row;
     justify-content: right;
 
@@ -161,9 +160,7 @@ body{
     width: 100%;
     height: auto;
     min-height: 70vh;
-
-    background-color: tomato;
-
+    
     display: flex;
     flex-direction: column;
     justify-content: center;
