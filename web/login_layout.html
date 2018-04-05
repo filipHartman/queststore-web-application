@@ -12,16 +12,20 @@
     <link rel="stylesheet" href="css/form.css">
 </head>
 <body>
-<div class="main-container">
-    <div class="main-header">
-        <header>main header</header>
-    </div>
+<div class="main-header">
+    <header>main header</header>
+</div>
 
-    <div class="main-content">
+<div class="main-content">
+    <div class="log-in-panel">
+        <div id="user-type"></div>
         <div class="form-style">
             <form method="post">
                 <fieldset>
                     <legend>Log in</legend>
+                    <label><span>Admin</span><input type="radio" name="user-type" required></label>
+                    <label><span> Mentor</span><input type="radio" name="user-type"></label>
+                    <label><span> Student</span><input type="radio" name="user-type"></label>
                     <label><span>Email </span><input type="email" class="input-field" name="email" placeholder="jan.nowak@gmail.com" required/></label>
                     <label><span>Password </span><input type="password" class="input-field" name="password" placeholder="password" required/></label>
                     <label><input type="submit" value="Log in" /></label>
@@ -29,11 +33,11 @@
             </form>
         </div>
     </div>
-
-    <div class="main-footer">
-        <footer><p>footer</p></footer>
-    </div>
-
 </div>
+
+<div class="main-footer">
+    <footer><p>footer</p></footer>
+</div>
+
 </body>
 </html>
