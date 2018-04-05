@@ -9,33 +9,31 @@
     <meta name="author" content="uMnieDziała">
 
     <link rel="stylesheet" href="css/index_style.css">
+    <link rel="stylesheet" href="css/form.css">
 </head>
 <body>
-    <div class="main-container">
-        <div class="main-header">
-            <header>main header</header>
-        </div>
-
-        <div class="user_info">
-            <p>user name</p>
-            <p>user email</p>
-        </div>
-
-        <div class="main-content">
-            <div class="navigation">
-                <p>asdasdasd</p>
-                <p>zzzz</p>
-                <p>ppoppopop</p>
-                <p>yyyy</p>
-            </div>
-                <div class="content"><p>some content</p></div>
-
-        </div>
-
-        <div class="main-footer">
-            <footer></footer>
-        </div>
-
+<div class="main-container">
+    <div class="main-header">
+        <header>main header</header>
     </div>
+
+    <div class="main-content">
+        <div class="form-style">
+            <form method="post">
+                <fieldset>
+                    <legend>Log in</legend>
+                    <label><span>Email </span><input type="email" class="input-field" name="email" placeholder="jan.nowak@gmail.com" required/></label>
+                    <label><span>Password </span><input type="password" class="input-field" name="password" placeholder="password" required/></label>
+                    <label><input type="button" value="Log in" onclick="location.href='admin_home.html'"/></label>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+    <div class="main-footer">
+        <footer><p>footer</p></footer>
+    </div>
+
+</div>
 </body>
 </html>
