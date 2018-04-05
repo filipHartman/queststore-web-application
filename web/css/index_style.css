@@ -1,9 +1,11 @@
 body{
+    background-color: #222e50;
     margin: 0;
     height: auto;
     width: auto;
     font-family: 'Basic', sans-serif;
     font-size: large;
+    word-break: normal;
 }
 .main-container{
     width: auto;
@@ -85,14 +87,12 @@ body{
     height: auto;
     min-height: 70vh;
     width: 50%;
-    margin: 1%;
-
     background-color: #f4f9f9;
     display: flex;
     justify-content: center;
     align-items: center;
 
-    margin-top: 0;
+    margin: 0 1% 1%;
     padding: 5%;
 
 }
@@ -123,7 +123,9 @@ body{
     .content-margin{
         display: none;
     }
+}
 
+@media (max-width: 400px) {
     .main-header  header  p {
         display: none;
     }
@@ -135,7 +137,6 @@ body{
 
     display: flex;
     background-color: #fe5f55;
-    margin-top: 1%;
     flex-direction: row;
     justify-content: right;
 
@@ -161,8 +162,6 @@ body{
     width: 100%;
     height: auto;
     min-height: 70vh;
-
-    background-color: tomato;
 
     display: flex;
     flex-direction: column;
