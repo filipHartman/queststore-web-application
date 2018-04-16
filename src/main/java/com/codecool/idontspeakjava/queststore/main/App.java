@@ -1,5 +1,6 @@
 package com.codecool.idontspeakjava.queststore.main;
 
+import com.codecool.idontspeakjava.queststore.controllers.Static;
 import com.codecool.idontspeakjava.queststore.controllers.login.WebLoginController;
 import com.sun.net.httpserver.HttpServer;
 
@@ -17,6 +18,7 @@ public class App {
         }
 
         server.createContext("/login", new WebLoginController());
+        server.createContext("/static", new Static());
         server.setExecutor(null);
 
         server.start();
