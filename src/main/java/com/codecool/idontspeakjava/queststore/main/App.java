@@ -1,7 +1,7 @@
 package com.codecool.idontspeakjava.queststore.main;
 
 
-import com.codecool.idontspeakjava.queststore.controllers.LoginController;
+import com.codecool.idontspeakjava.queststore.controllers.root.terminal.LoginController;
 
 public class App {
 
