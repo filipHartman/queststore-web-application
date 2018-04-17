@@ -1,14 +1,14 @@
 package com.codecool.idontspeakjava.queststore.controllers.login;
 
-import com.codecool.idontspeakjava.queststore.controllers.codecooler.CodecoolerController;
-import com.codecool.idontspeakjava.queststore.controllers.mentor.MentorController;
+import com.codecool.idontspeakjava.queststore.controllers.AbstractHandler;
+import com.codecool.idontspeakjava.queststore.controllers.codecooler.terminal.CodecoolerController;
+import com.codecool.idontspeakjava.queststore.controllers.mentor.terminal.MentorController;
 import com.codecool.idontspeakjava.queststore.controllers.root.terminal.RootController;
 import com.codecool.idontspeakjava.queststore.database.UserDAO;
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.services.PasswordService;
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
@@ -18,12 +18,14 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
-public class WebLoginController implements HttpHandler {
+public class WebLoginController extends AbstractHandler {
     private final UserDAO usersDAO;
     private final PasswordService passwordService;
 
     public WebLoginController() {
+        super();
         this.usersDAO = new SQLiteUserDAO();
         this.passwordService = new PasswordService();
     }
@@ -37,6 +39,7 @@ public class WebLoginController implements HttpHandler {
             JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/login.twig");
             JtwigModel model = JtwigModel.newModel();
             response = template.render(model);
+            sendResponse(exchange, response);
 
         } else if (method.equals("POST")) {
             try {
@@ -49,34 +52,49 @@ public class WebLoginController implements HttpHandler {
                 String canditatePassword = inputs.get("password");
 
                 Optional<User> user = Optional.ofNullable(processCredentialsAndReturnUserInstance(email));
-                if (user.isPresent()) {
-                    if (checkIfUserProvideCorrectPassword(user.get(), canditatePassword)) {
-                        //set sessionId and redirect to user menu
+                if (user.isPresent() && checkIfUserProvideCorrectPassword(user.get(), canditatePassword)) {
+                    //set sessionId and redirect to user menu
+                    String sid = generateSID();
+                    getSessionIdContainer().add(sid, user.get().getId());
+                    redirectToCorrectMenu(exchange, user);
 
-                    } else {
-//                        loginView.showBadCredentials();
-                    }
                 } else {
-//                    loginView.showBadCredentials();
+                    redirectToLocation(exchange,"/login");
                 }
 
             } catch (IOException e) {
                 e.printStackTrace();
+                redirectToLocation(exchange,"/login");
             }
         }
 
-        byte[] bytes = response.getBytes();
-        try {
-            exchange.sendResponseHeaders(200, bytes.length);
-            OutputStream os = exchange.getResponseBody();
-            os.write(bytes);
-            os.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
-    private Map<String,String> parseLoginData(String loginData) {
+    private void redirectToCorrectMenu(HttpExchange exchange, Optional<User> user) {
+        String location;
+
+        switch (user.get().getPermission()) {
+            case Mentor:
+                location = "/mentor";
+                break;
+            case Student:
+                location = "/student";
+                break;
+            case Root:
+                location = "/admin";
+                break;
+            default:
+                location = "/login";
+        }
+
+        redirectToLocation(exchange, location);
+    }
+
+    private String generateSID() {
+        return UUID.randomUUID().toString();
+    }
+
+    private Map<String, String> parseLoginData(String loginData) {
         Map<String, String> inputs = new HashMap<>();
         String key;
         String value;
