@@ -31,11 +31,7 @@ public class WebLoginController extends AbstractHandler {
 
         } else if (method.equals("POST")) {
             try {
-                InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "UTF-8");
-                BufferedReader br = new BufferedReader(isr);
-                String loginData = br.readLine();
-                Map<String, String> inputs = parseFormData(loginData);
-
+                Map<String, String> inputs = readFormData(exchange);
                 String email = inputs.get("email");
                 String candidatePassword = inputs.get("password");
 
