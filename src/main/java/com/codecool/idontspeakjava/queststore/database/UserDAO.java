@@ -11,6 +11,8 @@ public interface UserDAO {
 
     User getUserByEmail(String email);
 
+    User getUserById(int id);
+
     List<User> getUsersByPermission(Permissions permission);
 
     List<User> getAllUsers();

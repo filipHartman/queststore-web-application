@@ -70,6 +70,33 @@ public class SQLiteUserDAO extends AbstractDAO implements com.codecool.idontspea
     }
 
     @Override
+    public User getUserById(int id) {
+        String query = "SELECT * FROM users WHERE id = ?";
+        User user = null;
+        try {
+            if (checkIfUsersExists(id)) {
+                PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+                preparedStatement.setInt(1, id);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+                user = new User.Builder()
+                        .setId(resultSet.getInt("id"))
+                        .setLastName(resultSet.getString("last_name"))
+                        .setFirstName(resultSet.getString("first_name"))
+                        .setEmail(resultSet.getString("email"))
+                        .setPasswordHash(resultSet.getString("password_hash"))
+                        .setPermission(Permissions.valueOf(resultSet.getString("permission")))
+                        .build();
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    @Override
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         String query = "SELECT * FROM users";
