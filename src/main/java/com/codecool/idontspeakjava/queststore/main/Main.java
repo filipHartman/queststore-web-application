@@ -2,6 +2,7 @@ package com.codecool.idontspeakjava.queststore.main;
 
 import com.codecool.idontspeakjava.queststore.controllers.Static;
 import com.codecool.idontspeakjava.queststore.controllers.login.WebLoginController;
+import com.codecool.idontspeakjava.queststore.controllers.login.*;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
@@ -19,6 +20,7 @@ public class Main {
 
         server.createContext("/login", new WebLoginController());
         server.createContext("/static", new Static());
+        server.createContext("/cos", new Test());
         server.setExecutor(null);
 
         server.start();

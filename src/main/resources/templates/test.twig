@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Queststore</title>
+
+    <link rel="stylesheet" href="static/css/index_style.css">
+    <link rel="stylesheet" href="static/css/form.css">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+
+</head>
+<body>
+{% block javascripts %}
+    <script type="text/javascript" src="{{ assets("static/js/admin-menu.js") }}"></script>
+
+{% endblock %}
+<div class="main-header">
+    <header><img src="static/img/logo.png" alt="logo">
+        <p class="logo-text">queststore</p>
+    </header>
+</div>
+
+<div class="main-content">
+    <div class="navigation" id="navigation"></div>
+
+    <div class="content-margin"></div>
+</div>
+
+
+<div class="main-footer">
+    <footer>
+        <p>&copy; 2018 Codecool uMnieDziała iDontSpeakJava. Wszystkie prawa zastrzeżone</p>
+    </footer>
+</div>
+
+</body>
+</html>
