@@ -23,6 +23,10 @@ public class SessionIdContainer {
         return container;
     }
 
+    public int getUserId(String sessionId) {
+        return container.get(sessionId);
+    }
+
     public void add(String sessionId, int userId) {
         this.container.put(sessionId, userId);
     }
