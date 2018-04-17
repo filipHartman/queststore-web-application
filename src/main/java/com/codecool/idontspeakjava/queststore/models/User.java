@@ -124,4 +124,12 @@ public class User {
             return new User(this);
         }
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "firstName='" + firstName +
+                ", lastName='" + lastName +
+                '}';
+    }
 }

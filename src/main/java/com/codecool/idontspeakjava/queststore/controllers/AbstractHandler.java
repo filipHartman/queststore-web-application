@@ -9,8 +9,7 @@ import org.jtwig.JtwigTemplate;
 
 import java.io.*;
 import java.net.URLDecoder;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public abstract class AbstractHandler implements HttpHandler {
     private SessionIdContainer sessionIdContainer;
@@ -53,6 +52,15 @@ public abstract class AbstractHandler implements HttpHandler {
         sendResponse(exchange, response);
     }
 
+    public void sendTemplateResponseWithForm(HttpExchange exchange, String templateName, List <String> collection){
+        JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.twig", templateName));
+        JtwigModel model = JtwigModel.newModel();
+        model.with("form", getRadioForm(collection) );
+        String response = template.render(model);
+        sendResponse(exchange, response);
+
+    }
+
     public Map<String, String> readFormData(HttpExchange exchange) throws IOException {
         InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "UTF-8");
         BufferedReader br = new BufferedReader(isr);
@@ -61,7 +69,8 @@ public abstract class AbstractHandler implements HttpHandler {
     }
 
     public Map<String, String> parseFormData(String formData) {
-        Map<String, String> inputs = new HashMap<>();
+        System.out.println(formData);
+         Map<String, String> inputs = new HashMap<>();
         String key;
         String value;
 
@@ -79,5 +88,24 @@ public abstract class AbstractHandler implements HttpHandler {
             }
         }
         return inputs;
+    }
+
+    public static String getRadioForm(List<String> collection){
+
+
+        String form = "<fieldset> \n"+
+                "<form method = \"post\">";
+
+        form += "<label> <input type = \"radio\" name = \"name\" required> "+collection.get(0)+"</label>";
+
+        for(int i = 1;i< collection.size(); i++){
+            form += "<label> <input type = \"radio\" name = \"name\" > "+collection.get(i)+"</label>";
+        }
+
+        form += "<input type = \"submit\" value = \"Choose\">" +
+                "</form> </fieldset>";
+
+        return form;
+
     }
 }

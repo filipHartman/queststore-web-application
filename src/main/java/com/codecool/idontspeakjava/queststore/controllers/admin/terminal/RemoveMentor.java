@@ -1,4 +1,4 @@
-package com.codecool.idontspeakjava.queststore.controllers.root.terminal;
+package com.codecool.idontspeakjava.queststore.controllers.admin.terminal;
 
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.views.RootView;

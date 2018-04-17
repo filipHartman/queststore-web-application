@@ -3,9 +3,6 @@ package com.codecool.idontspeakjava.queststore.controllers.login;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.*;
-import java.net.URLDecoder;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;

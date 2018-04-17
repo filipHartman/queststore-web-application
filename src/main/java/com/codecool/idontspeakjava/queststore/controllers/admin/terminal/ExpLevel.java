@@ -1,4 +1,4 @@
-package com.codecool.idontspeakjava.queststore.controllers.root.terminal;
+package com.codecool.idontspeakjava.queststore.controllers.admin.terminal;
 
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteExperienceLevelDAO;
 import com.codecool.idontspeakjava.queststore.models.ExperienceLevel;
