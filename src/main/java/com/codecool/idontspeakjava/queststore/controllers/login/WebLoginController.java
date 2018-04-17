@@ -6,8 +6,6 @@ import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.services.PasswordService;
 import com.sun.net.httpserver.HttpExchange;
-import org.jtwig.JtwigModel;
-import org.jtwig.JtwigTemplate;
 
 import java.io.*;
 import java.util.Map;
@@ -26,7 +24,6 @@ public class WebLoginController extends AbstractHandler {
 
     @Override
     public void handle(HttpExchange exchange) {
-        String response;
         String method = exchange.getRequestMethod();
 
         if (method.equals("GET")) {
@@ -40,7 +37,7 @@ public class WebLoginController extends AbstractHandler {
                 Map<String, String> inputs = parseFormData(loginData);
 
                 String email = inputs.get("email");
-                String candidatePassword = inputs.get("password"); 
+                String candidatePassword = inputs.get("password");
 
                 Optional<User> user = Optional.ofNullable(processCredentialsAndReturnUserInstance(email));
                 if (user.isPresent() && checkIfUserProvideCorrectPassword(user.get(), candidatePassword)) {
