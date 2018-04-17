@@ -52,10 +52,19 @@ public abstract class AbstractHandler implements HttpHandler {
         sendResponse(exchange, response);
     }
 
-    public void sendTemplateResponseWithForm(HttpExchange exchange, String templateName, List <String> collection){
+    public void sendTemplateResponseWithRadio(HttpExchange exchange, String templateName, List <String> collection){
         JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.twig", templateName));
         JtwigModel model = JtwigModel.newModel();
         model.with("form", getRadioForm(collection) );
+        String response = template.render(model);
+        sendResponse(exchange, response);
+
+    }
+
+    public void sendTemplateResponseWithForm(HttpExchange exchange, String templateName, String form){
+        JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.twig", templateName));
+        JtwigModel model = JtwigModel.newModel();
+        model.with("form", form);
         String response = template.render(model);
         sendResponse(exchange, response);
 
@@ -96,10 +105,10 @@ public abstract class AbstractHandler implements HttpHandler {
         String form = "<fieldset> \n"+
                 "<form method = \"post\">";
 
-        form += "<label> <input type = \"radio\" name = \"name\" required> "+collection.get(0)+"</label>";
+        form += "<label> <input type = \"radio\" name = \"name\"  value =\""+collection.get(0)+"\" required> "+collection.get(0)+"</label>";
 
         for(int i = 1;i< collection.size(); i++){
-            form += "<label> <input type = \"radio\" name = \"name\" > "+collection.get(i)+"</label>";
+            form += "<label> <input type = \"radio\" name = \"name\" value =\"pupa\" > "+collection.get(i)+"</label>";
         }
 
         form += "<input type = \"submit\" value = \"Choose\">" +

@@ -27,16 +27,16 @@ public class WebAssignMentor extends AbstractHandler {
 
 
         if (method.equals("GET")) {
-            sendTemplateResponseWithForm(httpExchange, "admin_home", collection);
+            sendTemplateResponseWithRadio(httpExchange, "admin_home", collection);
 
         }
 
         if(method.equals("POST")){
             Map<String, String> data = readFormData(httpExchange);
-            for(String key : data.keySet()){
-                System.out.println(key + " " + data.get(key));
+            String name = data.get("name");
+            System.out.println(name);
 
             }
         }
-    }
+
 }

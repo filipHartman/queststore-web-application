@@ -6,7 +6,7 @@ import com.codecool.idontspeakjava.queststore.controllers.codecooler.web.WebCode
 import com.codecool.idontspeakjava.queststore.controllers.login.WebLoginController;
 import com.codecool.idontspeakjava.queststore.controllers.login.*;
 import com.codecool.idontspeakjava.queststore.controllers.mentor.web.WebMentorController;
-import com.codecool.idontspeakjava.queststore.controllers.admin.web.WebAdminController;
+import com.codecool.idontspeakjava.queststore.controllers.admin.web.*;
 
 import com.sun.net.httpserver.HttpServer;
 
@@ -32,6 +32,7 @@ public class Main {
         server.createContext("/mentor", new WebMentorController());
         server.createContext("/student", new WebCodecoolerController());
         server.createContext("/assign-mentor", new WebAssignMentor());
+        server.createContext("/create-mentor", new WebCreateMentor());
 
         server.setExecutor(null);
 
