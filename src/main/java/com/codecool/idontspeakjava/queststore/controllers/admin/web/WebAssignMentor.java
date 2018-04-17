@@ -25,9 +25,11 @@ public class WebAssignMentor extends AbstractHandler {
             collection.add(user.toString());
         }
 
+        String form = HTMLGenerator.getRadioForm(collection);
+
 
         if (method.equals("GET")) {
-            sendTemplateResponseWithRadio(httpExchange, "admin_home", collection);
+            sendTemplateResponseWithForm(httpExchange, "admin_home", form);
 
         }
 

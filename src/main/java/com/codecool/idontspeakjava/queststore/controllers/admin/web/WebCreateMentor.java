@@ -13,9 +13,6 @@ public class WebCreateMentor extends AbstractHandler {
     public void handle(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
 
-
-
-
         if (method.equals("GET")) {
             sendTemplateResponseWithForm(httpExchange, "admin_home", HTMLGenerator.generateFormToCreateUser() );
 
