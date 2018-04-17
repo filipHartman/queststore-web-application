@@ -1,9 +1,6 @@
 package com.codecool.idontspeakjava.queststore.controllers.login;
 
 import com.codecool.idontspeakjava.queststore.controllers.AbstractHandler;
-import com.codecool.idontspeakjava.queststore.controllers.codecooler.terminal.CodecoolerController;
-import com.codecool.idontspeakjava.queststore.controllers.mentor.terminal.MentorController;
-import com.codecool.idontspeakjava.queststore.controllers.root.terminal.RootController;
 import com.codecool.idontspeakjava.queststore.database.UserDAO;
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
 import com.codecool.idontspeakjava.queststore.models.User;
@@ -14,7 +11,6 @@ import org.jtwig.JtwigTemplate;
 
 import java.io.*;
 import java.net.URLDecoder;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -32,7 +28,7 @@ public class WebLoginController extends AbstractHandler {
 
     @Override
     public void handle(HttpExchange exchange) {
-        String response = "";
+        String response;
         String method = exchange.getRequestMethod();
 
         if (method.equals("GET")) {
@@ -53,7 +49,6 @@ public class WebLoginController extends AbstractHandler {
 
                 Optional<User> user = Optional.ofNullable(processCredentialsAndReturnUserInstance(email));
                 if (user.isPresent() && checkIfUserProvideCorrectPassword(user.get(), canditatePassword)) {
-                    //set sessionId and redirect to user menu
                     String sid = generateSID();
                     getSessionIdContainer().add(sid, user.get().getId());
                     redirectToCorrectMenu(exchange, user);
@@ -67,7 +62,6 @@ public class WebLoginController extends AbstractHandler {
                 redirectToLocation(exchange,"/login");
             }
         }
-
     }
 
     private void redirectToCorrectMenu(HttpExchange exchange, Optional<User> user) {
@@ -122,8 +116,6 @@ public class WebLoginController extends AbstractHandler {
     private boolean checkIfUserProvideCorrectPassword(User user, String canditatePassword) {
         String userPassword = user.getPasswordHash();
         if (userPassword.isEmpty()) {
-//            return runPasswordGenerator(user); decide if we want direct to webpage to create password for new User
-            System.out.println("No password for user");
             return false;
         } else {
             return passwordService.checkPassword(canditatePassword, userPassword);
