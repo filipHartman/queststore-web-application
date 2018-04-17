@@ -4,6 +4,8 @@ import com.codecool.idontspeakjava.queststore.controllers.login.SessionIdContain
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import org.jtwig.JtwigModel;
+import org.jtwig.JtwigTemplate;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -44,6 +46,13 @@ public abstract class AbstractHandler implements HttpHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void sendTemplateResponse(HttpExchange exchange, String templateName) {
+        JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.twig", templateName));
+        JtwigModel model = JtwigModel.newModel();
+        String response = template.render(model);
+        sendResponse(exchange, response);
     }
 
     public Map<String, String> parseFormData(String formData) {
