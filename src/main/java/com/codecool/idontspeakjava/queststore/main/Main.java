@@ -3,8 +3,10 @@ package com.codecool.idontspeakjava.queststore.main;
 import com.codecool.idontspeakjava.queststore.controllers.Static;
 import com.codecool.idontspeakjava.queststore.controllers.codecooler.web.WebCodecoolerController;
 import com.codecool.idontspeakjava.queststore.controllers.login.WebLoginController;
+import com.codecool.idontspeakjava.queststore.controllers.login.*;
 import com.codecool.idontspeakjava.queststore.controllers.mentor.web.WebMentorController;
 import com.codecool.idontspeakjava.queststore.controllers.root.web.WebAdminController;
+
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
@@ -22,6 +24,9 @@ public class Main {
 
         server.createContext("/login", new WebLoginController());
         server.createContext("/static", new Static());
+
+        server.createContext("/cos", new Test());
+
         server.createContext("/admin", new WebAdminController());
         server.createContext("/mentor", new WebMentorController());
         server.createContext("/student", new WebCodecoolerController());
