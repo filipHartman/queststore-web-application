@@ -108,4 +108,8 @@ public abstract class AbstractHandler implements HttpHandler {
         return form;
 
     }
+
+    public boolean isLoggedIn(String sid) {
+        return getSessionIdContainer().contains(sid);
+    }
 }
