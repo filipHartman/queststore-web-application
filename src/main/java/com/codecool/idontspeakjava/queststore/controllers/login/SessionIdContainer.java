@@ -30,4 +30,8 @@ public class SessionIdContainer {
     public void remove(String sessionId) {
         this.container.remove(sessionId);
     }
+
+    public boolean contains(String sessionId) {
+        return container.containsKey(sessionId);
+    }
 }
