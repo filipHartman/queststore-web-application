@@ -4,9 +4,17 @@ import com.codecool.idontspeakjava.queststore.controllers.AbstractHandler;
 import com.sun.net.httpserver.HttpExchange;
 
 public class WebMentorController extends AbstractHandler {
+
+    public WebMentorController() {
+        super();
+    }
+
     @Override
     public void handle(HttpExchange httpExchange) {
-        String response = "mentor menu";
-        sendResponse(httpExchange, response);
+        String method = httpExchange.getRequestMethod();
+
+        if (method.equals("GET")) {
+            sendTemplateResponse(httpExchange, "mentor_home");
+        }
     }
 }

@@ -6,8 +6,6 @@ import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.services.PasswordService;
 import com.sun.net.httpserver.HttpExchange;
-import org.jtwig.JtwigModel;
-import org.jtwig.JtwigTemplate;
 
 import java.io.*;
 import java.util.Map;
@@ -26,27 +24,19 @@ public class WebLoginController extends AbstractHandler {
 
     @Override
     public void handle(HttpExchange exchange) {
-        String response;
         String method = exchange.getRequestMethod();
 
         if (method.equals("GET")) {
-            JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/login.twig");
-            JtwigModel model = JtwigModel.newModel();
-            response = template.render(model);
-            sendResponse(exchange, response);
+            sendTemplateResponse(exchange,"login");
 
         } else if (method.equals("POST")) {
             try {
-                InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "UTF-8");
-                BufferedReader br = new BufferedReader(isr);
-                String loginData = br.readLine();
-                Map<String, String> inputs = parseFormData(loginData);
-
+                Map<String, String> inputs = readFormData(exchange);
                 String email = inputs.get("email");
-                String canditatePassword = inputs.get("password");
+                String candidatePassword = inputs.get("password");
 
                 Optional<User> user = Optional.ofNullable(processCredentialsAndReturnUserInstance(email));
-                if (user.isPresent() && checkIfUserProvideCorrectPassword(user.get(), canditatePassword)) {
+                if (user.isPresent() && checkIfUserProvideCorrectPassword(user.get(), candidatePassword)) {
                     String sid = generateSID();
                     getSessionIdContainer().add(sid, user.get().getId());
                     redirectToCorrectMenu(exchange, user);

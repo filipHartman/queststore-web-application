@@ -4,9 +4,17 @@ import com.codecool.idontspeakjava.queststore.controllers.AbstractHandler;
 import com.sun.net.httpserver.HttpExchange;
 
 public class WebCodecoolerController extends AbstractHandler {
+
+    public WebCodecoolerController() {
+        super();
+    }
+
     @Override
     public void handle(HttpExchange httpExchange) {
-        String response = "student menu";
-        sendResponse(httpExchange, response);
+        String method = httpExchange.getRequestMethod();
+
+        if (method.equals("GET")) {
+            sendTemplateResponse(httpExchange, "student_home");
+        }
     }
 }
