@@ -42,7 +42,7 @@ public class WebLoginController extends AbstractHandler {
                 InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "UTF-8");
                 BufferedReader br = new BufferedReader(isr);
                 String loginData = br.readLine();
-                Map<String, String> inputs = parseLoginData(loginData);
+                Map<String, String> inputs = parseFormData(loginData);
 
                 String email = inputs.get("email");
                 String canditatePassword = inputs.get("password");
@@ -86,27 +86,6 @@ public class WebLoginController extends AbstractHandler {
 
     private String generateSID() {
         return UUID.randomUUID().toString();
-    }
-
-    private Map<String, String> parseLoginData(String loginData) {
-        Map<String, String> inputs = new HashMap<>();
-        String key;
-        String value;
-
-        String[] pairs = loginData.split("&");
-        for (String pair : pairs) {
-            String[] keyValue = pair.split("=");
-            key = keyValue[0];
-
-            try {
-                value = new URLDecoder().decode(keyValue[1], "UTF-8");
-                inputs.put(key, value);
-
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        }
-        return inputs;
     }
 
     private User processCredentialsAndReturnUserInstance(String email) {
