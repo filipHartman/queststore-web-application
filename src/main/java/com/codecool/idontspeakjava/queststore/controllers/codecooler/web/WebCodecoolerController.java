@@ -4,6 +4,11 @@ import com.codecool.idontspeakjava.queststore.controllers.AbstractHandler;
 import com.sun.net.httpserver.HttpExchange;
 
 public class WebCodecoolerController extends AbstractHandler {
+
+    public WebCodecoolerController() {
+        super();
+    }
+
     @Override
     public void handle(HttpExchange httpExchange) {
         String method = httpExchange.getRequestMethod();
