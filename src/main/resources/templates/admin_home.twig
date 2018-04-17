@@ -6,15 +6,10 @@
 
     <link rel="stylesheet" href="static/css/index_style.css">
     <link rel="stylesheet" href="static/css/form.css">
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 
 
 </head>
 <body>
-{% block javascripts %}
-    <script type="text/javascript" src="{{ assets("static/js/admin-menu.js") }}"></script>
-
-{% endblock %}
 <div class="main-header">
     <header><img src="static/img/logo.png" alt="logo">
         <p class="logo-text">queststore</p>
@@ -22,7 +17,9 @@
 </div>
 
 <div class="main-content">
-    <div class="navigation" id="navigation"></div>
+    <div class="navigation" id="navigation">
+        <header>{%include "classpath:/templates/admin_menu.twig" ignore missing %}</header>
+    </div>
 
     <div class="content-margin"></div>
 </div>
