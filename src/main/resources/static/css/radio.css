@@ -1,0 +1,57 @@
+label{
+    display: block;
+}
+
+.radio{
+    border-radius: 5px;
+    background-color: #197bbd;
+    padding: 1em;
+    padding: 1em;
+}
+
+.radio fieldset {
+    border: none;
+    margin: auto;
+    width: auto;
+    height: inherit;
+
+    color: #f4f9f9;
+}
+
+.radio legend{
+
+    padding: 1em 0;
+    background-color: #fe5f55;
+    width: 100%;
+    border-radius: 4px;
+
+    text-align: center;
+    font-weight: 700;
+    color: #f4f9f9;
+    font-family: 'Exo 2', sans-serif;
+    font-size: large;
+    text-transform: uppercase;
+}
+
+
+.radio label{
+    margin: 1em;
+    display: flex;
+    flex-direction: row;
+    padding: 0 10%;
+}
+
+input[type=submit]{
+    width: 100%;
+    background-color: #fe5f55;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type=submit]:hover {
+    background-color: #ff6f66;
+}

@@ -1,4 +1,4 @@
-package com.codecool.idontspeakjava.queststore.controllers.root;
+package com.codecool.idontspeakjava.queststore.controllers.root.terminal;
 
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
 import com.codecool.idontspeakjava.queststore.models.Permissions;

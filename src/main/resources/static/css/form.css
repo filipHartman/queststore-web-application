@@ -1,0 +1,90 @@
+.form-style {
+    border-radius: 5px;
+    background-color: #197bbd;
+    padding: 1em;
+}
+
+.form-style form {
+    width: 100%;
+}
+.form-style fieldset{
+    border: none;
+    margin: auto;
+    width: auto;
+    height: inherit;
+}
+
+.form-style legend{
+    padding: 1em 0;
+    background-color: #fe5f55;
+    width: 100%;
+    border-radius: 4px;
+
+    text-align: center;
+    font-weight: 700;
+    color: #f4f9f9;
+    font-family: 'Exo 2', sans-serif;
+    font-size: large;
+    text-transform: uppercase;
+}
+.form-style label{
+    margin: 1em;
+    display: flex;
+    flex-direction: row;
+}
+.form-style label span {
+    float: left;
+    width: 100%;
+    font-weight: bold;
+    color: #f4f9f9;
+}
+
+
+.form-style input[type=text],
+.form-style input[type=email],
+.form-style input[type=password],
+.form-style input[type=number] {
+    color: #197bbd;
+    font-family: 'Basic', sans-serif;
+    font-size: small;
+    padding: 0.5em;
+    width: 45%;
+
+
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+
+@media (max-width: 500px) {
+    .form-style input[type=text],
+    .form-style input[type=email],
+    .form-style input[type=password],
+    .form-style input[type=number]{
+        width: 100%;
+    }
+
+    .form-style label{
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.form-style input[type=submit] {
+    width: 100%;
+    background-color: #fe5f55;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+    color: #f4f9f9;
+    font-size: medium;
+    font-weight: bold;
+}
+
+.form-style input[type=submit]:hover {
+    background-color: #ff6f66;
+}
+
