@@ -1,4 +1,4 @@
-package com.codecool.idontspeakjava.queststore.controllers.codecooler;
+package com.codecool.idontspeakjava.queststore.controllers.codecooler.terminal;
 
 import com.codecool.idontspeakjava.queststore.database.TeamsDAO;
 import com.codecool.idontspeakjava.queststore.models.Team;

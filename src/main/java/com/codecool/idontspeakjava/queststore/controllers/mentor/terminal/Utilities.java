@@ -1,4 +1,4 @@
-package com.codecool.idontspeakjava.queststore.controllers.mentor;
+package com.codecool.idontspeakjava.queststore.controllers.mentor.terminal;
 
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteArtifactsDAO;
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteOrdersDAO;

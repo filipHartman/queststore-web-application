@@ -1,7 +1,7 @@
 package com.codecool.idontspeakjava.queststore.controllers.root.terminal;
 
-import com.codecool.idontspeakjava.queststore.controllers.codecooler.CodecoolerController;
-import com.codecool.idontspeakjava.queststore.controllers.mentor.MentorController;
+import com.codecool.idontspeakjava.queststore.controllers.codecooler.terminal.CodecoolerController;
+import com.codecool.idontspeakjava.queststore.controllers.mentor.terminal.MentorController;
 import com.codecool.idontspeakjava.queststore.database.UserDAO;
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
 import com.codecool.idontspeakjava.queststore.models.User;
