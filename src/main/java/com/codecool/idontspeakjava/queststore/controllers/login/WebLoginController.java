@@ -51,7 +51,8 @@ public class WebLoginController implements HttpHandler {
                 Optional<User> user = Optional.ofNullable(processCredentialsAndReturnUserInstance(email));
                 if (user.isPresent()) {
                     if (checkIfUserProvideCorrectPassword(user.get(), canditatePassword)) {
-                        runNextController(user.get());
+                        //set sessionId and redirect to user menu
+
                     } else {
 //                        loginView.showBadCredentials();
                     }
@@ -110,22 +111,6 @@ public class WebLoginController implements HttpHandler {
             return passwordService.checkPassword(canditatePassword, userPassword);
         }
     }
-    private void runNextController(User user) {
 
-        try {
-            switch (user.getPermission()) {
-                case Mentor:
-                    new MentorController(user).run();
-                    break;
-                case Student:
-                    new CodecoolerController(user).run();
-                    break;
-                case Root:
-                    new RootController(user).start();
-                    break;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+
 }
