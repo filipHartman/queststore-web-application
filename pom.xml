@@ -78,7 +78,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.3.2</version>
                 <configuration>
-                    <mainClass>com.codecool.idontspeakjava.queststore.main.App</mainClass>
+                    <mainClass>com.codecool.idontspeakjava.queststore.main.Main</mainClass>
                     <cleanupDaemonThreads>false</cleanupDaemonThreads>
                 </configuration>
             </plugin>
