@@ -1,4 +1,4 @@
-package com.codecool.idontspeakjava.queststore.controllers.mentor;
+package com.codecool.idontspeakjava.queststore.controllers.mentor.terminal;
 
 import java.util.Arrays;
 import java.util.List;
