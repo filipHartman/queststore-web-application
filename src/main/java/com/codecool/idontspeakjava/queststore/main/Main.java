@@ -8,7 +8,6 @@ import com.codecool.idontspeakjava.queststore.controllers.login.*;
 import com.codecool.idontspeakjava.queststore.controllers.mentor.web.WebMentorController;
 import com.codecool.idontspeakjava.queststore.controllers.admin.web.*;
 
-import com.codecool.idontspeakjava.queststore.controllers.root.WebRootController;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
@@ -24,8 +23,7 @@ public class Main {
             e.printStackTrace();
         }
 
-        server.createContext("/", new WebRootController());
-        server.createContext("/login", new WebLoginController());
+        server.createContext("/", new WebLoginController());
         server.createContext("/static", new Static());
         server.createContext("/admin", new WebAdminController());
         server.createContext("/mentor", new WebMentorController());
