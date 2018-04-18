@@ -43,6 +43,10 @@ public class HTMLGenerator {
         return label(text);
     }
 
+    public static Tag getPassword(){
+        return input().withType("password").withName("password").isRequired();
+    }
+
     public static String getRadioForm(List<String> collection){
 
 
