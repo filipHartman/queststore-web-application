@@ -10,21 +10,20 @@ import com.codecool.idontspeakjava.queststore.models.User;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class WebAssignMentor extends AbstractHandler {
+public class WebEditMentorClass extends AbstractHandler {
 
-    @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+
         String method = httpExchange.getRequestMethod();
 
         List<User> userCollection = new SQLiteUserDAO().getUsersByPermission(Permissions.Mentor);
-        List<CodecoolClass> classCollection = new SQLiteCodecoolClassDAO().getAllCodecoolClasses();
+        List <CodecoolClass> classCollection = new SQLiteCodecoolClassDAO().getAllCodecoolClasses();
         System.out.println(classCollection.get(0));
 
-        String form = HTMLGenerator.getFormToEditClass(userCollection, classCollection);
+        String form = HTMLGenerator.getFormToEditClass(userCollection,classCollection);
         if (method.equals("GET")) {
             sendTemplateResponseWithForm(httpExchange, "admin_home", form);
 
@@ -35,25 +34,27 @@ public class WebAssignMentor extends AbstractHandler {
             String name = data.get("name");
             String className = data.get("className");
             User editedUser = null;
-            for (User user : userCollection) {
-                if (user.toString().equals(name)) {
+            for(User user : userCollection){
+                if(user.toString().equals(name)){
                     editedUser = user;
                 }
             }
 
             CodecoolClass choosenClass = null;
 
-            for (CodecoolClass codecoolClass : classCollection) {
-                if (codecoolClass.toString().equals(className)) {
+            for(CodecoolClass codecoolClass : classCollection){
+                if(codecoolClass.toString().equals(className)){
                     choosenClass = codecoolClass;
                 }
             }
 
+            new SQLiteCodecoolClassDAO().removeUserFromCodecoolClass(editedUser);
 
             new SQLiteCodecoolClassDAO().addUserToCodecoolClass(editedUser, choosenClass);
 
             redirectToLocation(httpExchange, "admin_home");
 
         }
+
     }
 }
