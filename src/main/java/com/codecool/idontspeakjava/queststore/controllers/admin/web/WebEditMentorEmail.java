@@ -2,43 +2,40 @@ package com.codecool.idontspeakjava.queststore.controllers.admin.web;
 
 import com.codecool.idontspeakjava.queststore.controllers.AbstractHandler;
 import com.codecool.idontspeakjava.queststore.controllers.helpers.HTMLGenerator;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteCodecoolClassDAO;
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
+import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
 import com.codecool.idontspeakjava.queststore.models.User;
+
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
-import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
-public class WebCreateMentor extends AbstractHandler {
+public class WebEditMentorEmail extends AbstractHandler {
 
-    @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+
         String method = httpExchange.getRequestMethod();
 
+        List<User> userCollection = new SQLiteUserDAO().getUsersByPermission(Permissions.Mentor);
+
+        String form = HTMLGenerator.generateFormToEditMail("Edit mentor's e-mail", userCollection);
         if (method.equals("GET")) {
-            sendTemplateResponseWithForm(httpExchange, "admin_home", HTMLGenerator.generateFormToCreateUser("Create mentor") );
+            sendTemplateResponseWithForm(httpExchange, "admin_home", form);
 
         }
 
-        if(method.equals("POST")){
+        if (method.equals("POST")) {
             Map<String, String> data = readFormData(httpExchange);
             String name = data.get("name");
-            String lastname = data.get("lastname");
-            String email = data.get("email");
-            String password = data.get("password");
-            User user = new User(name, lastname, password, email, Permissions.Mentor);
-            SQLiteUserDAO dao = new SQLiteUserDAO();
-            try {
-                dao.createUser(user);
-            }catch (SQLException e){
-                e.printStackTrace();
-            }
 
-            redirectToLocation(httpExchange, "/");
         }
-
 
     }
 }
+
+
+
