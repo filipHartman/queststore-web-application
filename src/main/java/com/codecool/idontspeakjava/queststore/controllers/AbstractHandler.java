@@ -76,10 +76,16 @@ public abstract class AbstractHandler implements HttpHandler {
 
     }
 
-    public Map<String, String> readFormData(HttpExchange exchange) throws IOException {
-        InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "UTF-8");
-        BufferedReader br = new BufferedReader(isr);
-        String loginData = br.readLine();
+    public Map<String, String> readFormData(HttpExchange exchange) {
+        String loginData = "";
+
+         try {
+             InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "UTF-8");
+             BufferedReader br = new BufferedReader(isr);
+             loginData = br.readLine();
+         }catch (IOException e){
+             e.printStackTrace();
+         }
         return parseFormData(loginData);
     }
 

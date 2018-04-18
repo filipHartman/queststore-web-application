@@ -24,11 +24,8 @@ public class WebCreateMentor extends AbstractHandler {
 
         if(method.equals("POST")){
             Map<String, String> data = null;
-            try {
-                data = readFormData(httpExchange);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+            data = readFormData(httpExchange);
             String name = data.get("name");
             String lastname = data.get("lastname");
             String email = data.get("email");

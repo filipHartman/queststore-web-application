@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class WebEditMentorClass extends AbstractHandler {
 
-    public void handle(HttpExchange httpExchange) throws IOException {
+    public void handle(HttpExchange httpExchange) {
 
         String method = httpExchange.getRequestMethod();
 

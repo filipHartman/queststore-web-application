@@ -37,11 +37,8 @@ public class WebAssignMentor extends AbstractHandler {
 
     private void assignMentorToClass(HttpExchange httpExchange, List<User> users, List<CodecoolClass> classes){
         Map<String, String> data = null;
-        try {
-            data = readFormData(httpExchange);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        data = readFormData(httpExchange);
 
         String userName = data.get("name");
         String className = data.get("className");

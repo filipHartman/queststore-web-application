@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class WebCreateClass extends AbstractHandler {
     @Override
-    public void handle(HttpExchange httpExchange) throws IOException {
+    public void handle(HttpExchange httpExchange) {
         String method = httpExchange.getRequestMethod();
 
         String form = HTMLGenerator.generateFromWith1Field("Create codecool class", "Codecool class name" );
