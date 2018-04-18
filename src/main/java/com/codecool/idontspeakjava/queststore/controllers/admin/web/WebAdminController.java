@@ -18,24 +18,27 @@ public class WebAdminController extends AbstractHandler {
     }
 
     private void redirectToActionHandler(HttpExchange httpExchange, String action){
-        try {
-            switch(action){
-                case "create-mentor": new WebCreateMentor().handle(httpExchange);
+            switch(action) {
+                case "create-mentor":
+                    new WebCreateMentor().handle(httpExchange);
                     break;
-                case "remove-mentor": break;
-                case "create-codecoolclass": break;
-                case "assign_mentor": new WebAssignMentor().handle(httpExchange);
+                case "remove-mentor":
                     break;
-                case "edit-mentor": break;
-                case "show-mentor": break;
-                case "create-level": break;
-                default: sendTemplateResponse(httpExchange, "admin_home");
+                case "create-codecoolclass":
                     break;
-
+                case "assign_mentor":
+                    new WebAssignMentor().handle(httpExchange);
+                    break;
+                case "edit-mentor":
+                    break;
+                case "show-mentor":
+                    break;
+                case "create-level":
+                    break;
+                default:
+                    sendTemplateResponse(httpExchange, "admin_home");
+                    break;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
 
