@@ -27,13 +27,13 @@ public class WebCreateMentor extends AbstractHandler {
             String name = data.get("name");
             String lastname = data.get("lastname");
             String email = data.get("email");
-            String password = "";
+            String password = data.get("password");
             User user = new User(name, lastname, password, email, Permissions.Mentor);
             SQLiteUserDAO dao = new SQLiteUserDAO();
             try {
                 dao.createUser(user);
             }catch (SQLException e){
-                System.out.println("SQL error");
+                e.printStackTrace();
             }
 
             sendTemplateResponse(httpExchange, "admin_home");

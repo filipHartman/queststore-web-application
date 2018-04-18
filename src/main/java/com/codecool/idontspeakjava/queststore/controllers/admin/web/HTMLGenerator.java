@@ -15,8 +15,10 @@ public class HTMLGenerator {
                                         form().withMethod("post").with(
                                                 getLabel("Name"),
                                                 getInput("name"),
-                                                getLabel("Lastname: "),
+                                                getLabel("Lastname"),
                                                 getInput("lastname"),
+                                                getLabel("pasword"),
+                                                getPassword(),
                                                 getLabel("E-mail"),
                                                 getEmail(),
                                                 getButton()
