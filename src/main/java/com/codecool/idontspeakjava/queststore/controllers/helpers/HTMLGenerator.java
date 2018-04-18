@@ -51,6 +51,9 @@ public class HTMLGenerator {
                 .render();
     }
 
+    public static Tag getLevel(){
+        return input().withClass("input-field").withName("threshold").withType("number").withPlaceholder("0").withValue("Submit");
+    }
 
 
     public static Tag getInput(String message){
