@@ -152,4 +152,15 @@ public class HTMLGenerator {
 
     }
 
+    public static String getList(List<String> collection, String legend){
+        return div(
+                fieldset(
+                        form(ul(each(collection, item ->
+                        li(
+                                span(item)
+                        ))))
+                ).with(getLegend(legend))
+        ).render();
+    }
+
 }

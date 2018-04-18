@@ -2,6 +2,7 @@ package com.codecool.idontspeakjava.queststore.database.sqlite;
 
 import com.codecool.idontspeakjava.queststore.database.AbstractDAO;
 import com.codecool.idontspeakjava.queststore.database.CodecoolClassDAO;
+import com.codecool.idontspeakjava.queststore.database.UserDAO;
 import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
 import com.codecool.idontspeakjava.queststore.models.User;
 import org.slf4j.Logger;
@@ -118,6 +119,27 @@ public class SQLiteCodecoolClassDAO extends AbstractDAO implements CodecoolClass
         }
     }
 
+    public List<User> getClassStudents(CodecoolClass codecoolClass) {
+        UserDAO userDao = new SQLiteUserDAO();
+        List<User> users = new ArrayList<>();
+        String query = "SELECT users.id as id FROM users INNER JOIN users_in_classes ON users.id=users_in_classes.user_id " +
+                "WHERE users.permission='Student' AND users_in_classes.class_id = ?;";
+        try {
+            PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+            preparedStatement.setInt(1, codecoolClass.getId());
+            log.info(preparedStatement.toString());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int uderId = resultSet.getInt("id");
+                users.add(userDao.getUserById(uderId));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
     @Override
     public CodecoolClass getUserCodecoolClass(User user) {
         CodecoolClass codecoolClass = null;
@@ -138,6 +160,7 @@ public class SQLiteCodecoolClassDAO extends AbstractDAO implements CodecoolClass
         }
         return codecoolClass;
     }
+
 
     @Override
     public void removeUserFromCodecoolClass(User user) {
