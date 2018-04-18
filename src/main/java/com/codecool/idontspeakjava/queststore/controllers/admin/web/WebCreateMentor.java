@@ -18,7 +18,7 @@ public class WebCreateMentor extends AbstractHandler {
         String method = httpExchange.getRequestMethod();
 
         if (method.equals("GET")) {
-            sendTemplateResponseWithForm(httpExchange, "admin_home", HTMLGenerator.generateFormToCreateUser() );
+            sendTemplateResponseWithForm(httpExchange, "admin_home", HTMLGenerator.generateFormToCreateUser("Create mentor") );
 
         }
 
