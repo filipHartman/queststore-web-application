@@ -29,6 +29,19 @@ public class HTMLGenerator {
 
     }
 
+    public static String generateFromToCreateClass(String methodName) {
+        return div(
+                fieldset(
+                        form().withMethod("post").with(
+                                getLabel("Codecool class name"),
+                                getInput("name"),
+                                getButton()
+                        )
+                ).with(getLegend(methodName))
+                ).withClass("form-style")
+                .render();
+    }
+
     public static Tag getInput(String message){
         return input().withClass("input-field").withName(message).isRequired();
     }
