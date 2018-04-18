@@ -1,17 +1,26 @@
 package com.codecool.idontspeakjava.queststore.controllers.admin.web;
 
 import com.codecool.idontspeakjava.queststore.controllers.AbstractHandler;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
+import com.codecool.idontspeakjava.queststore.models.Permissions;
+import com.codecool.idontspeakjava.queststore.models.User;
 import com.sun.net.httpserver.HttpExchange;
+
+import java.io.IOException;
+import java.util.Optional;
 
 public class WebAdminController extends AbstractHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) {
-
-        try {
-            redirectToActionHandler(httpExchange, getAction(httpExchange));
-        } catch (IndexOutOfBoundsException e) {
-            sendTemplateResponse(httpExchange, "admin_home");
+        if (checkPermission(httpExchange, Permissions.Root)) {
+            try {
+                redirectToActionHandler(httpExchange, getAction(httpExchange));
+            } catch (IndexOutOfBoundsException e) {
+                sendTemplateResponse(httpExchange, "admin_home");
+            }
+        } else {
+            redirectToLocation(httpExchange, "/");
         }
     }
 
@@ -38,5 +47,7 @@ public class WebAdminController extends AbstractHandler {
                     break;
             }
     }
+
+
 }
 

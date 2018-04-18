@@ -1,6 +1,9 @@
 package com.codecool.idontspeakjava.queststore.controllers;
 
 import com.codecool.idontspeakjava.queststore.controllers.login.SessionIdContainer;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
+import com.codecool.idontspeakjava.queststore.models.Permissions;
+import com.codecool.idontspeakjava.queststore.models.User;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -109,6 +112,20 @@ public abstract class AbstractHandler implements HttpHandler {
         String[] uriParts = uri.split("/");
 
         return uriParts[actionIndex];
+    }
+
+    public boolean checkPermission(HttpExchange httpExchange, Permissions permission) {
+        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
+        String sid = getSidFromCookieStr(cookieStr);
+
+        if (!isLoggedIn(sid)) {
+            return false;
+        }
+
+        int userId = getSessionIdContainer().getUserId(sid);
+        Optional<User> user = Optional.ofNullable(new SQLiteUserDAO().getUserById(userId));
+
+        return user.get().getPermission() == permission;
     }
 
 }
