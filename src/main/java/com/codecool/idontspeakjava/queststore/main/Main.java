@@ -18,21 +18,16 @@ public class Main {
     public static void main(String[] args) {
         HttpServer server = null;
         try {
-            server = HttpServer.create(new InetSocketAddress(8000),0);
+            server = HttpServer.create(new InetSocketAddress(8888),0);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        server.createContext("/login", new WebLoginController());
         server.createContext("/static", new Static());
-
-        server.createContext("/cos", new Test());
-
+        server.createContext("/login", new WebLoginController());
         server.createContext("/admin", new WebAdminController());
         server.createContext("/mentor", new WebMentorController());
         server.createContext("/student", new WebCodecoolerController());
-        server.createContext("/assign-mentor", new WebAssignMentor());
-        server.createContext("/create-mentor", new WebCreateMentor());
 
         server.setExecutor(null);
 
