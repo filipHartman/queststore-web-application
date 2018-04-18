@@ -1,63 +1,53 @@
 package com.codecool.idontspeakjava.queststore.controllers.admin.web;
 
 import com.codecool.idontspeakjava.queststore.controllers.AbstractHandler;
+import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
+import com.codecool.idontspeakjava.queststore.models.Permissions;
+import com.codecool.idontspeakjava.queststore.models.User;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class WebAdminController extends AbstractHandler {
 
-    public WebAdminController() {
-        super();
-    }
-
     @Override
     public void handle(HttpExchange httpExchange) {
-        String method = httpExchange.getRequestMethod();
-
-        if(method.equals("POST")){
-
-        }else if(method.equals("GET")){
-
-        }
-
-
-        if (uriParts.length == 2) {
-            sendTemplateResponse(httpExchange, "admin_home");
-        } else {
-            String action = uriParts[2];
-            if (action.equals("create-mentor")) {
-                try {
-                    new WebCreateMentor().handle(httpExchange);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else if (action.equals("assign-mentor")) {
-                try {
-                    new WebAssignMentor().handle(httpExchange);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        if (checkPermission(httpExchange, Permissions.Root)) {
+            try {
+                redirectToActionHandler(httpExchange, getAction(httpExchange));
+            } catch (IndexOutOfBoundsException e) {
+                sendTemplateResponse(httpExchange, "admin_home");
             }
+        } else {
+            redirectToLocation(httpExchange, "/");
         }
-
     }
 
-    private void handlePostRequest(HttpExchange httpExchange){
-        String action = getAction(httpExchange);
-        
-
+    private void redirectToActionHandler(HttpExchange httpExchange, String action){
+            switch(action) {
+                case "create-mentor":
+                    new WebCreateMentor().handle(httpExchange);
+                    break;
+                case "remove-mentor":
+                    break;
+                case "create-codecoolclass":
+                    break;
+                case "assign_mentor":
+                    new WebAssignMentor().handle(httpExchange);
+                    break;
+                case "edit-mentor":
+                    break;
+                case "show-mentor":
+                    break;
+                case "create-level":
+                    break;
+                default:
+                    sendTemplateResponse(httpExchange, "admin_home");
+                    break;
+            }
     }
 
-    private void handleGetRequest(HttpExchange httpExchange){
-
-    }
-
-    private String getAction(HttpExchange httpExchange){
-        int actionIndex = 2;
-        String uri = httpExchange.getRequestURI().toString();
-        String[] uriParts = uri.split("/");
-        return uriParts[actionIndex];
-    }
 
 }
+
