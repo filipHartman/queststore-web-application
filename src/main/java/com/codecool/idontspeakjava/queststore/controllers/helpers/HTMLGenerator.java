@@ -1,4 +1,4 @@
-package com.codecool.idontspeakjava.queststore.controllers.admin.web;
+package com.codecool.idontspeakjava.queststore.controllers.helpers;
 
 import j2html.tags.Tag;
 

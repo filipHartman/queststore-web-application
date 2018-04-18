@@ -1,7 +1,7 @@
 package com.codecool.idontspeakjava.queststore.controllers.admin.web;
 
 import com.codecool.idontspeakjava.queststore.controllers.AbstractHandler;
-import com.codecool.idontspeakjava.queststore.controllers.admin.web.HTMLGenerator;
+import com.codecool.idontspeakjava.queststore.controllers.helpers.HTMLGenerator;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
