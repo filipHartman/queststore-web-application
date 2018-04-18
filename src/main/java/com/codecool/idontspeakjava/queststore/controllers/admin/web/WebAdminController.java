@@ -7,57 +7,35 @@ import java.io.IOException;
 
 public class WebAdminController extends AbstractHandler {
 
-    public WebAdminController() {
-        super();
-    }
-
     @Override
     public void handle(HttpExchange httpExchange) {
-        String method = httpExchange.getRequestMethod();
 
-        if(method.equals("POST")){
-
-        }else if(method.equals("GET")){
-
-        }
-
-
-        if (uriParts.length == 2) {
+        try {
+            redirectToActionHandler(httpExchange, getAction(httpExchange));
+        } catch (IndexOutOfBoundsException e) {
             sendTemplateResponse(httpExchange, "admin_home");
-        } else {
-            String action = uriParts[2];
-            if (action.equals("create-mentor")) {
-                try {
-                    new WebCreateMentor().handle(httpExchange);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else if (action.equals("assign-mentor")) {
-                try {
-                    new WebAssignMentor().handle(httpExchange);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
-
     }
 
-    private void handlePostRequest(HttpExchange httpExchange){
-        String action = getAction(httpExchange);
-        
+    private void redirectToActionHandler(HttpExchange httpExchange, String action){
+        try {
+            switch(action){
+                case "create_mentor": new WebCreateMentor().handle(httpExchange);
+                    break;
+                case "remove_mentor": break;
+                case "create_codecoolclass": break;
+                case "assign_mentor": new WebAssignMentor().handle(httpExchange);
+                    break;
+                case "edit_mentor": break;
+                case "show_mentor": break;
+                case "create_level": break;
+                case "logout": break;
+                default: break;
 
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-
-    private void handleGetRequest(HttpExchange httpExchange){
-
-    }
-
-    private String getAction(HttpExchange httpExchange){
-        int actionIndex = 2;
-        String uri = httpExchange.getRequestURI().toString();
-        String[] uriParts = uri.split("/");
-        return uriParts[actionIndex];
-    }
-
 }
+
