@@ -23,5 +23,23 @@ public class WebMentorController extends AbstractHandler {
         }
     }
 
+    private void redirectToActionHandler(HttpExchange httpExchange, String action){
+        try {
+            switch(action){
+                case "create-codecooler": break;
+                case "add-quest": break;
+                case "add-artifact": break;
+                case "choose-quest": break;
+                case "choose-artifact": break;
+                case "choose-student-to-mark-quest": break;
+                case "choose-student-to-mark-artifact": break;
+                case "check-wallet": break;
+                default: sendTemplateResponse(httpExchange, "mentor_home");
+                    break;
 
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
