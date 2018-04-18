@@ -8,38 +8,37 @@ import com.codecool.idontspeakjava.queststore.models.User;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.SQLException;
 import java.util.Map;
 
-public class WebAssignMentor extends AbstractHandler {
+public class WebCreateMentor extends AbstractHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
 
-        List <User> userCollection = new SQLiteUserDAO().getUsersByPermission(Permissions.Mentor);
-
-        List<String> collection = new ArrayList<>();
-
-        for(User user: userCollection){
-            collection.add(user.toString());
-        }
-
-        String form = HTMLGenerator.getRadioForm(collection);
-
-
         if (method.equals("GET")) {
-            sendTemplateResponseWithForm(httpExchange, "admin_home", form);
+            sendTemplateResponseWithForm(httpExchange, "admin_home", HTMLGenerator.generateFormToCreateUser() );
 
         }
 
         if(method.equals("POST")){
             Map<String, String> data = readFormData(httpExchange);
             String name = data.get("name");
-            System.out.println(name);
-
+            String lastname = data.get("lastname");
+            String email = data.get("email");
+            String password = data.get("password");
+            User user = new User(name, lastname, password, email, Permissions.Mentor);
+            SQLiteUserDAO dao = new SQLiteUserDAO();
+            try {
+                dao.createUser(user);
+            }catch (SQLException e){
+                e.printStackTrace();
             }
+
+            sendTemplateResponse(httpExchange, "admin_home");
         }
 
+
+    }
 }
