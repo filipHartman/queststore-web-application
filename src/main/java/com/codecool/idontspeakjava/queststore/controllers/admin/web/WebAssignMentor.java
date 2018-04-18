@@ -20,13 +20,7 @@ public class WebAssignMentor extends AbstractHandler {
 
         List <User> userCollection = new SQLiteUserDAO().getUsersByPermission(Permissions.Mentor);
 
-        List<String> collection = new ArrayList<>();
-
-        for(User user: userCollection){
-            collection.add(user.toString());
-        }
-
-        String form = HTMLGenerator.getRadioForm(collection);
+        String form = HTMLGenerator.getRadioForm(userCollection);
 
 
         if (method.equals("GET")) {
@@ -37,9 +31,13 @@ public class WebAssignMentor extends AbstractHandler {
         if(method.equals("POST")){
             Map<String, String> data = readFormData(httpExchange);
             String name = data.get("name");
-            System.out.println(name);
+
+
+            redirectToLocation(httpExchange, "admin_home");
+
 
             }
+
         }
 
 }

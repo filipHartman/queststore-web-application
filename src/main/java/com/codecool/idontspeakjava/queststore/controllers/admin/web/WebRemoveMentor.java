@@ -8,7 +8,6 @@ import com.codecool.idontspeakjava.queststore.models.User;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +39,9 @@ public class WebRemoveMentor extends AbstractHandler {
             }
 
         }
-            new SQLiteUserDAO().deleteUser(userToDelete);
+        new SQLiteUserDAO().deleteUser(userToDelete);
+
+        redirectToLocation(httpExchange, "admin_home");
 
     }
 }

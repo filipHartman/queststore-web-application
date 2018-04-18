@@ -29,11 +29,20 @@ public class HTMLGenerator {
 
     }
 
-    public static String generateFromToCreateClass(String methodName) {
+    public static String generateFormToEditMail(String methodName, List <?> collection){
+        return
+                        form().withMethod("post").with(
+                                getLabel("Email"),
+                                getEmail()
+                        )
+        .render() + getRadioFormNoButton(collection);
+    }
+
+    public static String generateFromWith1Field(String methodName, String label) {
         return div(
                 fieldset(
                         form().withMethod("post").with(
-                                getLabel("Codecool class name"),
+                                getLabel(label),
                                 getInput("name"),
                                 getButton()
                         )
@@ -41,6 +50,8 @@ public class HTMLGenerator {
                 ).withClass("form-style")
                 .render();
     }
+
+
 
     public static Tag getInput(String message){
         return input().withClass("input-field").withName(message).isRequired();
@@ -76,6 +87,17 @@ public class HTMLGenerator {
 
         form += "<input type = \"submit\" value = \"Choose\">" +
                 "</form> </fieldset>";
+
+        return form;
+
+    }
+
+    public static String getRadioFormNoButton(List <?> collection){
+
+        String form = "";
+        for(int i = 0;i< collection.size(); i++){
+            form += "<label> <input type = \"radio\" name = \"name\" value =\""+collection.get(i).toString()+"\" required> "+collection.get(i).toString()+"</label>";
+        }
 
         return form;
 

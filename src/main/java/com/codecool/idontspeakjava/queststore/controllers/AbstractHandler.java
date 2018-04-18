@@ -63,6 +63,16 @@ public abstract class AbstractHandler implements HttpHandler {
 
     }
 
+    public void sendTemplateResponseWithForm(HttpExchange exchange, String templateName, String form, String form2){
+        JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.twig", templateName));
+        JtwigModel model = JtwigModel.newModel();
+        model.with("form", form);
+        model.with("form2", form2);
+        String response = template.render(model);
+        sendResponse(exchange, response);
+
+    }
+
     public Map<String, String> readFormData(HttpExchange exchange) throws IOException {
         InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "UTF-8");
         BufferedReader br = new BufferedReader(isr);
