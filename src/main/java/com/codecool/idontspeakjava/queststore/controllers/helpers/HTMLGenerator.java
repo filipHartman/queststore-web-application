@@ -51,15 +51,14 @@ public class HTMLGenerator {
 
     public static Tag getLegend(String text) { return legend(text);}
 
-    public static String getRadioForm(List<String> collection){
-
+    public static String getRadioForm(List <?> collection){
 
         String form = "<fieldset> \n"+
                 "<form method = \"post\">";
 
 
         for(int i = 0;i< collection.size(); i++){
-            form += "<label> <input type = \"radio\" name = \"name\" value =\"pupa\" required> "+collection.get(i)+"</label>";
+            form += "<label> <input type = \"radio\" name = \"name\" value =\""+collection.get(i).toString()+"\" required> "+collection.get(i).toString()+"</label>";
         }
 
         form += "<input type = \"submit\" value = \"Choose\">" +
