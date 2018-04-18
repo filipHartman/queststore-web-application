@@ -2,6 +2,7 @@ package com.codecool.idontspeakjava.queststore.controllers;
 
 import com.codecool.idontspeakjava.queststore.controllers.login.SessionIdContainer;
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
+import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.sun.net.httpserver.Headers;
@@ -142,6 +143,28 @@ public abstract class AbstractHandler implements HttpHandler {
         Optional<User> user = Optional.ofNullable(new SQLiteUserDAO().getUserById(userId));
 
         return user.get().getPermission() == permission;
+    }
+
+    public User getChosenUser(List<User> users, String name){
+        User editedUser = null;
+        for (User user : users) {
+            if (user.toString().equals(name)) {
+                editedUser = user;
+            }
+        }
+        return editedUser;
+    }
+
+    public CodecoolClass getChosenClass(List<CodecoolClass> codecoolClasses, String className) {
+        CodecoolClass choosenClass = null;
+
+        for (CodecoolClass codecoolClass : codecoolClasses) {
+            if (codecoolClass.toString().equals(className)) {
+                choosenClass = codecoolClass;
+                break;
+            }
+        }
+        return choosenClass;
     }
 
 }

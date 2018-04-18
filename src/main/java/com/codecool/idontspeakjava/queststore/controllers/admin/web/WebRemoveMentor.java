@@ -32,13 +32,7 @@ public class WebRemoveMentor extends AbstractHandler {
         if(method.equals("POST")){
         Map<String, String> data = readFormData(httpExchange);
         String name = data.get("name");
-        User userToDelete = null;
-        for(User user: userCollection){
-            if(user.toString().equals(name)){
-                userToDelete = user;
-            }
-
-        }
+        User userToDelete = getChosenUser(userCollection, name);
         new SQLiteUserDAO().deleteUser(userToDelete);
 
         redirectToLocation(httpExchange, "admin_home");

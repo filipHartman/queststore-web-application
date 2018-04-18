@@ -32,12 +32,7 @@ public class WebEditMentorEmail extends AbstractHandler {
             Map<String, String> data = readFormData(httpExchange);
             String name = data.get("name");
             String email = data.get("email");
-            User editedUser = null;
-            for(User user : userCollection){
-                if(user.toString().equals(name)){
-                    editedUser = user;
-                }
-            }
+            User editedUser = getChosenUser(userCollection, name);
 
             editedUser.setEmail(email);
 

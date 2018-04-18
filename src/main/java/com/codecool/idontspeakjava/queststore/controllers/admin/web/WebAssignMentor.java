@@ -51,25 +51,4 @@ public class WebAssignMentor extends AbstractHandler {
 
     }
 
-    private User getChosenUser(List<User> users, String name){
-        User editedUser = null;
-        for (User user : users) {
-            if (user.toString().equals(name)) {
-                editedUser = user;
-            }
-        }
-        return editedUser;
-    }
-
-    private CodecoolClass getChosenClass(List<CodecoolClass> codecoolClasses, String className){
-        CodecoolClass choosenClass = null;
-
-        for (CodecoolClass codecoolClass : codecoolClasses) {
-            if (codecoolClass.toString().equals(className)) {
-                choosenClass = codecoolClass;
-                break;
-            }
-        }
-        return choosenClass;
-    }
 }

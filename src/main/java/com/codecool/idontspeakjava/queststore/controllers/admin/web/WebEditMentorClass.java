@@ -33,25 +33,10 @@ public class WebEditMentorClass extends AbstractHandler {
             Map<String, String> data = readFormData(httpExchange);
             String name = data.get("name");
             String className = data.get("className");
-            User editedUser = null;
-            for(User user : userCollection){
-                if(user.toString().equals(name)){
-                    editedUser = user;
-                }
-            }
-
-            CodecoolClass choosenClass = null;
-
-            for(CodecoolClass codecoolClass : classCollection){
-                if(codecoolClass.toString().equals(className)){
-                    choosenClass = codecoolClass;
-                }
-            }
-
+            User editedUser = getChosenUser(userCollection, name);
+            CodecoolClass choosenClass = getChosenClass(classCollection, className);
             new SQLiteCodecoolClassDAO().removeUserFromCodecoolClass(editedUser);
-
             new SQLiteCodecoolClassDAO().addUserToCodecoolClass(editedUser, choosenClass);
-
             redirectToLocation(httpExchange, "admin_home");
 
         }

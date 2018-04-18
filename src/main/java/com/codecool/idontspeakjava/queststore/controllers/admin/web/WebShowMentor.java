@@ -30,16 +30,13 @@ public class WebShowMentor extends AbstractHandler {
         }
 
         if (method.equals("POST")) {
-            try {
-                String classForm = getMentorsClassForm(httpExchange, userCollection);
-                sendTemplateResponseWithForm(httpExchange, "admin_home", classForm);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+            String classForm = getMentorsClassForm(httpExchange, userCollection);
+            sendTemplateResponseWithForm(httpExchange, "admin_home", classForm);
         }
 
     }
-    private String getMentorsClassForm(HttpExchange httpExchange, List<User> mentors) throws IOException{
+    private String getMentorsClassForm(HttpExchange httpExchange, List<User> mentors) {
         User mentor = getChosenMentor(httpExchange, mentors);
         CodecoolClass mentorClass = getMentorsClass(mentor);
 
@@ -62,7 +59,7 @@ public class WebShowMentor extends AbstractHandler {
         return mentorClass;
     }
 
-    private User getChosenMentor(HttpExchange httpExchange, List<User> users) throws IOException{
+    private User getChosenMentor(HttpExchange httpExchange, List<User> users) {
         Map<String, String> data = readFormData(httpExchange);
         String name = data.get("name");
 
