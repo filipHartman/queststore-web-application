@@ -41,7 +41,8 @@ public class WebCreateMentor extends AbstractHandler {
                 e.printStackTrace();
             }
 
-            sendTemplateResponse(httpExchange, "admin_home");
+            // sendTemplateResponse(httpExchange, "admin_home"); should be redirect anyway!
+            redirectToLocation(httpExchange, "/alert/mentor-create-success");
         }
 
 
