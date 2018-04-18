@@ -30,12 +30,14 @@ public class HTMLGenerator {
     }
 
     public static String generateFormToEditMail(String methodName, List <?> collection){
+
+        String button = getButton().render();
         return
                         form().withMethod("post").with(
                                 getLabel("Email"),
                                 getEmail()
                         )
-        .render() + getRadioFormNoButton(collection);
+        .render();
     }
 
     public static String generateFromWith1Field(String methodName, String label) {
@@ -92,14 +94,22 @@ public class HTMLGenerator {
 
     }
 
-    public static String getRadioFormNoButton(List <?> collection){
+    public static String getFormToEditMail(List <?> collection){
 
-        String form = "";
+        String form = "<fieldset> \n"+
+                "<form method = \"post\">";
+
         for(int i = 0;i< collection.size(); i++){
             form += "<label> <input type = \"radio\" name = \"name\" value =\""+collection.get(i).toString()+"\" required> "+collection.get(i).toString()+"</label>";
         }
 
+        form += "<input type = \"email\" name = \"email\">";
+
+        form += "<input type = \"submit\" value = \"Choose\">" +
+                "</form> </fieldset>";
+
         return form;
+
 
     }
 }

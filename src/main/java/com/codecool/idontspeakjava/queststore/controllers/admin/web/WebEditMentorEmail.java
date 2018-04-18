@@ -22,7 +22,7 @@ public class WebEditMentorEmail extends AbstractHandler {
 
         List<User> userCollection = new SQLiteUserDAO().getUsersByPermission(Permissions.Mentor);
 
-        String form = HTMLGenerator.generateFormToEditMail("Edit mentor's e-mail", userCollection);
+        String form = HTMLGenerator.getFormToEditMail(userCollection);
         if (method.equals("GET")) {
             sendTemplateResponseWithForm(httpExchange, "admin_home", form);
 
@@ -31,6 +31,18 @@ public class WebEditMentorEmail extends AbstractHandler {
         if (method.equals("POST")) {
             Map<String, String> data = readFormData(httpExchange);
             String name = data.get("name");
+            String email = data.get("email");
+            User editedUser = null;
+            for(User user : userCollection){
+                if(user.toString().equals(name)){
+                    editedUser = user;
+                }
+            }
+
+            editedUser.setEmail(email);
+
+            new SQLiteUserDAO().updateUser(editedUser);
+            redirectToLocation(httpExchange, "admin_home");
 
         }
 
