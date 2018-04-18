@@ -102,4 +102,13 @@ public abstract class AbstractHandler implements HttpHandler {
         return cookie.toString().split("=")[1];
     }
 
+    public String getAction(HttpExchange httpExchange){
+        int actionIndex = 2;
+
+        String uri = httpExchange.getRequestURI().toString();
+        String[] uriParts = uri.split("/");
+
+        return uriParts[actionIndex];
+    }
+
 }
