@@ -15,8 +15,10 @@ public class HTMLGenerator {
                                         form().withMethod("post").with(
                                                 getLabel("Name"),
                                                 getInput("name"),
-                                                getLabel("Lastname: "),
+                                                getLabel("Lastname"),
                                                 getInput("lastname"),
+                                                getLabel("pasword"),
+                                                getPassword(),
                                                 getLabel("E-mail"),
                                                 getEmail(),
                                                 getButton()
@@ -41,6 +43,10 @@ public class HTMLGenerator {
 
     public static Tag getLabel(String text){
         return label(text);
+    }
+
+    public static Tag getPassword(){
+        return input().withType("password").withName("password").isRequired();
     }
 
     public static String getRadioForm(List<String> collection){
