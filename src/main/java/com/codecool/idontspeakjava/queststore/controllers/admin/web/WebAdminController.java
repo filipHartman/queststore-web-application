@@ -15,8 +15,13 @@ public class WebAdminController extends AbstractHandler {
     public void handle(HttpExchange httpExchange) {
         String method = httpExchange.getRequestMethod();
 
-        String uri = httpExchange.getRequestURI().toString();
-        String[] uriParts = uri.split("/");
+        if(method.equals("POST")){
+
+        }else if(method.equals("GET")){
+
+        }
+
+
         if (uriParts.length == 2) {
             sendTemplateResponse(httpExchange, "admin_home");
         } else {
@@ -37,4 +42,22 @@ public class WebAdminController extends AbstractHandler {
         }
 
     }
+
+    private void handlePostRequest(HttpExchange httpExchange){
+        String action = getAction(httpExchange);
+        
+
+    }
+
+    private void handleGetRequest(HttpExchange httpExchange){
+
+    }
+
+    private String getAction(HttpExchange httpExchange){
+        int actionIndex = 2;
+        String uri = httpExchange.getRequestURI().toString();
+        String[] uriParts = uri.split("/");
+        return uriParts[actionIndex];
+    }
+
 }
