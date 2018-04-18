@@ -8,7 +8,7 @@ import static j2html.TagCreator.*;
 
 public class HTMLGenerator {
 
-    public static String generateFormToCreateUser(){
+    public static String generateFormToCreateUser(String methodName){
 
         return div(
                                 fieldset(
@@ -17,28 +17,28 @@ public class HTMLGenerator {
                                                 getInput("name"),
                                                 getLabel("Lastname"),
                                                 getInput("lastname"),
-                                                getLabel("pasword"),
+                                                getLabel("password"),
                                                 getPassword(),
                                                 getLabel("E-mail"),
                                                 getEmail(),
                                                 getButton()
                                         )
-                                )
-                        )
+                                ).with(getLegend(methodName))
+                        ).withClass("form-style")
                 .render();
 
     }
 
     public static Tag getInput(String message){
-        return input().withName(message).isRequired();
+        return input().withClass("input-field").withName(message).isRequired();
     }
 
     public static Tag getEmail(){
-        return input().withType("e-mail").withName("email").isRequired();
+        return input().withClass("input-field").withType("e-mail").withName("email").isRequired();
     }
 
     public static Tag getButton(){
-        return input().withType("submit").withValue("Submit");
+        return input().withClass("input-field").withType("submit").withValue("Submit");
     }
 
     public static Tag getLabel(String text){
@@ -46,8 +46,10 @@ public class HTMLGenerator {
     }
 
     public static Tag getPassword(){
-        return input().withType("password").withName("password").isRequired();
+        return input().withClass("input-field").withType("password").withName("password").isRequired();
     }
+
+    public static Tag getLegend(String text) { return legend(text);}
 
     public static String getRadioForm(List<String> collection){
 
