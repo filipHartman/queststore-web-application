@@ -51,6 +51,20 @@ public class HTMLGenerator {
                 .render();
     }
 
+    public static String generateFormToCreateLevel(String methodName){
+        return div(
+                fieldset(
+                        form().withMethod("post").with(
+                                getLabel("Level name"),
+                                getInput("name"),
+                                getLabel("Level threshold"),
+                                getLevel(),
+                                getButton()
+                        )
+                ).with(getLegend(methodName))
+        ).withClass("form-style").render();
+    }
+
     public static Tag getLevel(){
         return input().withClass("input-field").withName("threshold").withType("number").withPlaceholder("0").withValue("Submit");
     }
@@ -105,4 +119,5 @@ public class HTMLGenerator {
         return form;
 
     }
+
 }
