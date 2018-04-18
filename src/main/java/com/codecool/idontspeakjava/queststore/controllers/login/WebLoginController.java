@@ -57,12 +57,12 @@ public class WebLoginController extends AbstractHandler {
                     redirectToCorrectMenu(exchange, user);
 
                 } else {
-                    redirectToLocation(exchange,"/login");
+                    redirectToLocation(exchange,"/");
                 }
 
             } catch (IOException e) {
                 e.printStackTrace();
-                redirectToLocation(exchange,"/login");
+                redirectToLocation(exchange,"/");
             }
         }
     }
@@ -81,7 +81,7 @@ public class WebLoginController extends AbstractHandler {
                 location = "/admin";
                 break;
             default:
-                location = "/login";
+                location = "/";
         }
 
         redirectToLocation(exchange, location);

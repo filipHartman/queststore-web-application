@@ -1,6 +1,7 @@
 package com.codecool.idontspeakjava.queststore.controllers.mentor.web;
 
 import com.codecool.idontspeakjava.queststore.controllers.AbstractHandler;
+import com.codecool.idontspeakjava.queststore.models.Permissions;
 import com.sun.net.httpserver.HttpExchange;
 
 public class WebMentorController extends AbstractHandler {
@@ -11,10 +12,39 @@ public class WebMentorController extends AbstractHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) {
-        String method = httpExchange.getRequestMethod();
-
-        if (method.equals("GET")) {
-            sendTemplateResponse(httpExchange, "mentor_home");
+        if ((checkPermission(httpExchange, Permissions.Mentor))) {
+            try {
+                redirectToActionHandler(httpExchange, getAction(httpExchange));
+            } catch (IndexOutOfBoundsException e) {
+                sendTemplateResponse(httpExchange, "admin_home");
+            }
+        } else {
+            redirectToLocation(httpExchange, "/");
         }
+    }
+
+    private void redirectToActionHandler(HttpExchange httpExchange, String action){
+        switch(action) {
+            case "create-codecooler":
+                break;
+            case "add-quest":
+                break;
+            case "add-artifact":
+                break;
+            case "choose-quest":
+                break;
+            case "choose-artifact":
+                break;
+            case "choose-student-to-mark-quest":
+                break;
+            case "choose-student-to-mark-artifact":
+                break;
+            case "check-wallet":
+                break;
+            default:
+                sendTemplateResponse(httpExchange, "mentor_home");
+                break;
+        }
+
     }
 }
