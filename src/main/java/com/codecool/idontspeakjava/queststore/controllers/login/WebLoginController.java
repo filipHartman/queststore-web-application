@@ -8,6 +8,7 @@ import com.codecool.idontspeakjava.queststore.services.PasswordService;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.*;
+import java.net.HttpCookie;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,9 +26,24 @@ public class WebLoginController extends AbstractHandler {
     @Override
     public void handle(HttpExchange exchange) {
         String method = exchange.getRequestMethod();
+        String cookieStr = exchange.getRequestHeaders().getFirst("Cookie");
+        HttpCookie cookie;
+        String sid;
+        if (cookieStr == null) {
+            sid = generateSID();
+            cookie = new HttpCookie("SID", sid);
+            exchange.getResponseHeaders().add("Set-Cookie", cookie.toString());
+        } else {
+            sid = getSidFromCookieStr(cookieStr);
+        }
 
-        if (method.equals("GET")) {
-            sendTemplateResponse(exchange,"login");
+        if (method.equals("GET") && !isLoggedIn(sid)) {
+            sendTemplateResponse(exchange, "login");
+
+        } if (method.equals("GET") && isLoggedIn(sid)) {
+            int userId = getSessionIdContainer().getUserId(sid);
+            Optional<User> user = Optional.ofNullable(usersDAO.getUserById(userId));
+            redirectToCorrectMenu(exchange, user);
 
         } else if (method.equals("POST")) {
             try {
@@ -37,7 +53,6 @@ public class WebLoginController extends AbstractHandler {
 
                 Optional<User> user = Optional.ofNullable(processCredentialsAndReturnUserInstance(email));
                 if (user.isPresent() && checkIfUserProvideCorrectPassword(user.get(), candidatePassword)) {
-                    String sid = generateSID();
                     getSessionIdContainer().add(sid, user.get().getId());
                     redirectToCorrectMenu(exchange, user);
 
@@ -80,14 +95,13 @@ public class WebLoginController extends AbstractHandler {
         return usersDAO.getUserByEmail(email);
     }
 
-    private boolean checkIfUserProvideCorrectPassword(User user, String canditatePassword) {
+    private boolean checkIfUserProvideCorrectPassword(User user, String candidatePassword) {
         String userPassword = user.getPasswordHash();
         if (userPassword.isEmpty()) {
             return false;
         } else {
-            return passwordService.checkPassword(canditatePassword, userPassword);
+            return passwordService.checkPassword(candidatePassword, userPassword); 
         }
     }
-
 
 }

@@ -8,6 +8,7 @@ import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.*;
+import java.net.HttpCookie;
 import java.net.URLDecoder;
 import java.util.*;
 
@@ -107,5 +108,14 @@ public abstract class AbstractHandler implements HttpHandler {
 
         return form;
 
+    }
+
+    public boolean isLoggedIn(String sid) {
+        return getSessionIdContainer().contains(sid);
+    }
+
+    public String getSidFromCookieStr(String cookieStr) {
+        HttpCookie cookie = HttpCookie.parse(cookieStr).get(0);
+        return cookie.toString().split("=")[1];
     }
 }
