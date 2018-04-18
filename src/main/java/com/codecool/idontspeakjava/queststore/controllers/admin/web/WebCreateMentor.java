@@ -36,7 +36,7 @@ public class WebCreateMentor extends AbstractHandler {
                 e.printStackTrace();
             }
 
-            sendTemplateResponse(httpExchange, "admin_home");
+            redirectToLocation(httpExchange, "/");
         }
 
 
