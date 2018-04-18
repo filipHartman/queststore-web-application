@@ -31,14 +31,9 @@
     margin: 1em;
     display: flex;
     flex-direction: row;
-}
-.form-style label span {
-    float: left;
-    width: 100%;
     font-weight: bold;
     color: #f4f9f9;
 }
-
 
 .form-style input[type=text],
 .form-style input[type=email],
