@@ -42,7 +42,7 @@ public class HTMLGenerator {
     }
 
     public static Tag getLabel(String text){
-        return label(text);
+        return label().with(span(text));
     }
 
     public static Tag getPassword(){
