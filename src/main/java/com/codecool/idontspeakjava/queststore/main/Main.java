@@ -1,12 +1,11 @@
 package com.codecool.idontspeakjava.queststore.main;
 
 import com.codecool.idontspeakjava.queststore.controllers.Static;
-import com.codecool.idontspeakjava.queststore.controllers.admin.web.WebAssignMentor;
+import com.codecool.idontspeakjava.queststore.controllers.admin.web.WebAdminController;
 import com.codecool.idontspeakjava.queststore.controllers.codecooler.web.WebCodecoolerController;
-import com.codecool.idontspeakjava.queststore.controllers.login.WebLoginController;
 import com.codecool.idontspeakjava.queststore.controllers.login.*;
+
 import com.codecool.idontspeakjava.queststore.controllers.mentor.web.WebMentorController;
-import com.codecool.idontspeakjava.queststore.controllers.admin.web.*;
 
 import com.sun.net.httpserver.HttpServer;
 

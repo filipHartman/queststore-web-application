@@ -15,7 +15,7 @@ import java.util.Map;
 public class WebAssignMentor extends AbstractHandler {
 
     @Override
-    public void handle(HttpExchange httpExchange) throws IOException {
+    public void handle(HttpExchange httpExchange) {
         String method = httpExchange.getRequestMethod();
 
         List <User> userCollection = new SQLiteUserDAO().getUsersByPermission(Permissions.Mentor);
@@ -35,7 +35,12 @@ public class WebAssignMentor extends AbstractHandler {
         }
 
         if(method.equals("POST")){
-            Map<String, String> data = readFormData(httpExchange);
+            Map<String, String> data = null;
+            try {
+                data = readFormData(httpExchange);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             String name = data.get("name");
             System.out.println(name);
 

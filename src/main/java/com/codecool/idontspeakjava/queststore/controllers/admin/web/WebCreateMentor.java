@@ -14,7 +14,7 @@ import java.util.Map;
 public class WebCreateMentor extends AbstractHandler {
 
     @Override
-    public void handle(HttpExchange httpExchange) throws IOException {
+    public void handle(HttpExchange httpExchange) {
         String method = httpExchange.getRequestMethod();
 
         if (method.equals("GET")) {
@@ -23,7 +23,12 @@ public class WebCreateMentor extends AbstractHandler {
         }
 
         if(method.equals("POST")){
-            Map<String, String> data = readFormData(httpExchange);
+            Map<String, String> data = null;
+            try {
+                data = readFormData(httpExchange);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             String name = data.get("name");
             String lastname = data.get("lastname");
             String email = data.get("email");
