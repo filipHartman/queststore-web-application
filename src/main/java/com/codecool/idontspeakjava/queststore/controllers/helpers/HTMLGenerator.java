@@ -49,7 +49,7 @@ public class HTMLGenerator {
         return input().withType("password").withName("password").isRequired();
     }
 
-    public static String getRadioForm(List<String> collection){
+    public static String getRadioForm(List <?> collection){
 
 
         String form = "<fieldset> \n"+
@@ -57,7 +57,7 @@ public class HTMLGenerator {
 
 
         for(int i = 0;i< collection.size(); i++){
-            form += "<label> <input type = \"radio\" name = \"name\" value =\"pupa\" required> "+collection.get(i)+"</label>";
+            form += "<label> <input type = \"radio\" name = \"name\" value =\""+collection.get(i).toString()+"\" required> "+collection.get(i).toString()+"</label>";
         }
 
         form += "<input type = \"submit\" value = \"Choose\">" +
