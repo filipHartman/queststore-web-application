@@ -1,7 +1,11 @@
 package com.codecool.idontspeakjava.queststore.controllers.mentor.web;
 
 import com.codecool.idontspeakjava.queststore.controllers.AbstractHandler;
+import com.codecool.idontspeakjava.queststore.controllers.admin.web.WebAssignMentor;
+import com.codecool.idontspeakjava.queststore.controllers.admin.web.WebCreateMentor;
 import com.sun.net.httpserver.HttpExchange;
+
+import java.io.IOException;
 
 public class WebMentorController extends AbstractHandler {
 
@@ -11,10 +15,13 @@ public class WebMentorController extends AbstractHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) {
-        String method = httpExchange.getRequestMethod();
 
-        if (method.equals("GET")) {
-            sendTemplateResponse(httpExchange, "mentor_home");
+        try {
+            redirectToActionHandler(httpExchange, getAction(httpExchange));
+        } catch (IndexOutOfBoundsException e) {
+            sendTemplateResponse(httpExchange, "admin_home");
         }
     }
+
+
 }
