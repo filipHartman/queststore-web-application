@@ -23,11 +23,19 @@ public class SessionIdContainer {
         return container;
     }
 
+    public int getUserId(String sessionId) {
+        return container.get(sessionId);
+    }
+
     public void add(String sessionId, int userId) {
         this.container.put(sessionId, userId);
     }
 
     public void remove(String sessionId) {
         this.container.remove(sessionId);
+    }
+
+    public boolean contains(String sessionId) {
+        return container.containsKey(sessionId);
     }
 }
