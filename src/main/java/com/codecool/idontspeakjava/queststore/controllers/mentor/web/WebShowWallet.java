@@ -47,8 +47,8 @@ public class WebShowWallet extends AbstractHandler {
              ));
 
 
-             List<String> test = getUserOrders(choosenUser);
-             walletData.addAll(test);
+             List<String> orders = getUserOrders(choosenUser);
+             walletData.addAll(orders);
 
              String responseForm = HTMLGenerator.getList(walletData, choosenUser.getFullName(),"list-style-type: none");
              sendTemplateResponseWithForm(httpExchange, "mentor_home", responseForm);
@@ -69,7 +69,8 @@ public class WebShowWallet extends AbstractHandler {
 
         for (Order o : orders) {
             String orderInfo = dao.getArtifact(o.getArtifactID()).getTitle() + ", ";
-            orderInfo += o.isUsed() ? "Used" : "Not used" + ", ";
+            orderInfo += o.isUsed() ? "Used" : "Not used";
+            orderInfo += ", ";
             orderInfo += o instanceof TeamOrder ? "Magic" : "Basic";
             ordersToPrint.add(orderInfo);
         }
