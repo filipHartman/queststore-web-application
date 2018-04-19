@@ -2,45 +2,57 @@ package com.codecool.idontspeakjava.queststore.controllers.admin.web;
 
 import com.codecool.idontspeakjava.queststore.controllers.AbstractHandler;
 import com.codecool.idontspeakjava.queststore.controllers.helpers.HTMLGenerator;
-import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteCodecoolClassDAO;
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
-import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
 import com.codecool.idontspeakjava.queststore.models.User;
 
 import com.sun.net.httpserver.HttpExchange;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 public class WebEditMentorEmail extends AbstractHandler {
 
     public void handle(HttpExchange httpExchange) {
-
         String method = httpExchange.getRequestMethod();
+        List<User> mentors = new SQLiteUserDAO().getUsersByPermission(Permissions.Mentor);
 
-        List<User> userCollection = new SQLiteUserDAO().getUsersByPermission(Permissions.Mentor);
+        if(mentors.size() == 0){
+            redirectToLocation(httpExchange, "/alert/fail");
+        }
 
-        String form = HTMLGenerator.getFormToEditMail(userCollection);
         if (method.equals("GET")) {
+            String form = HTMLGenerator.getFormToEditMail(mentors);
             sendTemplateResponseWithForm(httpExchange, "admin_home", form);
 
         }
 
         if (method.equals("POST")) {
-            Map<String, String> data = readFormData(httpExchange);
-            String name = data.get("name");
-            String email = data.get("email");
-            User editedUser = getChosenUser(userCollection, name);
+            if(editMentor(httpExchange, mentors)){
+                redirectToLocation(httpExchange, "/alert/success");
+            }else {
+                redirectToLocation(httpExchange, "/alert/fail");
 
-            editedUser.setEmail(email);
-
-            new SQLiteUserDAO().updateUser(editedUser);
-            redirectToLocation(httpExchange, "admin_home");
+            }
 
         }
 
+    }
+
+    private boolean editMentor(HttpExchange httpExchange, List<User> mentors) {
+        boolean operationSucceeded = false;
+        Map<String, String> data = readFormData(httpExchange);
+        String name = data.get("name");
+        String email = data.get("email");
+
+        User user = getChosenUser(mentors, name);
+
+        if (user != null) {
+            user.setEmail(email);
+            operationSucceeded = new SQLiteUserDAO().updateUser(user);
+
+        }
+        return operationSucceeded;
     }
 }
 
