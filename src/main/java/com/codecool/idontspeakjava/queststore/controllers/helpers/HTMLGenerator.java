@@ -145,13 +145,14 @@ public class HTMLGenerator {
 
     }
 
-    public static String getList(List<String> collection, String legend){
+    public static String getList(List<String> collection, String legend, String listStyle){
         return div(
                 fieldset(
-                        form(ul(each(collection, item ->
+                        form(ol(each(collection, item ->
                         li(
                                 span(item)
-                        ))))
+                        ))).withStyle(listStyle)
+                        )
                 ).with(getLegend(legend))
         ).withClass("form-style").render();
     }
@@ -160,11 +161,12 @@ public class HTMLGenerator {
         return div(
                 fieldset(
                         form().withMethod("post").with(
-                                getLabel(message),
+                                label().with(span(message)),
                                 getButton("OK")
                         )
                 )
-        ).render();
+        ).withClass("form-style")
+         .render();
     }
 
 }

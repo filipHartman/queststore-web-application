@@ -41,12 +41,14 @@ public class WebShowMentor extends AbstractHandler {
 
         String className = "No class assigned";
         List<String> mentorStudents = asList("No students to show");
+        String listStyle = "list-style-type: none";
         if(mentorClass != null) {
             className = mentorClass.getName();
             mentorStudents = getClassStudentsList(mentorClass);
+            listStyle = "list-style-type: decimal";
         }
 
-        return HTMLGenerator.getList(mentorStudents, className);
+        return HTMLGenerator.getList(mentorStudents, className, listStyle);
     }
     private CodecoolClass getMentorsClass(User mentor){
         CodecoolClass mentorClass = null;
