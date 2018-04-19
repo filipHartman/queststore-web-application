@@ -17,7 +17,8 @@ public class SQLiteUserDAO extends AbstractDAO implements com.codecool.idontspea
     private static final Logger log = LoggerFactory.getLogger(SQLiteUserDAO.class);
 
     @Override
-    public void createUser(User user) throws SQLException {
+    public boolean createUser(User user){
+        boolean operationSucceeded = false;
 
         String email = user.getEmail();
         String firstName = user.getFirstName();
@@ -25,20 +26,26 @@ public class SQLiteUserDAO extends AbstractDAO implements com.codecool.idontspea
         String passwordHash = user.getPasswordHash();
         String permission = String.valueOf(user.getPermission());
 
-        if (!checkIfUsersExists(email)) {
-            String query = "INSERT INTO users(email, first_name, last_name, password_hash, permission)"
-                    + " VALUES (?, ?, ?, ?, ?)";
+        try {
+            if (!checkIfUsersExists(email)) {
+                String query = "INSERT INTO users(email, first_name, last_name, password_hash, permission)"
+                        + " VALUES (?, ?, ?, ?, ?)";
 
-            PreparedStatement preparedStatement = getConnection().prepareStatement(query);
-            preparedStatement.setString(1, email);
-            preparedStatement.setString(2, firstName);
-            preparedStatement.setString(3, lastName);
-            preparedStatement.setString(4, passwordHash);
-            preparedStatement.setString(5, permission);
+                PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+                preparedStatement.setString(1, email);
+                preparedStatement.setString(2, firstName);
+                preparedStatement.setString(3, lastName);
+                preparedStatement.setString(4, passwordHash);
+                preparedStatement.setString(5, permission);
 
-            preparedStatement.executeUpdate();
-            user.setId(getUserByEmail(user.getEmail()).getId());
+                preparedStatement.executeUpdate();
+                user.setId(getUserByEmail(user.getEmail()).getId());
+                operationSucceeded = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return operationSucceeded;
     }
 
     @Override
