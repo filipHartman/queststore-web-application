@@ -25,6 +25,12 @@ public class WebLoginController extends AbstractHandler {
 
     @Override
     public void handle(HttpExchange exchange) {
+        String uri = exchange.getRequestURI().toString();
+        if (!uri.equals("/")) {
+            redirectToLocation(exchange, "/");
+            return;
+        }
+
         String method = exchange.getRequestMethod();
         String cookieStr = exchange.getRequestHeaders().getFirst("Cookie");
         HttpCookie cookie;
