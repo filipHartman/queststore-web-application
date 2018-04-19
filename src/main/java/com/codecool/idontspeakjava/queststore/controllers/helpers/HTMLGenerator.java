@@ -106,15 +106,19 @@ public class HTMLGenerator {
         return div(
                 fieldset(
                         form(
-                              label(subTitle),
+                              label().with(span(subTitle)).withClass("subtitle"),
                               each(collection, item ->
-                                      label(item.toString()).with(getRadioInput(name, item.toString()))
+                                      label()
+                                              .with(getRadioInput(name, item.toString()))
+                                              .with(span(item.toString()))
                                 ),
-                                label(subTitle2),
+                                label().with(span(subTitle2)).withClass("subtitle"),
                                 each(collection2, item ->
-                                        label(item.toString()).with(getRadioInput(name2, item.toString()))
+                                        label()
+                                                .with(getRadioInput(name2, item.toString()))
+                                                .with(span(item.toString()))
                                 )
-                        ).with(getButton("submit"))
+                        ).with(getButton("Submit"))
                          .withMethod("post")
                 ).with(getLegend(legend))
         ).withClass("form-style").render();
@@ -125,12 +129,13 @@ public class HTMLGenerator {
         return div(
                 fieldset(
                         form(
-                                label(subTitle),
+                                label().with(span(subTitle)).withClass("subtitle"),
                                 each(collection, item ->
-                                        label(item.toString()).with(getRadioInput(name, item.toString()))
+                                        label().with(getRadioInput(name, item.toString()))
+                                               .with(span(item.toString()))
                                 ),
-                                label(subTitle2),
-                                getEmail()
+                                label().with(span(subTitle2)).withClass("subtitle"),
+                                label().with(span("E-mail")).with(getEmail())
                         ).with(getButton("Submit"))
                                 .withMethod("post")
                 ).with(getLegend(legend))

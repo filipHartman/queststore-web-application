@@ -260,6 +260,21 @@ body{
     background-color: #ff6f66;
 }
 
+.subtitle span{
+    /*padding: 1em 1%;*/
+    /*background-color: #fe5f55;*/
+    width: 100%;
+    /*border-radius: 4px;*/
+    /*display: flex;*/
+
+    text-align: center;
+    font-weight: 700;
+    color: #fe5f55;
+    font-family: 'Exo 2', sans-serif;
+    font-size: medium;
+    text-transform: uppercase;
+}
+
 /*radio.css*/
 
 label{
