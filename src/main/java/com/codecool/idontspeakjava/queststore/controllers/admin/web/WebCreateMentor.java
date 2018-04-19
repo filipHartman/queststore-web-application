@@ -8,7 +8,6 @@ import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.services.PasswordService;
 import com.sun.net.httpserver.HttpExchange;
 
-import java.sql.SQLException;
 import java.util.Map;
 
 public class WebCreateMentor extends AbstractHandler {
