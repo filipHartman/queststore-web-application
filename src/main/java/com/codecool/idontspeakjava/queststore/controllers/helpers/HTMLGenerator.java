@@ -13,14 +13,10 @@ public class HTMLGenerator {
         return div(
                                 fieldset(
                                         form().withMethod("post").with(
-                                                getLabel("Name"),
-                                                getInput("name"),
-                                                getLabel("Lastname"),
-                                                getInput("lastname"),
-                                                getLabel("password"),
-                                                getPassword(),
-                                                getLabel("E-mail"),
-                                                getEmail(),
+                                                label().with(span("Name")).with(getInput("name")),
+                                                label().with(span("Lastname")).with(getInput("lastname")),
+                                                label().with(span("Password")).with(getPassword()),
+                                                label().with(span("E-mail")).with(getEmail()),
                                                 getButton("Submit")
                                         )
                                 ).with(getLegend(methodName))
@@ -31,14 +27,14 @@ public class HTMLGenerator {
 
     public static String generateFromWith1Field(String methodName, String label) {
         return div(
-                fieldset(
-                        form().withMethod("post").with(
-                                getLabel(label),
-                                getInput("name"),
-                                getButton("Submit")
-                        )
-                ).with(getLegend(methodName))
-                ).withClass("form-style")
+                fieldset()
+
+                .with(form()
+                        .with(getLegend(methodName))
+                        .withMethod("post").with(
+                        label().with(span(label)).with(getInput("name"))),
+                        getButton("Submit"))
+                .withClass("form-style"))
                 .render();
     }
 
@@ -46,10 +42,10 @@ public class HTMLGenerator {
         return div(
                 fieldset(
                         form().withMethod("post").with(
-                                getLabel("Level name"),
-                                getInput("name"),
-                                getLabel("Level threshold"),
-                                getLevel(),
+                                label().with(span("Level name")).with(getInput("name")),
+                               
+                                label().with(span("Level threshold")).with(getLevel()),
+
                                 getButton("Submit")
                         )
                 ).with(getLegend(methodName))
@@ -62,11 +58,11 @@ public class HTMLGenerator {
 
 
     public static Tag getInput(String message){
-        return input().withClass("input-field").withName(message).isRequired();
+        return input().withType("text").withClass("input-field").withName(message).isRequired();
     }
 
     public static Tag getRadioInput(String name, String value) {
-        return input().withType("radio").withName(name).withValue(value);
+        return input().withType("radio").withName(name).withValue(value).isRequired();
     }
 
     public static Tag getEmail(){
@@ -91,12 +87,13 @@ public class HTMLGenerator {
         return div(
                 fieldset(
                         form(each(collection, item ->
-                                label(item.toString())
-                                        .with(getRadioInput(name, item.toString()))
+                                label()
+                                  .with(getRadioInput(name, item.toString()))
+                                  .with(span(item.toString()))
                                 )).with(getButton("Submit"))
                                 .withMethod("post")
                 ).with(getLegend(legend))
-        ).render();
+        ).withClass("form-style").render();
     }
 
     public static String getRadioForm(List<?> collection,
@@ -109,18 +106,22 @@ public class HTMLGenerator {
         return div(
                 fieldset(
                         form(
-                              label(subTitle),
+                              label().with(span(subTitle)).withClass("subtitle"),
                               each(collection, item ->
-                                      label(item.toString()).with(getRadioInput(name, item.toString()))
+                                      label()
+                                              .with(getRadioInput(name, item.toString()))
+                                              .with(span(item.toString()))
                                 ),
-                                label(subTitle2),
+                                label().with(span(subTitle2)).withClass("subtitle"),
                                 each(collection2, item ->
-                                        label(item.toString()).with(getRadioInput(name2, item.toString()))
+                                        label()
+                                                .with(getRadioInput(name2, item.toString()))
+                                                .with(span(item.toString()))
                                 )
-                        ).with(getButton("submit"))
+                        ).with(getButton("Submit"))
                          .withMethod("post")
                 ).with(getLegend(legend))
-        ).render();
+        ).withClass("form-style").render();
     }
 
     public static String getFormToEditMail(List <?> collection, String legend, String subTitle, String subTitle2, String name){
@@ -128,16 +129,17 @@ public class HTMLGenerator {
         return div(
                 fieldset(
                         form(
-                                label(subTitle),
+                                label().with(span(subTitle)).withClass("subtitle"),
                                 each(collection, item ->
-                                        label(item.toString()).with(getRadioInput(name, item.toString()))
+                                        label().with(getRadioInput(name, item.toString()))
+                                               .with(span(item.toString()))
                                 ),
-                                label(subTitle2),
-                                getEmail()
+                                label().with(span(subTitle2)).withClass("subtitle"),
+                                label().with(span("E-mail")).with(getEmail())
                         ).with(getButton("Submit"))
                                 .withMethod("post")
                 ).with(getLegend(legend))
-        ).render();
+        ).withClass("form-style").render();
 
 
 
@@ -151,7 +153,7 @@ public class HTMLGenerator {
                                 span(item)
                         ))))
                 ).with(getLegend(legend))
-        ).render();
+        ).withClass("form-style").render();
     }
 
     public static String getAlertForm(String message) {
