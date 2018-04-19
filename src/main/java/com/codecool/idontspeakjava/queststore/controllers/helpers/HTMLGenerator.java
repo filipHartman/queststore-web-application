@@ -13,14 +13,10 @@ public class HTMLGenerator {
         return div(
                                 fieldset(
                                         form().withMethod("post").with(
-                                                getLabel("Name"),
-                                                getInput("name"),
-                                                getLabel("Lastname"),
-                                                getInput("lastname"),
-                                                getLabel("password"),
-                                                getPassword(),
-                                                getLabel("E-mail"),
-                                                getEmail(),
+                                                label().with(span("Name")).with(getInput("name")),
+                                                label().with(span("Lastname")).with(getInput("lastname")),
+                                                label().with(span("Password")).with(getPassword()),
+                                                label().with(span("E-mail")).with(getEmail()),
                                                 getButton("Submit")
                                         )
                                 ).with(getLegend(methodName))
@@ -62,7 +58,7 @@ public class HTMLGenerator {
 
 
     public static Tag getInput(String message){
-        return input().withClass("input-field").withName(message).isRequired();
+        return input().withType("text").withClass("input-field").withName(message).isRequired();
     }
 
     public static Tag getRadioInput(String name, String value) {
