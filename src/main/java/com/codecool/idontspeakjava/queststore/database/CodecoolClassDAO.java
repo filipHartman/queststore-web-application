@@ -17,7 +17,7 @@ public interface CodecoolClassDAO {
 
     void deleteCodecoolClass(CodecoolClass codecoolClass);
 
-    void addUserToCodecoolClass(User user, CodecoolClass codecoolClass);
+    boolean addUserToCodecoolClass(User user, CodecoolClass codecoolClass);
 
     CodecoolClass getUserCodecoolClass(User user);
 

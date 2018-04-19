@@ -104,7 +104,8 @@ public class SQLiteCodecoolClassDAO extends AbstractDAO implements CodecoolClass
     }
 
     @Override
-    public void addUserToCodecoolClass(User user, CodecoolClass codecoolClass) {
+    public boolean addUserToCodecoolClass(User user, CodecoolClass codecoolClass) {
+        boolean operationSuccessful = false;
         String query = "INSERT INTO users_in_classes(class_id, user_id) VALUES(?, ?)";
 
         try {
@@ -115,11 +116,13 @@ public class SQLiteCodecoolClassDAO extends AbstractDAO implements CodecoolClass
                 preparedStatement.setInt(2, user.getId());
 
                 preparedStatement.executeUpdate();
+                operationSuccessful = true;
 
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return operationSuccessful;
     }
 
     public List<User> getClassStudents(CodecoolClass codecoolClass) {
