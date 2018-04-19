@@ -212,4 +212,23 @@ public class HTMLGenerator {
                 ).with(getLegend("Add artifact"))
         ).render();
     }
+
+    public static String generateFormToEditQuest(List<?> collection) {
+        return div(
+                fieldset(label().with(span("Choose quest")).withClass("subtitle"),
+                        form(each(collection, item ->
+                                label(item.toString())
+                                        .with(getRadioInput("quest", item.toString()))
+                        ),
+                                label().with(span("Edit quest")).withClass("subtitle"),
+                                label().with(span("Title")).with(getInput("title")),
+                                label().with(span("Description")).with(getInput("description")),
+                                label().with(span("Reward")).with(getInput("reward").withType("number")),
+                                label().with(span("Choose category")).withClass("subtitle"),
+                                label("Basic").with(getRadioInput("category", "Basic" )),
+                                label("Extra").with(getRadioInput("category", "Extra" ))
+                ).with(getButton("Submit"))
+                ).with(getLegend("Edit quest"))
+        ).withClass("form-style").render();
+    }
 }
