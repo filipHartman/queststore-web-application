@@ -1,5 +1,6 @@
 package com.codecool.idontspeakjava.queststore.controllers.helpers;
 
+import com.codecool.idontspeakjava.queststore.models.ArtifactCategory;
 import com.codecool.idontspeakjava.queststore.models.QuestCategory;
 import j2html.tags.Tag;
 
@@ -183,7 +184,28 @@ public class HTMLGenerator {
                                 getRadioInput("category", QuestCategory.Extra.toString()),
                                 getButton("Add quest")
                         )
-                )
+                ).with(getLegend("Add quest"))
+        ).render();
+    }
+
+    public static String generateFormToAddArtifact() {
+        return div(
+                fieldset(
+                        form().withMethod("post").with(
+                                getLabel("Title"),
+                                getInput("title"),
+                                getLabel("Description"),
+                                getInput("description"),
+                                getLabel("Price"),
+                                getInput("price").withType("number"),
+                                getLabel("Choose category"),
+                                getLabel("Basic"),
+                                getRadioInput("category", ArtifactCategory.Basic.toString()),
+                                getLabel("Magic"),
+                                getRadioInput("category", ArtifactCategory.Magic.toString()),
+                                getButton("Add artifact")
+                        )
+                ).with(getLegend("Add artifact"))
         ).render();
     }
 }
