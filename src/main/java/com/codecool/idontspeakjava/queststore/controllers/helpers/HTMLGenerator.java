@@ -1,5 +1,6 @@
 package com.codecool.idontspeakjava.queststore.controllers.helpers;
 
+import com.codecool.idontspeakjava.queststore.models.QuestCategory;
 import j2html.tags.Tag;
 
 import java.util.List;
@@ -165,4 +166,24 @@ public class HTMLGenerator {
         ).render();
     }
 
+    public static String generateFormToAddQuest() {
+        return div(
+                fieldset(
+                        form().withMethod("post").with(
+                                getLabel("Title"),
+                                getInput("title"),
+                                getLabel("Description"),
+                                getInput("description"),
+                                getLabel("Reward"),
+                                getInput("reward").withType("number"),
+                                getLabel("Choose category"),
+                                getLabel("Basic"),
+                                getRadioInput("category", QuestCategory.Basic.toString()),
+                                getLabel("Extra"),
+                                getRadioInput("category", QuestCategory.Extra.toString()),
+                                getButton("Add quest")
+                        )
+                )
+        ).render();
+    }
 }
