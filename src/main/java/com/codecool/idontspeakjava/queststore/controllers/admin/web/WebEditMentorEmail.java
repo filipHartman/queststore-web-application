@@ -22,7 +22,7 @@ public class WebEditMentorEmail extends AbstractHandler {
         }
 
         if (method.equals("GET")) {
-            String form = HTMLGenerator.getFormToEditMail(mentors);
+            String form = HTMLGenerator.getFormToEditMail(mentors, "edit mentor's e-mail", "Choose mentor", "Enter new e-mail", "name");
             sendTemplateResponseWithForm(httpExchange, "admin_home", form);
 
         }

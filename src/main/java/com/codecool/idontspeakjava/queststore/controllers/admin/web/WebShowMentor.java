@@ -22,7 +22,7 @@ public class WebShowMentor extends AbstractHandler {
         String method = httpExchange.getRequestMethod();
 
         List<User> userCollection = new SQLiteUserDAO().getUsersByPermission(Permissions.Mentor);
-        String form = HTMLGenerator.getRadioForm(userCollection);
+        String form = HTMLGenerator.getRadioForm(userCollection, "show mentors", "name");
 
         if (method.equals("GET")) {
             sendTemplateResponseWithForm(httpExchange, "admin_home", form);

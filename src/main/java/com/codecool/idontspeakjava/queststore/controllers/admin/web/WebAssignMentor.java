@@ -26,7 +26,14 @@ public class WebAssignMentor extends AbstractHandler {
         }
 
         if (method.equals("GET")) {
-            String form = HTMLGenerator.getFormToEditClass(allMentors, allCodecoolClasses);
+            String form = HTMLGenerator.getRadioForm(allMentors,
+                    allCodecoolClasses,
+                    "Assign mentor to class",
+                    "Choose mentor",
+                    "Choose class",
+                    "name",
+                    "className");
+
             sendTemplateResponseWithForm(httpExchange, "admin_home", form);
         }
 

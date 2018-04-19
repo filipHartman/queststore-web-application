@@ -13,8 +13,8 @@ import java.util.Map;
 public class WebRemoveMentor extends AbstractHandler {
 
     public void handle(HttpExchange httpExchange){
-
         String method = httpExchange.getRequestMethod();
+
         List<User> mentors = new SQLiteUserDAO().getUsersByPermission(Permissions.Mentor);
 
         if(mentors.size() == 0){
@@ -22,7 +22,7 @@ public class WebRemoveMentor extends AbstractHandler {
         }
 
         if (method.equals("GET")) {
-            String form = HTMLGenerator.getRadioForm(mentors);
+            String form = HTMLGenerator.getRadioForm(mentors,"choose mentor to remove", "name" );
             sendTemplateResponseWithForm(httpExchange, "admin_home", form);
         }
 
