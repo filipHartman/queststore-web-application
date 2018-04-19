@@ -23,7 +23,14 @@ public class WebEditMentorClass extends AbstractHandler {
         List <CodecoolClass> classCollection = new SQLiteCodecoolClassDAO().getAllCodecoolClasses();
         System.out.println(classCollection.get(0));
 
-        String form = HTMLGenerator.getFormToEditClass(userCollection,classCollection);
+        String form = HTMLGenerator.getRadioForm(userCollection,
+                classCollection,
+                "Edit mentor's class",
+                "Choose mentor",
+                "Choose class",
+                "name",
+                "className");
+
         if (method.equals("GET")) {
             sendTemplateResponseWithForm(httpExchange, "admin_home", form);
 

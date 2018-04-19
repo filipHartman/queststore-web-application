@@ -25,7 +25,14 @@ public class WebAssignMentor extends AbstractHandler {
         List<CodecoolClass> classCollection = new SQLiteCodecoolClassDAO().getAllCodecoolClasses();
 
         if (method.equals("GET")) {
-            String form = HTMLGenerator.getFormToEditClass(userCollection, classCollection);
+            String form = HTMLGenerator.getRadioForm(userCollection,
+                    classCollection,
+                    "Assign mentor to class",
+                    "Choose mentor",
+                    "Choose class",
+                    "name",
+                    "className");
+
             sendTemplateResponseWithForm(httpExchange, "admin_home", form);
         }
 
