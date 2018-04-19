@@ -180,8 +180,8 @@ public class HTMLGenerator {
                                 label().with(span("Description")).with(getInput("description")),
 
                                 label().with(span("Reward")).with(getInput("reward").withType("number")),
-                                label().with(span("Choose category")).withClass("subtitle"),
 
+                                label().with(span("Choose category")).withClass("subtitle"),
                                 label().with(span("Basic")).with(getRadioInput("category", QuestCategory.Basic.toString())),
                                 label().with(span("Extra")).with(getRadioInput("category", QuestCategory.Extra.toString())),
                                 getButton("Add quest")
@@ -195,20 +195,19 @@ public class HTMLGenerator {
         return div(
                 fieldset(
                         form().withMethod("post").with(
-                                getLabel("Title"),
-                                getInput("title"),
-                                getLabel("Description"),
-                                getInput("description"),
-                                getLabel("Price"),
-                                getInput("price").withType("number"),
-                                getLabel("Choose category"),
-                                getLabel("Basic"),
-                                getRadioInput("category", ArtifactCategory.Basic.toString()),
-                                getLabel("Magic"),
-                                getRadioInput("category", ArtifactCategory.Magic.toString()),
+                                label().with(span("Title")).with(getInput("title")),
+
+                                label().with(span("Description")).with(getInput("description")),
+
+                                label().with(span("Price")).with(getInput("price").withType("number")),
+
+                                label().with(span("Choose category")).withClass("subtitle"),
+                                label().with(span("Basic")).with(getRadioInput("category", ArtifactCategory.Basic.toString())),
+                                label().with(span("Magic")).with(getRadioInput("category", ArtifactCategory.Magic.toString())),
                                 getButton("Add artifact")
                         )
                 ).with(getLegend("Add artifact"))
-        ).render();
+        ).withClass("form-style")
+         .render();
     }
 }
