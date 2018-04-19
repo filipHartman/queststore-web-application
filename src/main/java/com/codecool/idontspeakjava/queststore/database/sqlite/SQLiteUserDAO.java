@@ -139,7 +139,8 @@ public class SQLiteUserDAO extends AbstractDAO implements com.codecool.idontspea
     }
 
     @Override
-    public void updateUser(User user) {
+    public boolean updateUser(User user) {
+        boolean operationSucceeded = false;
         String query = "UPDATE users SET email = ?, first_name = ?, last_name = ?, password_hash = ?, permission = ?\n" +
                 "WHERE id =?;";
 
@@ -155,10 +156,12 @@ public class SQLiteUserDAO extends AbstractDAO implements com.codecool.idontspea
 
 
                 preparedStatement.executeUpdate();
+                operationSucceeded = true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return operationSucceeded;
 
     }
 
