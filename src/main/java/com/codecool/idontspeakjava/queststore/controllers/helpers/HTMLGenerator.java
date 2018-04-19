@@ -21,7 +21,7 @@ public class HTMLGenerator {
                                                 getPassword(),
                                                 getLabel("E-mail"),
                                                 getEmail(),
-                                                getButton()
+                                                getButton("Submit")
                                         )
                                 ).with(getLegend(methodName))
                         ).withClass("form-style")
@@ -31,7 +31,7 @@ public class HTMLGenerator {
 
     public static String generateFormToEditMail(String methodName, List <?> collection){
 
-        String button = getButton().render();
+        String button = getButton("Submit").render();
         return
                         form().withMethod("post").with(
                                 getLabel("Email"),
@@ -46,7 +46,7 @@ public class HTMLGenerator {
                         form().withMethod("post").with(
                                 getLabel(label),
                                 getInput("name"),
-                                getButton()
+                                getButton("Submit")
                         )
                 ).with(getLegend(methodName))
                 ).withClass("form-style")
@@ -61,7 +61,7 @@ public class HTMLGenerator {
                                 getInput("name"),
                                 getLabel("Level threshold"),
                                 getLevel(),
-                                getButton()
+                                getButton("Submit")
                         )
                 ).with(getLegend(methodName))
         ).withClass("form-style").render();
@@ -80,8 +80,8 @@ public class HTMLGenerator {
         return input().withClass("input-field").withType("e-mail").withName("email").isRequired();
     }
 
-    public static Tag getButton(){
-        return input().withClass("input-field").withType("submit").withValue("Submit");
+    public static Tag getButton(String value){
+        return input().withClass("input-field").withType("submit").withValue(value);
     }
 
     public static Tag getLabel(String text){
@@ -160,6 +160,17 @@ public class HTMLGenerator {
                                 span(item)
                         ))))
                 ).with(getLegend(legend))
+        ).render();
+    }
+
+    public static String getAlertForm(String message) {
+        return div(
+                fieldset(
+                        form().withMethod("post").with(
+                                getLabel(message),
+                                getButton("OK")
+                        )
+                )
         ).render();
     }
 
