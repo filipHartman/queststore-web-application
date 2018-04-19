@@ -81,7 +81,7 @@ public class HTMLGenerator {
     }
 
     public static Tag getEmail(){
-        return input().withClass("input-field").withType("e-mail").withName("email").isRequired();
+        return input().withClass("input-field").withType("email").withName("email").isRequired();
     }
 
     public static Tag getButton(){
@@ -134,21 +134,22 @@ public class HTMLGenerator {
         ).render();
     }
 
-    public static String getFormToEditMail(List <?> collection){
+    public static String getFormToEditMail(List <?> collection, String legend, String subTitle, String subTitle2, String name){
 
-        String form = "<fieldset> \n"+
-                "<form method = \"post\">";
+        return div(
+                fieldset(
+                        form(
+                                label(subTitle),
+                                each(collection, item ->
+                                        label(item.toString()).with(getRadioInput(name, item.toString()))
+                                ),
+                                label(subTitle2),
+                                getEmail()
+                        ).with(getButton())
+                                .withMethod("post")
+                ).with(getLegend(legend))
+        ).render();
 
-        for(int i = 0;i< collection.size(); i++){
-            form += "<label> <input type = \"radio\" name = \"name\" value =\""+collection.get(i).toString()+"\" required> "+collection.get(i).toString()+"</label>";
-        }
-
-        form += "<input type = \"email\" name = \"email\">";
-
-        form += "<input type = \"submit\" value = \"Choose\">" +
-                "</form> </fieldset>";
-
-        return form;
 
 
     }
