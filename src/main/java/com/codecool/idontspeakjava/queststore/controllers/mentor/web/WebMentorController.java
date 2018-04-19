@@ -1,6 +1,7 @@
 package com.codecool.idontspeakjava.queststore.controllers.mentor.web;
 
 import com.codecool.idontspeakjava.queststore.controllers.AbstractHandler;
+import com.codecool.idontspeakjava.queststore.controllers.admin.web.WebCreateMentor;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
 import com.sun.net.httpserver.HttpExchange;
 
@@ -16,7 +17,7 @@ public class WebMentorController extends AbstractHandler {
             try {
                 redirectToActionHandler(httpExchange, getAction(httpExchange));
             } catch (IndexOutOfBoundsException e) {
-                sendTemplateResponse(httpExchange, "admin_home");
+                sendTemplateResponse(httpExchange, "mentor_home");
             }
         } else {
             redirectToLocation(httpExchange, "/");
@@ -26,6 +27,7 @@ public class WebMentorController extends AbstractHandler {
     private void redirectToActionHandler(HttpExchange httpExchange, String action){
         switch(action) {
             case "create-codecooler":
+                new WebCreateStudent().handle(httpExchange);
                 break;
             case "add-quest":
                 break;
