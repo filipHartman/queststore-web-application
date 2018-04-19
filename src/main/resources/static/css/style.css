@@ -274,6 +274,15 @@ body{
     font-size: medium;
     text-transform: uppercase;
 }
+.form-style ol {
+    padding: 0;
+}
+.form-style li {
+    color: #f4f9f9;
+    padding: 2%;
+    font-weight: bold;
+    text-align: left;
+}
 
 /*radio.css*/
 
