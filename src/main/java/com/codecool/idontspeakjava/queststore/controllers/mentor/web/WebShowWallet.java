@@ -50,7 +50,7 @@ public class WebShowWallet extends AbstractHandler {
              List<String> test = getUserOrders(choosenUser);
              walletData.addAll(test);
 
-             String responseForm = HTMLGenerator.getList(walletData, choosenUser.getFullName());
+             String responseForm = HTMLGenerator.getList(walletData, choosenUser.getFullName(),"list-style-type: none");
              sendTemplateResponseWithForm(httpExchange, "mentor_home", responseForm);
 
          }
