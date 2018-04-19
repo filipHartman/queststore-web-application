@@ -167,4 +167,25 @@ public abstract class AbstractHandler implements HttpHandler {
         return choosenClass;
     }
 
+    public String getHomeLocationFromSid(String sid) {
+        String location;
+        int userId = getSessionIdContainer().getUserId(sid);
+        Optional<User> user = Optional.ofNullable(new SQLiteUserDAO().getUserById(userId));
+
+        switch (user.get().getPermission()) {
+            case Mentor:
+                location = "/mentor";
+                break;
+            case Student:
+                location = "/student";
+                break;
+            case Root:
+                location = "/admin";
+                break;
+            default:
+                location = "/";
+        }
+        return location;
+    }
+
 }
