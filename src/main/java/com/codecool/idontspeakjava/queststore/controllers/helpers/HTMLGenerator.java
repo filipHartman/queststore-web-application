@@ -76,6 +76,10 @@ public class HTMLGenerator {
         return input().withClass("input-field").withName(message).isRequired();
     }
 
+    public static Tag getRadioInput(String name, String value) {
+        return input().withType("radio").withName(name).withValue(value);
+    }
+
     public static Tag getEmail(){
         return input().withClass("input-field").withType("e-mail").withName("email").isRequired();
     }
@@ -94,21 +98,16 @@ public class HTMLGenerator {
 
     public static Tag getLegend(String text) { return legend(text);}
 
-    public static String getRadioForm(List <?> collection){
-
-        String form = "<fieldset> \n"+
-                "<form method = \"post\">";
-
-
-        for(int i = 0;i< collection.size(); i++){
-            form += "<label> <input type = \"radio\" name = \"name\" value =\""+collection.get(i).toString()+"\" required> "+collection.get(i).toString()+"</label>";
-        }
-
-        form += "<input type = \"submit\" value = \"Choose\">" +
-                "</form> </fieldset>";
-
-        return form;
-
+    public static String getRadioForm(List <?> collection, String legend, String name){
+        return div(
+                fieldset(
+                        form(each(collection, item ->
+                                label(item.toString())
+                                        .with(getRadioInput(name, item.toString()))
+                                )).with(getButton())
+                                .withMethod("post")
+                ).with(getLegend(legend))
+        ).render();
     }
 
     public static String getFormToEditMail(List <?> collection){
