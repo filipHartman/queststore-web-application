@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface UserDAO {
-    void createUser(User user) throws SQLException;
+    boolean createUser(User user) throws SQLException;
 
     User getUserByEmail(String email);
 
@@ -17,9 +17,9 @@ public interface UserDAO {
 
     List<User> getAllUsers();
 
-    void updateUser(User user);
+    boolean updateUser(User user);
 
-    void deleteUser(User user);
+    boolean deleteUser(User user);
 
     boolean checkIfUsersExists(String email) throws SQLException;
 

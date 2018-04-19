@@ -6,7 +6,6 @@ import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteCodecoolClas
 import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
 import com.sun.net.httpserver.HttpExchange;
 
-import java.io.IOException;
 import java.util.Map;
 
 public class WebCreateClass extends AbstractHandler {
@@ -21,12 +20,18 @@ public class WebCreateClass extends AbstractHandler {
         }
 
         if(method.equals("POST")) {
-            Map<String, String> data = readFormData(httpExchange);
-
-            String name = data.get("name");
-            new SQLiteCodecoolClassDAO().createCodecoolClass(new CodecoolClass(name));
-
-            redirectToLocation(httpExchange, "/");
+            if(createClass(httpExchange)){
+                redirectToLocation(httpExchange, "/alert/success");
+            }else {
+                redirectToLocation(httpExchange, "/alert/fail");
+            }
         }
+    }
+
+    private boolean createClass(HttpExchange httpExchange){
+        Map<String, String> data = readFormData(httpExchange);
+
+        String name = data.get("name");
+        return new SQLiteCodecoolClassDAO().createCodecoolClass(new CodecoolClass(name));
     }
 }

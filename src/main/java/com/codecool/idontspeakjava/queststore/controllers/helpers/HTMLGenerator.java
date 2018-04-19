@@ -57,7 +57,7 @@ public class HTMLGenerator {
     }
 
     public static Tag getLevel(){
-        return input().withClass("input-field").withName("threshold").withType("number").withPlaceholder("0").withValue("Submit");
+        return input().withClass("input-field").withName("threshold").withType("number").withPlaceholder("0").withValue("Submit").isRequired();
     }
 
 

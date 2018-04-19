@@ -135,13 +135,13 @@ class CodecoolerCreator {
     private void addCodecoolerToDatabase() {
         String hash = "";
         User newCodecooler = new User(name, secondName, hash, email, Permissions.Student);
-        try {
-            new SQLiteUserDAO().createUser(newCodecooler);
+        
+        if(new SQLiteUserDAO().createUser(newCodecooler)) {
             new SQLiteCodecoolClassDAO().addUserToCodecoolClass(newCodecooler, selectedCodecoolClass);
             view.showCodecoolerCreated();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }else {
             view.showCodecoolerCreationFailed();
         }
+
     }
 }

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface CodecoolClassDAO {
-    void createCodecoolClass(CodecoolClass codecoolClass);
+    boolean createCodecoolClass(CodecoolClass codecoolClass);
 
     CodecoolClass getCodecoolClass(String name);
 
@@ -17,7 +17,7 @@ public interface CodecoolClassDAO {
 
     void deleteCodecoolClass(CodecoolClass codecoolClass);
 
-    void addUserToCodecoolClass(User user, CodecoolClass codecoolClass);
+    boolean addUserToCodecoolClass(User user, CodecoolClass codecoolClass);
 
     CodecoolClass getUserCodecoolClass(User user);
 

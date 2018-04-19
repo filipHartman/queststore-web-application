@@ -19,22 +19,24 @@ public class WebCreateLevel extends AbstractHandler {
         if(method.equals("GET")){
             sendTemplateResponseWithForm(httpExchange, "admin_home", form);
         }else if(method.equals("POST")){
-            try {
-                parseFormDataToLevelObject(httpExchange);
-            } catch (IOException e) {
-                e.printStackTrace();
+            if(parseFormDataToLevelObject(httpExchange)) {
+                redirectToLocation(httpExchange, "/alert/success");
+            }else {
+                redirectToLocation(httpExchange, "/alert/fail");
             }
-            redirectToLocation(httpExchange, "/");
 
         }
     }
 
-    private void parseFormDataToLevelObject(HttpExchange httpExchange) throws IOException {
+    private boolean parseFormDataToLevelObject(HttpExchange httpExchange){
+        boolean operationSucceeded = false;
         Map<String, String> data = readFormData(httpExchange);
 
         String name = data.get("name");
         Long threshold = Long.parseLong(data.get("threshold"));
-
-        new SQLiteExperienceLevelDAO().createExperienceLevel(new ExperienceLevel(name, threshold));
+        if(threshold >= 0) {
+            operationSucceeded = new SQLiteExperienceLevelDAO().createExperienceLevel(new ExperienceLevel(name, threshold));
+        }
+        return operationSucceeded;
     }
 }

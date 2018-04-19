@@ -89,11 +89,10 @@ class MentorCreator{
     private void addMentorToDatabase() {
         String hash = "";
         User newMentor = new User(name, lastName, hash, email, Permissions.Mentor);
-        try {
-            new SQLiteUserDAO().createUser(newMentor);
+
+        if(new SQLiteUserDAO().createUser(newMentor)){
             view.showMentorCreated();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }else {
             view.showMentorCreationFailed();
         }
     }
