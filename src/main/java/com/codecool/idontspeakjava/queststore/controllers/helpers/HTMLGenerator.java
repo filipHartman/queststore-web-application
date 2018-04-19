@@ -62,7 +62,7 @@ public class HTMLGenerator {
     }
 
     public static Tag getRadioInput(String name, String value) {
-        return input().withType("radio").withName(name).withValue(value);
+        return input().withType("radio").withName(name).withValue(value).isRequired();
     }
 
     public static Tag getEmail(){
@@ -87,12 +87,13 @@ public class HTMLGenerator {
         return div(
                 fieldset(
                         form(each(collection, item ->
-                                label(item.toString())
-                                        .with(getRadioInput(name, item.toString()))
+                                label()
+                                  .with(getRadioInput(name, item.toString()))
+                                  .with(span(item.toString()))
                                 )).with(getButton("Submit"))
                                 .withMethod("post")
                 ).with(getLegend(legend))
-        ).withClass("radio").render();
+        ).withClass("form-style").render();
     }
 
     public static String getRadioForm(List<?> collection,
@@ -116,7 +117,7 @@ public class HTMLGenerator {
                         ).with(getButton("submit"))
                          .withMethod("post")
                 ).with(getLegend(legend))
-        ).withClass("radio").render();
+        ).withClass("form-style").render();
     }
 
     public static String getFormToEditMail(List <?> collection, String legend, String subTitle, String subTitle2, String name){
@@ -133,7 +134,7 @@ public class HTMLGenerator {
                         ).with(getButton("Submit"))
                                 .withMethod("post")
                 ).with(getLegend(legend))
-        ).withClass("radio").render();
+        ).withClass("form-style").render();
 
 
 
@@ -147,7 +148,7 @@ public class HTMLGenerator {
                                 span(item)
                         ))))
                 ).with(getLegend(legend))
-        ).withClass("radio").render();
+        ).withClass("form-style").render();
     }
 
     public static String getAlertForm(String message) {
