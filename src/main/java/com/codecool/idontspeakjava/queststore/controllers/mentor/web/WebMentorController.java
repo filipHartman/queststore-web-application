@@ -30,6 +30,7 @@ public class WebMentorController extends AbstractHandler {
                 new WebCreateStudent().handle(httpExchange);
                 break;
             case "add-quest":
+                new WebQuestCreator().handle(httpExchange);
                 break;
             case "add-artifact":
                 break;
