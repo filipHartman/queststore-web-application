@@ -40,8 +40,8 @@ public class WebShowWallet extends AbstractHandler {
              int choosenUserId = choosenUser.getId();
              Wallet choosenUserWallet = new SQLiteWalletsDAO().getWalletByUserID(choosenUserId);
              List <String> walletData = new ArrayList<>(Arrays.asList(
-                     "Total earing: " + choosenUserWallet.getTotalEarnings(),
-                     "Current State:"+ choosenUserWallet.getCurrentState(),
+                     "Total earning: " + choosenUserWallet.getTotalEarnings(),
+                     "Current State: "+ choosenUserWallet.getCurrentState(),
                      "\n",
                      "Artifacts:"
              ));
