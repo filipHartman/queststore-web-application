@@ -7,7 +7,6 @@ import com.codecool.idontspeakjava.queststore.models.Permissions;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.sun.net.httpserver.HttpExchange;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -15,28 +14,39 @@ public class WebRemoveMentor extends AbstractHandler {
 
     public void handle(HttpExchange httpExchange){
 
-    String method = httpExchange.getRequestMethod();
+        String method = httpExchange.getRequestMethod();
+        List<User> mentors = new SQLiteUserDAO().getUsersByPermission(Permissions.Mentor);
 
-    List<User> userCollection = new SQLiteUserDAO().getUsersByPermission(Permissions.Mentor);
-
-
-
-    String form = HTMLGenerator.getRadioForm(userCollection);
-
+        if(mentors.size() == 0){
+            redirectToLocation(httpExchange, "/alert/fail");
+        }
 
         if (method.equals("GET")) {
-        sendTemplateResponseWithForm(httpExchange, "admin_home", form);
-
-    }
+            String form = HTMLGenerator.getRadioForm(mentors);
+            sendTemplateResponseWithForm(httpExchange, "admin_home", form);
+        }
 
         if(method.equals("POST")){
+            if(removeMentor(httpExchange, mentors)){
+                redirectToLocation(httpExchange, "/alert/success");
+            }else {
+                redirectToLocation(httpExchange, "/alert/fail");
+
+            }
+        }
+    }
+
+    private boolean removeMentor(HttpExchange httpExchange, List<User> mentors){
+        boolean operationSucceeded = false;
         Map<String, String> data = readFormData(httpExchange);
         String name = data.get("name");
-        User userToDelete = getChosenUser(userCollection, name);
-        new SQLiteUserDAO().deleteUser(userToDelete);
+        User userToDelete = getChosenUser(mentors, name);
 
-        redirectToLocation(httpExchange, "admin_home");
-
+        if(userToDelete != null){
+            operationSucceeded = new SQLiteUserDAO(). (userToDelete);
+        }
+        return operationSucceeded;
     }
-}
+
+
 }
