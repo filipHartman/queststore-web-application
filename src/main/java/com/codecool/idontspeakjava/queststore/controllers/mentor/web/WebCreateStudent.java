@@ -34,12 +34,9 @@ public class WebCreateStudent extends AbstractHandler{
             String password = new PasswordService().hashPassword(data.get("password"));
             User user = new User(name, lastname, password, email, Permissions.Student);
             SQLiteUserDAO dao = new SQLiteUserDAO();
-            try {
+            
                 dao.createUser(user);
-            } catch (SQLException e) {
-                e.printStackTrace();
-                redirectToLocation(httpExchange, "/alert/fail");
-            }
+
 
             redirectToLocation(httpExchange, "/alert/success");
         }
