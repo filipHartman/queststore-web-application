@@ -93,7 +93,7 @@ public class HTMLGenerator {
                         form(each(collection, item ->
                                 label(item.toString())
                                         .with(getRadioInput(name, item.toString()))
-                                )).with(getButton())
+                                )).with(getButton("Submit"))
                                 .withMethod("post")
                 ).with(getLegend(legend))
         ).render();
@@ -117,7 +117,7 @@ public class HTMLGenerator {
                                 each(collection2, item ->
                                         label(item.toString()).with(getRadioInput(name2, item.toString()))
                                 )
-                        ).with(getButton())
+                        ).with(getButton("submit"))
                          .withMethod("post")
                 ).with(getLegend(legend))
         ).render();
@@ -134,7 +134,7 @@ public class HTMLGenerator {
                                 ),
                                 label(subTitle2),
                                 getEmail()
-                        ).with(getButton())
+                        ).with(getButton("Submit"))
                                 .withMethod("post")
                 ).with(getLegend(legend))
         ).render();
