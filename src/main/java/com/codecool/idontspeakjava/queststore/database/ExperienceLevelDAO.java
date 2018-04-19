@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface ExperienceLevelDAO {
-    void createExperienceLevel(ExperienceLevel experienceLevel);
+    boolean createExperienceLevel(ExperienceLevel experienceLevel);
 
     List<ExperienceLevel> getAllExperienceLevels();
 
