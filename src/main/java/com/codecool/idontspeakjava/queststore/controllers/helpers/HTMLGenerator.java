@@ -110,6 +110,30 @@ public class HTMLGenerator {
         ).render();
     }
 
+    public static String getRadioForm(List<?> collection,
+                                      List<?> collection2,
+                                      String legend,
+                                      String subTitle,
+                                      String subTitle2,
+                                      String name,
+                                      String name2) {
+        return div(
+                fieldset(
+                        form(
+                              label(subTitle),
+                              each(collection, item ->
+                                      label(item.toString()).with(getRadioInput(name, item.toString()))
+                                ),
+                                label(subTitle2),
+                                each(collection2, item ->
+                                        label(item.toString()).with(getRadioInput(name2, item.toString()))
+                                )
+                        ).with(getButton())
+                         .withMethod("post")
+                ).with(getLegend(legend))
+        ).render();
+    }
+
     public static String getFormToEditMail(List <?> collection){
 
         String form = "<fieldset> \n"+
@@ -120,28 +144,6 @@ public class HTMLGenerator {
         }
 
         form += "<input type = \"email\" name = \"email\">";
-
-        form += "<input type = \"submit\" value = \"Choose\">" +
-                "</form> </fieldset>";
-
-        return form;
-
-
-    }
-
-    public static String getFormToEditClass(List <?> collection, List<?> collection2){
-
-        String form = "<fieldset> \n"+
-                "<form method = \"post\">";
-
-        for(int i = 0;i< collection.size(); i++){
-            form += "<label> <input type = \"radio\" name = \"name\" value =\""+collection.get(i).toString()+"\" required> "+collection.get(i).toString()+"</label>";
-        }
-
-        for(int i = 0;i< collection2.size(); i++){
-            form += "<label> <input type = \"radio\" name = \"className\" value =\""+collection2.get(i).toString()+"\" required> "+collection2.get(i).toString()+"</label>";
-        }
-
 
         form += "<input type = \"submit\" value = \"Choose\">" +
                 "</form> </fieldset>";
