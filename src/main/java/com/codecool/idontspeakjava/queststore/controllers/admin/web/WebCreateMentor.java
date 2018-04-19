@@ -19,29 +19,25 @@ public class WebCreateMentor extends AbstractHandler {
 
         if (method.equals("GET")) {
             sendTemplateResponseWithForm(httpExchange, "admin_home", HTMLGenerator.generateFormToCreateUser("Create mentor") );
-
         }
 
         if(method.equals("POST")){
-            Map<String, String> data = null;
-
-            data = readFormData(httpExchange);
-            String name = data.get("name");
-            String lastname = data.get("lastname");
-            String email = data.get("email");
-            String password = new PasswordService().hashPassword(data.get("password"));
-            User user = new User(name, lastname, password, email, Permissions.Mentor);
-            SQLiteUserDAO dao = new SQLiteUserDAO();
-            try {
-                dao.createUser(user);
-            }catch (SQLException e){
-                e.printStackTrace();
+            if(createMentor(httpExchange)) {
+                redirectToLocation(httpExchange, "/alert/success");
+            }else {
                 redirectToLocation(httpExchange, "/alert/fail");
             }
-
-            redirectToLocation(httpExchange, "/alert/success");
         }
+    }
 
+    private boolean createMentor(HttpExchange httpExchange){
+        Map<String, String> data = readFormData(httpExchange);
 
+        String name = data.get("name");
+        String lastname = data.get("lastname");
+        String email = data.get("email");
+        String password = new PasswordService().hashPassword(data.get("password"));
+
+        return new SQLiteUserDAO().createUser(new User(name, lastname, password, email, Permissions.Mentor));
     }
 }
