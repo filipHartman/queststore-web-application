@@ -43,7 +43,7 @@ public class WebRemoveMentor extends AbstractHandler {
         User userToDelete = getChosenUser(mentors, name);
 
         if(userToDelete != null){
-            operationSucceeded = new SQLiteUserDAO(). (userToDelete);
+            operationSucceeded = new SQLiteUserDAO().deleteUser(userToDelete);
         }
         return operationSucceeded;
     }
