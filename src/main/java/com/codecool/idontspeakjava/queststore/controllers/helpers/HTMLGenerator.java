@@ -96,7 +96,7 @@ public class HTMLGenerator {
                                 )).with(getButton("Submit"))
                                 .withMethod("post")
                 ).with(getLegend(legend))
-        ).render();
+        ).withClass("radio").render();
     }
 
     public static String getRadioForm(List<?> collection,
@@ -120,7 +120,7 @@ public class HTMLGenerator {
                         ).with(getButton("submit"))
                          .withMethod("post")
                 ).with(getLegend(legend))
-        ).render();
+        ).withClass("radio").render();
     }
 
     public static String getFormToEditMail(List <?> collection, String legend, String subTitle, String subTitle2, String name){
@@ -137,7 +137,7 @@ public class HTMLGenerator {
                         ).with(getButton("Submit"))
                                 .withMethod("post")
                 ).with(getLegend(legend))
-        ).render();
+        ).withClass("radio").render();
 
 
 
@@ -151,7 +151,7 @@ public class HTMLGenerator {
                                 span(item)
                         ))))
                 ).with(getLegend(legend))
-        ).render();
+        ).withClass("radio").render();
     }
 
     public static String getAlertForm(String message) {
