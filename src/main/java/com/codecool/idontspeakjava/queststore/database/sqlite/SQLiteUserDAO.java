@@ -163,7 +163,8 @@ public class SQLiteUserDAO extends AbstractDAO implements com.codecool.idontspea
     }
 
     @Override
-    public void deleteUser(User user) {
+    public boolean deleteUser(User user) {
+        boolean operationSuccessful = false;
         String query = "DELETE FROM users WHERE email = ?";
 
         try {
@@ -172,10 +173,12 @@ public class SQLiteUserDAO extends AbstractDAO implements com.codecool.idontspea
                 preparedStatement.setString(1, user.getEmail());
 
                 preparedStatement.executeUpdate();
+                operationSuccessful = true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return operationSuccessful;
     }
 
     @Override

@@ -19,7 +19,7 @@ public interface UserDAO {
 
     void updateUser(User user);
 
-    void deleteUser(User user);
+    boolean deleteUser(User user);
 
     boolean checkIfUsersExists(String email) throws SQLException;
 
