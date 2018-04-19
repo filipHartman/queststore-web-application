@@ -16,22 +16,25 @@ public class SQLiteExperienceLevelDAO extends AbstractDAO implements com.codecoo
     private static final Logger log = LoggerFactory.getLogger(SQLiteExperienceLevelDAO.class);
 
     @Override
-    public void createExperienceLevel(ExperienceLevel experienceLevel) {
+    public boolean createExperienceLevel(ExperienceLevel experienceLevel) {
+        boolean operationSucceeded = false;
         String query = "INSERT INTO experience_levels(name, threshold) " +
                 "VALUES(?, ?)";
 
         try {
-            if (!checkIfExperienceLevelExists(experienceLevel.getName())) {
+            if (!checkIfExperienceLevelExists(experienceLevel.getName()) && !checkIfExperienceLevelExists(experienceLevel.getThreshold())) {
                 PreparedStatement preparedStatement = getConnection().prepareStatement(query);
 
                 preparedStatement.setString(1, experienceLevel.getName());
                 preparedStatement.setLong(2, experienceLevel.getThreshold());
 
                 preparedStatement.executeUpdate();
+                operationSucceeded = true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return  operationSucceeded;
     }
 
     @Override
@@ -100,6 +103,14 @@ public class SQLiteExperienceLevelDAO extends AbstractDAO implements com.codecoo
 
         PreparedStatement preparedStatement = getConnection().prepareStatement(query);
         preparedStatement.setString(1, name);
+        return preparedStatement.executeQuery().next();
+    }
+
+    private boolean checkIfExperienceLevelExists(Long threshold) throws SQLException {
+        String query = "SELECT * FROM experience_levels WHERE threshold=?";
+
+        PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+        preparedStatement.setLong(1, threshold);
         return preparedStatement.executeQuery().next();
     }
 
