@@ -209,6 +209,7 @@ body{
 .form-style label span {
     float: left;
     width: 100%;
+    margin: 1%;
 }
 
 .form-style input[type=text],

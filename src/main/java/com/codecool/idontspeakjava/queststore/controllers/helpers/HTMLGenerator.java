@@ -27,14 +27,14 @@ public class HTMLGenerator {
 
     public static String generateFromWith1Field(String methodName, String label) {
         return div(
-                fieldset(
-                        form().withMethod("post").with(
-                                getLabel(label),
-                                getInput("name"),
-                                getButton("Submit")
-                        )
-                ).with(getLegend(methodName))
-                ).withClass("form-style")
+                fieldset()
+
+                .with(form()
+                        .with(getLegend(methodName))
+                        .withMethod("post").with(
+                        label().with(span(label)).with(getInput("name"))),
+                        getButton("Submit"))
+                .withClass("form-style"))
                 .render();
     }
 
