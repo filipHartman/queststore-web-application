@@ -64,6 +64,10 @@ public class Quest{
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        return title;
+    }
 
     public static final class Builder {
         private int id;

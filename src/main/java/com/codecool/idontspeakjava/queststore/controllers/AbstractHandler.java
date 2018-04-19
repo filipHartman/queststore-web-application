@@ -4,6 +4,7 @@ import com.codecool.idontspeakjava.queststore.controllers.login.SessionIdContain
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
 import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
+import com.codecool.idontspeakjava.queststore.models.Quest;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
@@ -164,6 +165,15 @@ public abstract class AbstractHandler implements HttpHandler {
             }
         }
         return choosenClass;
+    }
+
+    public Quest getQuestByName(String questName, List<Quest> allQuests) {
+        for (Quest quest : allQuests) {
+            if (quest.toString().equals(questName)) {
+                return quest;
+            }
+        }
+        return null;
     }
 
     public String getHomeLocationFromSid(String sid) {
