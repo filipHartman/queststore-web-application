@@ -41,9 +41,9 @@ public class WebMentorController extends AbstractHandler {
             case "edit-artifact":
                 new WebArtifactEditor().handle(httpExchange);
                 break;
-            case "choose-student-to-mark-quest":
+            case "mark-quest":
                 break;
-            case "choose-student-to-mark-artifact":
+            case "mark-artifact":
                 break;
             case "check-wallet":
                 new WebShowWallet().handle(httpExchange);
