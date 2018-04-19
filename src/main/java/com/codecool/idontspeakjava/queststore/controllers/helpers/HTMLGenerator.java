@@ -175,21 +175,20 @@ public class HTMLGenerator {
         return div(
                 fieldset(
                         form().withMethod("post").with(
-                                getLabel("Title"),
-                                getInput("title"),
-                                getLabel("Description"),
-                                getInput("description"),
-                                getLabel("Reward"),
-                                getInput("reward").withType("number"),
-                                getLabel("Choose category"),
-                                getLabel("Basic"),
-                                getRadioInput("category", QuestCategory.Basic.toString()),
-                                getLabel("Extra"),
-                                getRadioInput("category", QuestCategory.Extra.toString()),
+                                label().with(span("Title")).with(getInput("title")),
+
+                                label().with(span("Description")).with(getInput("description")),
+
+                                label().with(span("Reward")).with(getInput("reward").withType("number")),
+                                label().with(span("Choose category")).withClass("subtitle"),
+
+                                label().with(span("Basic")).with(getRadioInput("category", QuestCategory.Basic.toString())),
+                                label().with(span("Extra")).with(getRadioInput("category", QuestCategory.Extra.toString())),
                                 getButton("Add quest")
                         )
                 ).with(getLegend("Add quest"))
-        ).render();
+        ).withClass("form-style")
+         .render();
     }
 
     public static String generateFormToAddArtifact() {
