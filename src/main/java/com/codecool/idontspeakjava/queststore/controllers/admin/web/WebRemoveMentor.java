@@ -21,7 +21,7 @@ public class WebRemoveMentor extends AbstractHandler {
 
 
 
-    String form = HTMLGenerator.getRadioForm(userCollection);
+    String form = HTMLGenerator.getRadioForm(userCollection,"choose mentor to remove", "name" );
 
 
         if (method.equals("GET")) {
