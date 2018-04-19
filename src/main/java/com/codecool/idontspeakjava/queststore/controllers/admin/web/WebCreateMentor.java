@@ -8,7 +8,6 @@ import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.services.PasswordService;
 import com.sun.net.httpserver.HttpExchange;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Map;
 
@@ -37,9 +36,10 @@ public class WebCreateMentor extends AbstractHandler {
                 dao.createUser(user);
             }catch (SQLException e){
                 e.printStackTrace();
+                redirectToLocation(httpExchange, "/alert/fail");
             }
 
-            redirectToLocation(httpExchange, "/");
+            redirectToLocation(httpExchange, "/alert/success");
         }
 
 

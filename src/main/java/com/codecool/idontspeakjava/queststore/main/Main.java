@@ -1,5 +1,6 @@
 package com.codecool.idontspeakjava.queststore.main;
 
+import com.codecool.idontspeakjava.queststore.controllers.AlertController;
 import com.codecool.idontspeakjava.queststore.controllers.Static;
 import com.codecool.idontspeakjava.queststore.controllers.admin.web.WebAdminController;
 import com.codecool.idontspeakjava.queststore.controllers.codecooler.web.WebCodecoolerController;
@@ -24,6 +25,7 @@ public class Main {
 
         server.createContext("/", new WebLoginController());
         server.createContext("/static", new Static());
+        server.createContext("/alert", new AlertController());
         server.createContext("/admin", new WebAdminController());
         server.createContext("/mentor", new WebMentorController());
         server.createContext("/student", new WebCodecoolerController());
