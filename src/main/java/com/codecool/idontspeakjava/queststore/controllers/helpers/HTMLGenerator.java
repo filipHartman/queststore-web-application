@@ -29,17 +29,6 @@ public class HTMLGenerator {
 
     }
 
-    public static String generateFormToEditMail(String methodName, List <?> collection){
-
-        String button = getButton().render();
-        return
-                        form().withMethod("post").with(
-                                getLabel("Email"),
-                                getEmail()
-                        )
-        .render();
-    }
-
     public static String generateFromWith1Field(String methodName, String label) {
         return div(
                 fieldset(
