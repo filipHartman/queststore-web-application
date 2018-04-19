@@ -1,5 +1,7 @@
 package com.codecool.idontspeakjava.queststore.controllers.helpers;
 
+import com.codecool.idontspeakjava.queststore.models.ArtifactCategory;
+import com.codecool.idontspeakjava.queststore.models.QuestCategory;
 import j2html.tags.Tag;
 
 import java.util.List;
@@ -167,4 +169,45 @@ public class HTMLGenerator {
         ).render();
     }
 
+    public static String generateFormToAddQuest() {
+        return div(
+                fieldset(
+                        form().withMethod("post").with(
+                                getLabel("Title"),
+                                getInput("title"),
+                                getLabel("Description"),
+                                getInput("description"),
+                                getLabel("Reward"),
+                                getInput("reward").withType("number"),
+                                getLabel("Choose category"),
+                                getLabel("Basic"),
+                                getRadioInput("category", QuestCategory.Basic.toString()),
+                                getLabel("Extra"),
+                                getRadioInput("category", QuestCategory.Extra.toString()),
+                                getButton("Add quest")
+                        )
+                ).with(getLegend("Add quest"))
+        ).render();
+    }
+
+    public static String generateFormToAddArtifact() {
+        return div(
+                fieldset(
+                        form().withMethod("post").with(
+                                getLabel("Title"),
+                                getInput("title"),
+                                getLabel("Description"),
+                                getInput("description"),
+                                getLabel("Price"),
+                                getInput("price").withType("number"),
+                                getLabel("Choose category"),
+                                getLabel("Basic"),
+                                getRadioInput("category", ArtifactCategory.Basic.toString()),
+                                getLabel("Magic"),
+                                getRadioInput("category", ArtifactCategory.Magic.toString()),
+                                getButton("Add artifact")
+                        )
+                ).with(getLegend("Add artifact"))
+        ).render();
+    }
 }

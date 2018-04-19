@@ -87,5 +87,13 @@ public class Wallet{
         public Wallet build() {
             return new Wallet(this);
         }
+
+
+    }
+
+    @Override
+    public String toString() {
+        return "Total earing: " + totalEarnings + "\n" +
+                "Current State: " + currentState;
     }
 }

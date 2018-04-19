@@ -21,7 +21,6 @@ public class WebEditMentorClass extends AbstractHandler {
 
         List<User> userCollection = new SQLiteUserDAO().getUsersByPermission(Permissions.Mentor);
         List <CodecoolClass> classCollection = new SQLiteCodecoolClassDAO().getAllCodecoolClasses();
-        System.out.println(classCollection.get(0));
 
         String form = HTMLGenerator.getRadioForm(userCollection,
                 classCollection,

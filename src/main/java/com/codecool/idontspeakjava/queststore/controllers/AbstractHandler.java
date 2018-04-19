@@ -91,7 +91,6 @@ public abstract class AbstractHandler implements HttpHandler {
     }
 
     public Map<String, String> parseFormData(String formData) {
-        System.out.println(formData);
          Map<String, String> inputs = new HashMap<>();
         String key;
         String value;
