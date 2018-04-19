@@ -1,13 +1,8 @@
 package com.codecool.idontspeakjava.queststore.controllers.admin.web;
 
 import com.codecool.idontspeakjava.queststore.controllers.AbstractHandler;
-import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
-import com.codecool.idontspeakjava.queststore.models.User;
 import com.sun.net.httpserver.HttpExchange;
-
-import java.io.IOException;
-import java.util.Optional;
 
 public class WebAdminController extends AbstractHandler {
 
@@ -25,37 +20,36 @@ public class WebAdminController extends AbstractHandler {
     }
 
     private void redirectToActionHandler(HttpExchange httpExchange, String action){
-            switch(action) {
-                case "create-mentor":
-                    new WebCreateMentor().handle(httpExchange);
-                    break;
-                case "remove-mentor":
-                    new WebRemoveMentor().handle(httpExchange);
-                    break;
-                case "create-codecoolclass":
-                    new WebCreateClass().handle(httpExchange);
-                    break;
-                case "assign-mentor":
-                    new WebAssignMentor().handle(httpExchange);
-                    break;
-                case "edit-mentor-class":
-                    new WebEditMentorClass().handle(httpExchange);
-                    break;
-                case "edit-mentor-email":
-                    new WebEditMentorEmail().handle(httpExchange);
-                    break;
-                case "show-mentor":
-                    new WebShowMentor().handle(httpExchange);
-                    break;
-                case "create-level":
-                    new WebCreateLevel().handle(httpExchange);
-                    break;
-                default:
-                    sendTemplateResponse(httpExchange, "admin_home");
-                    break;
-            }
+        switch(action) {
+            case "create-mentor":
+                new WebCreateMentor().handle(httpExchange);
+                break;
+            case "remove-mentor":
+                new WebRemoveMentor().handle(httpExchange);
+                break;
+            case "create-codecoolclass":
+                new WebCreateClass().handle(httpExchange);
+                break;
+            case "assign-mentor":
+                new WebAssignMentor().handle(httpExchange);
+                break;
+            case "edit-mentor-class":
+                new WebEditMentorClass().handle(httpExchange);
+                break;
+            case "edit-mentor-email":
+                new WebEditMentorEmail().handle(httpExchange);
+                break;
+            case "show-mentor":
+                new WebShowMentor().handle(httpExchange);
+                break;
+            case "create-level":
+                new WebCreateLevel().handle(httpExchange);
+                break;
+            default:
+                sendTemplateResponse(httpExchange, "admin_home");
+                break;
+        }
     }
-
 
 }
 
