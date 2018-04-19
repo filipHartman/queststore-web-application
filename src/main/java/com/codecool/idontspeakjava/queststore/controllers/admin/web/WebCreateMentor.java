@@ -37,9 +37,10 @@ public class WebCreateMentor extends AbstractHandler {
                 dao.createUser(user);
             }catch (SQLException e){
                 e.printStackTrace();
+                redirectToLocation(httpExchange, "/alert/fail");
             }
 
-            redirectToLocation(httpExchange, "/alert/mentor-create-success");
+            redirectToLocation(httpExchange, "/alert/success");
         }
 
 
