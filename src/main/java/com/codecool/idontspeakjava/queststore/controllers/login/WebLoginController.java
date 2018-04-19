@@ -46,7 +46,7 @@ public class WebLoginController extends AbstractHandler {
             redirectToCorrectMenu(exchange, user);
 
         } else if (method.equals("POST")) {
-            try {
+
                 Map<String, String> inputs = readFormData(exchange);
                 String email = inputs.get("email");
                 String candidatePassword = inputs.get("password");
@@ -60,10 +60,7 @@ public class WebLoginController extends AbstractHandler {
                     redirectToLocation(exchange,"/");
                 }
 
-            } catch (IOException e) {
-                e.printStackTrace();
-                redirectToLocation(exchange,"/");
-            }
+
         }
     }
 

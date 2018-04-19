@@ -2,6 +2,7 @@ package com.codecool.idontspeakjava.queststore.controllers;
 
 import com.codecool.idontspeakjava.queststore.controllers.login.SessionIdContainer;
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
+import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
 import com.codecool.idontspeakjava.queststore.models.User;
 import com.sun.net.httpserver.Headers;
@@ -66,10 +67,26 @@ public abstract class AbstractHandler implements HttpHandler {
 
     }
 
-    public Map<String, String> readFormData(HttpExchange exchange) throws IOException {
-        InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "UTF-8");
-        BufferedReader br = new BufferedReader(isr);
-        String loginData = br.readLine();
+    public void sendTemplateResponseWithForm(HttpExchange exchange, String templateName, String form, String form2){
+        JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.twig", templateName));
+        JtwigModel model = JtwigModel.newModel();
+        model.with("form", form);
+        model.with("form2", form2);
+        String response = template.render(model);
+        sendResponse(exchange, response);
+
+    }
+
+    public Map<String, String> readFormData(HttpExchange exchange) {
+        String loginData = "";
+
+         try {
+             InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "UTF-8");
+             BufferedReader br = new BufferedReader(isr);
+             loginData = br.readLine();
+         }catch (IOException e){
+             e.printStackTrace();
+         }
         return parseFormData(loginData);
     }
 
@@ -126,6 +143,28 @@ public abstract class AbstractHandler implements HttpHandler {
         Optional<User> user = Optional.ofNullable(new SQLiteUserDAO().getUserById(userId));
 
         return user.get().getPermission() == permission;
+    }
+
+    public User getChosenUser(List<User> users, String name){
+        User editedUser = null;
+        for (User user : users) {
+            if (user.toString().equals(name)) {
+                editedUser = user;
+            }
+        }
+        return editedUser;
+    }
+
+    public CodecoolClass getChosenClass(List<CodecoolClass> codecoolClasses, String className) {
+        CodecoolClass choosenClass = null;
+
+        for (CodecoolClass codecoolClass : codecoolClasses) {
+            if (codecoolClass.toString().equals(className)) {
+                choosenClass = codecoolClass;
+                break;
+            }
+        }
+        return choosenClass;
     }
 
 }

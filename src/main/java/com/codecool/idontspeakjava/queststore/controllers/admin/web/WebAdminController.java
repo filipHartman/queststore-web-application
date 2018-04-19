@@ -30,17 +30,25 @@ public class WebAdminController extends AbstractHandler {
                     new WebCreateMentor().handle(httpExchange);
                     break;
                 case "remove-mentor":
+                    new WebRemoveMentor().handle(httpExchange);
                     break;
                 case "create-codecoolclass":
+                    new WebCreateClass().handle(httpExchange);
                     break;
-                case "assign_mentor":
+                case "assign-mentor":
                     new WebAssignMentor().handle(httpExchange);
                     break;
-                case "edit-mentor":
+                case "edit-mentor-class":
+                    new WebEditMentorClass().handle(httpExchange);
+                    break;
+                case "edit-mentor-email":
+                    new WebEditMentorEmail().handle(httpExchange);
                     break;
                 case "show-mentor":
+                    new WebShowMentor().handle(httpExchange);
                     break;
                 case "create-level":
+                    new WebCreateLevel().handle(httpExchange);
                     break;
                 default:
                     sendTemplateResponse(httpExchange, "admin_home");
