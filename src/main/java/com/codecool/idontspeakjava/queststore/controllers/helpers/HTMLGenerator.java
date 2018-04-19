@@ -42,10 +42,10 @@ public class HTMLGenerator {
         return div(
                 fieldset(
                         form().withMethod("post").with(
-                                getLabel("Level name"),
-                                getInput("name"),
-                                getLabel("Level threshold"),
-                                getLevel(),
+                                label().with(span("Level name")).with(getInput("name")),
+                               
+                                label().with(span("Level threshold")).with(getLevel()),
+
                                 getButton("Submit")
                         )
                 ).with(getLegend(methodName))
