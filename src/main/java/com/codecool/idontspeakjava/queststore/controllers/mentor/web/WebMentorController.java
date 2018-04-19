@@ -35,9 +35,11 @@ public class WebMentorController extends AbstractHandler {
             case "add-artifact":
                 new WebArtifactCreator().handle(httpExchange);
                 break;
-            case "choose-quest":
+            case "edit-quest":
+                new WebQuestEditor().handle(httpExchange);
                 break;
-            case "choose-artifact":
+            case "edit-artifact":
+                new WebArtifactEditor().handle(httpExchange);
                 break;
             case "choose-student-to-mark-quest":
                 break;
