@@ -7,7 +7,6 @@ import com.codecool.idontspeakjava.queststore.models.User;
 import com.codecool.idontspeakjava.queststore.services.PasswordService;
 import com.sun.net.httpserver.HttpExchange;
 
-import java.io.*;
 import java.net.HttpCookie;
 import java.util.Map;
 import java.util.Optional;
@@ -47,47 +46,23 @@ public class WebLoginController extends AbstractHandler {
             sendTemplateResponse(exchange, "login");
 
         } if (method.equals("GET") && isLoggedIn(sid)) {
-            int userId = getSessionIdContainer().getUserId(sid);
-            Optional<User> user = Optional.ofNullable(usersDAO.getUserById(userId));
-            redirectToCorrectMenu(exchange, user);
+            redirectToLocation(exchange, getHomeLocationFromSid(sid));
 
         } else if (method.equals("POST")) {
 
-                Map<String, String> inputs = readFormData(exchange);
-                String email = inputs.get("email");
-                String candidatePassword = inputs.get("password");
+            Map<String, String> inputs = readFormData(exchange);
+            String email = inputs.get("email");
+            String candidatePassword = inputs.get("password");
 
-                Optional<User> user = Optional.ofNullable(processCredentialsAndReturnUserInstance(email));
-                if (user.isPresent() && checkIfUserProvideCorrectPassword(user.get(), candidatePassword)) {
-                    getSessionIdContainer().add(sid, user.get().getId());
-                    redirectToCorrectMenu(exchange, user);
+            Optional<User> user = Optional.ofNullable(processCredentialsAndReturnUserInstance(email));
+            if (user.isPresent() && checkIfUserProvideCorrectPassword(user.get(), candidatePassword)) {
+                getSessionIdContainer().add(sid, user.get().getId());
+                redirectToLocation(exchange, getHomeLocationFromSid(sid));
 
-                } else {
-                    redirectToLocation(exchange,"/");
-                }
-
-
+            } else {
+                redirectToLocation(exchange,"/");
+            }
         }
-    }
-
-    private void redirectToCorrectMenu(HttpExchange exchange, Optional<User> user) {
-        String location;
-
-        switch (user.get().getPermission()) {
-            case Mentor:
-                location = "/mentor";
-                break;
-            case Student:
-                location = "/student";
-                break;
-            case Root:
-                location = "/admin";
-                break;
-            default:
-                location = "/";
-        }
-
-        redirectToLocation(exchange, location);
     }
 
     private String generateSID() {
