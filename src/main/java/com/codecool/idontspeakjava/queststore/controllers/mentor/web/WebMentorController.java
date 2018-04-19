@@ -44,6 +44,7 @@ public class WebMentorController extends AbstractHandler {
             case "choose-student-to-mark-artifact":
                 break;
             case "check-wallet":
+                new WebShowWallet().handle(httpExchange);
                 break;
             default:
                 sendTemplateResponse(httpExchange, "mentor_home");
