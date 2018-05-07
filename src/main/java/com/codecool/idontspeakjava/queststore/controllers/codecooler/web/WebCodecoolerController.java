@@ -27,9 +27,6 @@ public class WebCodecoolerController extends AbstractHandler{
             case "get-quest":
                 new WebGetQuest().handle(httpExchange);
                 break;
-            case "manage-team":
-                new WebManageTeam().handle(httpExchange);
-                break;
             case "see-wallet":
                 new WebSeeWallet().handle(httpExchange);
                 break;
