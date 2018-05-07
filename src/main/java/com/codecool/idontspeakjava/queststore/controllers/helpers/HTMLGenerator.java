@@ -63,6 +63,14 @@ public class HTMLGenerator {
         return input().withType("text").withClass("input-field").withName(message).isRequired();
     }
 
+    public static Tag getNumberImput(String message) {
+        return input().withType("number")
+                .withName(message)
+                .withClass("input-field")
+                .attr("min", 0)
+                .isRequired();
+    }
+
     public static Tag getRadioInput(String name, String value) {
         return input().withType("radio").withName(name).withValue(value).isRequired();
     }
@@ -179,7 +187,7 @@ public class HTMLGenerator {
 
                                 label().with(span("Description")).with(getInput("description")),
 
-                                label().with(span("Reward")).with(getInput("reward").withType("number")),
+                                label().with(span("Reward")).with(getNumberImput("reward")),
 
                                 label().with(span("Choose category")).withClass("subtitle"),
                                 label().with(span("Basic")).with(getRadioInput("category", QuestCategory.Basic.toString())),
@@ -199,7 +207,7 @@ public class HTMLGenerator {
 
                                 label().with(span("Description")).with(getInput("description")),
 
-                                label().with(span("Price")).with(getInput("price").withType("number")),
+                                label().with(span("Price")).with(getNumberImput("price")),
 
                                 label().with(span("Choose category")).withClass("subtitle"),
                                 label().with(span("Basic")).with(getRadioInput("category", ArtifactCategory.Basic.toString())),
