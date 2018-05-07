@@ -9,6 +9,9 @@ public class WebManageTeam extends AbstractHandler{
 
     @Override
     public void handle(HttpExchange httpExchange){
-
+        String method = httpExchange.getRequestMethod();
+        if(method.equals("GET")) {
+            sendTemplateResponse(httpExchange, "team_home");
+        }
     }
 }
