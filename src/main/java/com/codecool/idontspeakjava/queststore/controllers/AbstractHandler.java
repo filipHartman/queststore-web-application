@@ -119,6 +119,12 @@ public abstract class AbstractHandler implements HttpHandler {
         return cookie.toString().split("=")[1];
     }
 
+    public User getUserBySession(HttpExchange httpExchange){
+        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
+        String sid = getSidFromCookieStr(cookieStr);
+         return new SQLiteUserDAO().getUserById(sessionIdContainer.getUserId(sid));
+    }
+
     public String getAction(HttpExchange httpExchange){
         int actionIndex = 2;
 
