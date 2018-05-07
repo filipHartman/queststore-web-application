@@ -21,37 +21,67 @@ public class WebMarkArtifact extends AbstractHandler {
     @Override
     public void handle(HttpExchange exchange) {
         String method = exchange.getRequestMethod();
-        Map<User, Wallet> studentsWithArtifact = new HashMap<>();
-        List <User> students = new SQLiteUserDAO().getUsersByPermission(Student);
-        for(User student : students) {
-            Wallet choosenUserWallet = new SQLiteWalletsDAO().getWalletByUserID(student.getId());
-            studentsWithArtifact.put(student, choosenUserWallet);
-        }
-
-
+        List<User> students = new SQLiteUserDAO().getUsersByPermission(Student);
 
         if (method.equals("GET")) {
-            String form = HTMLGenerator.getRadioForm(students, "Choose student", "student");
-            sendTemplateResponseWithForm(exchange, "mentor_home", form);
 
-        } else if (method.equals("POST")) {
-            Map<String, String> data = readFormData(exchange);
-            String student = data.get("student");
-            User studentUser = getChosenUser(students, student);
-            //Wallet studentWallet = studentsWithArtifact.get(studentUser);
-            List <Order> studentOrders = new SQLiteOrdersDAO().getAllOrdersByUser(studentUser);
-            List <Artifact> studentArtifacts = new ArrayList<>();
-            for(Order o : studentOrders){
-                Artifact artifact = new SQLiteArtifactsDAO().getArtifact(o.getArtifactID());
-                studentArtifacts.add(artifact);
+            if(getUserIDFromURI(exchange) == -1){
+                String form = HTMLGenerator.getRadioForm(students, "Choose student", "student");
+                sendTemplateResponseWithForm(exchange, "mentor_home", form);
             }
 
-            String form = HTMLGenerator.getRadioForm(studentArtifacts, "Choose artifact to mark", "artifact");
+            else{
+                int userID = getUserIDFromURI(exchange);
+                User studentUser = new SQLiteUserDAO().getUserById(userID);
+                List<Order> studentOrders = new SQLiteOrdersDAO().getAllOrdersByUser(studentUser);
+                List<Artifact> studentArtifacts = new ArrayList<>();
+                for (Order o : studentOrders) {
+                    if(!o.isUsed()) {
+                        Artifact artifact = new SQLiteArtifactsDAO().getArtifact(o.getArtifactID());
+                        studentArtifacts.add(artifact);
+                    }
+                }
+                String form = HTMLGenerator.getRadioForm(studentArtifacts, "Choose artifact", "artifact");
+                sendTemplateResponseWithForm(exchange, "mentor_home", form);
+            }
 
-            sendTemplateResponseWithForm(exchange, "mentor_home", form);
 
-            //redirectToLocation(exchange, "/alert/success");
+        } else if (method.equals("POST")) {
+
+            if(getUserIDFromURI(exchange) == -1){
+                Map<String, String> data = readFormData(exchange);
+                String student = data.get("student");
+                User studentUser = getChosenUser(students, student);
+                redirectToLocation(exchange, "/mentor/mark-artifact/" + studentUser.getId());
+            }else {
+                Map<String, String> data = readFormData(exchange);
+                String artifact = data.get("artifact");
+                List <Artifact> artifacts = new SQLiteArtifactsDAO().getAllArtifacts();
+                Artifact artifact1 = getArtifactByName(artifact, artifacts);
+                int artifactID = artifact1.getId();
+
+                int userID = getUserIDFromURI(exchange);
+                User studentUser = new SQLiteUserDAO().getUserById(userID);
+                List<Order> studentOrders = new SQLiteOrdersDAO().getAllOrdersByUser(studentUser);
+                Order orderToUpdate = null;
+                for(Order o : studentOrders){
+                    if(o.getArtifactID() == artifactID){
+                        orderToUpdate = o;
+                    }
+                }
+
+                orderToUpdate.setUsed(true);
+
+                new SQLiteOrdersDAO().updateOrder(orderToUpdate);
+                redirectToLocation(exchange, "/alert/success");
+
+            }
+
         }
+
+
     }
 
 }
+
+
