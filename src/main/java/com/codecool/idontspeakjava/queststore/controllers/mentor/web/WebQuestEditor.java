@@ -20,7 +20,7 @@ public class WebQuestEditor extends AbstractHandler {
         List<Quest> allQuests = new SQLiteQuestsDAO().getAllQuests();
 
         if (method.equals("GET")) {
-            String form = HTMLGenerator.generateFormToEditQuest(allQuests);
+            String form = HTMLGenerator.generateFormToEditQuestOrArtifact(allQuests, "Reward", "Extra", "Edit Quest" );
             sendTemplateResponseWithForm(exchange, "mentor_home", form);
 
         } else if (method.equals("POST")) {
@@ -30,7 +30,7 @@ public class WebQuestEditor extends AbstractHandler {
 
             String title = data.get("title");
             String description = data.get("description");
-            int reward = Integer.parseInt(data.get("reward"));
+            int reward = Integer.parseInt(data.get("Reward"));
             QuestCategory category = data.get("category").equals("Basic") ? QuestCategory.Basic : QuestCategory.Extra;
 
             quest.setTitle(title);

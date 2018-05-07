@@ -211,41 +211,24 @@ public class HTMLGenerator {
          .render();
     }
 
-    public static String generateFormToEditQuest(List<?> collection) {
+    public static String generateFormToEditQuestOrArtifact(List<?> collection, String priceOrReward, String Category, String legend) {
         return div(
                 fieldset(label().with(span("Choose quest")).withClass("subtitle"),
                         form(each(collection, item ->
                                 label().with(getRadioInput("quest", item.toString()))
                                        .with(span(item.toString()))
                         ),
-                                label().with(span("Edit quest")).withClass("subtitle"),
+                                label().with(span(legend)).withClass("subtitle"),
                                 label().with(span("Title")).with(getInput("title")),
                                 label().with(span("Description")).with(getInput("description")),
-                                label().with(span("Reward")).with(getInput("reward").withType("number")),
+                                label().with(span(priceOrReward)).with(getInput(priceOrReward).withType("number")),
                                 label().with(span("Choose category")).withClass("subtitle"),
-                                label().with(span("Basic")).with(getRadioInput("category", QuestCategory.Basic.toString())),
-                                label().with(span("Extra")).with(getRadioInput("category", QuestCategory.Extra.toString()))
+                                label().with(span("Basic")).with(getRadioInput("category", "Basic")),
+                                label().with(span(Category)).with(getRadioInput("category", Category))
                 ).with(getButton("Submit")).withMethod("post")
-                ).with(getLegend("Edit quest"))
+                ).with(getLegend(legend))
         ).withClass("form-style").render();
     }
 
-    public static String generateFormToEditArtifact(List<?> collection) {
-        return div(
-                fieldset(label().with(span("Choose artifact")).withClass("subtitle"),
-                        form(each(collection, item ->
-                                        label().with(getRadioInput("artifact", item.toString()))
-                                               .with(span(item.toString()))
-                                ),
-                                label().with(span("Edit artifact")).withClass("subtitle"),
-                                label().with(span("Title")).with(getInput("title")),
-                                label().with(span("Description")).with(getInput("description")),
-                                label().with(span("Price")).with(getInput("price").withType("number")),
-                                label().with(span("Choose category")).withClass("subtitle"),
-                                label().with(span("Basic")).with(getRadioInput("category", ArtifactCategory.Basic.toString())),
-                                label().with(span("Magic")).with(getRadioInput("category", ArtifactCategory.Magic.toString()))
-                        ).with(getButton("Submit"))
-                ).with(getLegend("Edit artifact"))
-        ).withClass("form-style").render();
-    }
+
 }

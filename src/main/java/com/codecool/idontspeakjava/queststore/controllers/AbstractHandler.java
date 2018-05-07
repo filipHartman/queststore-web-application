@@ -2,10 +2,7 @@ package com.codecool.idontspeakjava.queststore.controllers;
 
 import com.codecool.idontspeakjava.queststore.controllers.login.SessionIdContainer;
 import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
-import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
-import com.codecool.idontspeakjava.queststore.models.Permissions;
-import com.codecool.idontspeakjava.queststore.models.Quest;
-import com.codecool.idontspeakjava.queststore.models.User;
+import com.codecool.idontspeakjava.queststore.models.*;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -171,6 +168,15 @@ public abstract class AbstractHandler implements HttpHandler {
         for (Quest quest : allQuests) {
             if (quest.toString().equals(questName)) {
                 return quest;
+            }
+        }
+        return null;
+    }
+
+    public Artifact getArtifactByName(String questName, List<Artifact> allArtifacts) {
+        for (Artifact artifact : allArtifacts) {
+            if (artifact.toString().equals(questName)) {
+                return artifact;
             }
         }
         return null;
