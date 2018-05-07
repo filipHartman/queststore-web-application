@@ -25,7 +25,7 @@ public class WebCodecoolerController extends AbstractHandler{
                 new WebBuyArtifact().handle(httpExchange);
                 break;
             case "buy-team-artifact":
-//                new WebBuyArtifact().handle(httpExchange);
+                new WebBuyTeamArtifact().handle(httpExchange);
                 break;
             case "get-quest":
                 new WebGetQuest().handle(httpExchange);
