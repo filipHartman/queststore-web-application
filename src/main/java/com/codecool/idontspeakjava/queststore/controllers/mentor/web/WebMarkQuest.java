@@ -2,17 +2,11 @@ package com.codecool.idontspeakjava.queststore.controllers.mentor.web;
 
 import com.codecool.idontspeakjava.queststore.controllers.AbstractHandler;
 import com.codecool.idontspeakjava.queststore.controllers.helpers.HTMLGenerator;
-import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteArtifactsDAO;
-import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteOrdersDAO;
-import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteQuestsDAO;
-import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
-import com.codecool.idontspeakjava.queststore.models.Artifact;
-import com.codecool.idontspeakjava.queststore.models.Order;
-import com.codecool.idontspeakjava.queststore.models.Quest;
-import com.codecool.idontspeakjava.queststore.models.User;
+import com.codecool.idontspeakjava.queststore.database.WalletsDAO;
+import com.codecool.idontspeakjava.queststore.database.sqlite.*;
+import com.codecool.idontspeakjava.queststore.models.*;
 import com.sun.net.httpserver.HttpExchange;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +28,6 @@ public class WebMarkQuest extends AbstractHandler {
             }
 
             else{
-                int userID = getUserIDFromURI(exchange);
                 String form = HTMLGenerator.getRadioForm(quests, "Choose quest", "quest");
                 sendTemplateResponseWithForm(exchange, "mentor_home", form);
             }
@@ -45,18 +38,33 @@ public class WebMarkQuest extends AbstractHandler {
             if(getUserIDFromURI(exchange) == -1){
                 Map<String, String> data = readFormData(exchange);
                 String student = data.get("student");
-                User studentUser = getChosenUser(students, student);
-                redirectToLocation(exchange, "/mentor/mark-quest/" + studentUser.getId());
+                User chosenUser = getChosenUser(students, student);
+                redirectToLocation(exchange, "/mentor/mark-quest/" + chosenUser.getId());
             }else {
                 Map<String, String> data = readFormData(exchange);
                 String quest = data.get("quest");
-
+                int userID = getUserIDFromURI(exchange);
+                Quest chosenQuest = getQuestByName(quest, new SQLiteQuestsDAO().getAllQuests());
+                User chosenUser = new SQLiteUserDAO().getUserById(userID);
+                addCoinsFromQuest(chosenQuest, chosenUser );
                 redirectToLocation(exchange, "/alert/success");
 
             }
 
         }
 
+    }
 
+    private void addCoinsFromQuest(Quest chosenQuest, User chosenUser) {
+        int reward = chosenQuest.getReward();
+        WalletsDAO walletsDAO = new SQLiteWalletsDAO();
+        Wallet wallet = walletsDAO.getWalletByUserID(chosenUser.getId());
+
+        long currentCoins = wallet.getCurrentState();
+        long totalEarnings = wallet.getTotalEarnings();
+        wallet.setCurrentState(currentCoins + reward);
+        wallet.setTotalEarnings(totalEarnings + reward);
+
+        walletsDAO.updateWallet(wallet);
     }
 }
