@@ -24,7 +24,6 @@ public class WebEditMentorEmail extends AbstractHandler {
         if (method.equals("GET")) {
             String form = HTMLGenerator.getFormToEditMail(mentors, "edit mentor's e-mail", "Choose mentor", "Enter new e-mail", "name");
             sendTemplateResponseWithForm(httpExchange, "admin_home", form);
-
         }
 
         if (method.equals("POST")) {
@@ -32,11 +31,8 @@ public class WebEditMentorEmail extends AbstractHandler {
                 redirectToLocation(httpExchange, "/alert/success");
             }else {
                 redirectToLocation(httpExchange, "/alert/fail");
-
             }
-
         }
-
     }
 
     private boolean editMentor(HttpExchange httpExchange, List<User> mentors) {
@@ -50,7 +46,6 @@ public class WebEditMentorEmail extends AbstractHandler {
         if (user != null) {
             user.setEmail(email);
             operationSucceeded = new SQLiteUserDAO().updateUser(user);
-
         }
         return operationSucceeded;
     }

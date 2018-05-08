@@ -7,17 +7,15 @@ import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
 import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
 import com.codecool.idontspeakjava.queststore.models.User;
-import com.codecool.idontspeakjava.queststore.services.PasswordService;
 import com.sun.net.httpserver.HttpExchange;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 public class WebEditMentorClass extends AbstractHandler {
 
-    List<User> userCollection = new SQLiteUserDAO().getUsersByPermission(Permissions.Mentor);
-    List<CodecoolClass> classCollection = new SQLiteCodecoolClassDAO().getAllCodecoolClasses();
+    private List<User> userCollection = new SQLiteUserDAO().getUsersByPermission(Permissions.Mentor);
+    private List<CodecoolClass> classCollection = new SQLiteCodecoolClassDAO().getAllCodecoolClasses();
 
     public void handle(HttpExchange httpExchange) {
 
@@ -33,7 +31,6 @@ public class WebEditMentorClass extends AbstractHandler {
 
         if (method.equals("GET")) {
             sendTemplateResponseWithForm(httpExchange, "admin_home", form);
-
         }
 
         if (method.equals("POST")) {
@@ -42,9 +39,7 @@ public class WebEditMentorClass extends AbstractHandler {
             }else {
                 redirectToLocation(httpExchange, "/alert/fail");
             }
-
         }
-
     }
 
     private boolean editMentor(HttpExchange httpExchange) {

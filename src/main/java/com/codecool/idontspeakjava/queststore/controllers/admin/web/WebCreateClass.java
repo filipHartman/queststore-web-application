@@ -30,8 +30,8 @@ public class WebCreateClass extends AbstractHandler {
 
     private boolean createClass(HttpExchange httpExchange){
         Map<String, String> data = readFormData(httpExchange);
-
         String name = data.get("name");
-        return new SQLiteCodecoolClassDAO().createCodecoolClass(new CodecoolClass(name));
+        boolean operationSuccesful = new SQLiteCodecoolClassDAO().createCodecoolClass(new CodecoolClass(name));
+        return operationSuccesful;
     }
 }

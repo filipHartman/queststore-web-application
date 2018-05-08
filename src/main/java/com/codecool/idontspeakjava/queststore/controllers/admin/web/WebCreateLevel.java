@@ -12,8 +12,8 @@ import java.util.Map;
 public class WebCreateLevel extends AbstractHandler {
     @Override
     public void handle(HttpExchange httpExchange){
-        String method = httpExchange.getRequestMethod();
 
+        String method = httpExchange.getRequestMethod();
         String form = HTMLGenerator.generateFormToCreateLevel("Create experience level");
 
         if(method.equals("GET")){
@@ -24,17 +24,15 @@ public class WebCreateLevel extends AbstractHandler {
             }else {
                 redirectToLocation(httpExchange, "/alert/fail");
             }
-
         }
     }
 
     private boolean parseFormDataToLevelObject(HttpExchange httpExchange){
-        Map<String, String> data = readFormData(httpExchange);
 
+        Map<String, String> data = readFormData(httpExchange);
         String name = data.get("name");
         Long threshold = Long.parseLong(data.get("threshold"));
-        boolean operationSucceeded = new SQLiteExperienceLevelDAO().createExperienceLevel(new ExperienceLevel(name, threshold));
 
-        return operationSucceeded;
+        return new SQLiteExperienceLevelDAO().createExperienceLevel(new ExperienceLevel(name, threshold));
     }
 }
