@@ -85,6 +85,22 @@ public class SQLiteArtifactsDAO extends AbstractDAO implements com.codecool.idon
     }
 
     @Override
+    public List<Artifact> getArtifacts(ArtifactCategory category) {
+        String query = "SELECT * FROM artifacts WHERE category='" + category.toString() +"'";
+        List<Artifact> artifacts = new ArrayList<>();
+        try {
+            ResultSet resultSet = getConnection().createStatement().executeQuery(query);
+            while (resultSet.next()) {
+                artifacts.add(getArtifact(resultSet.getInt("id")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return artifacts;
+    }
+
+    @Override
     public void updateArtifact(Artifact artifact) {
         String query = "UPDATE artifacts SET title = ?, category = ?, artifact_description = ?, price = ? WHERE id = ?";
         try {
