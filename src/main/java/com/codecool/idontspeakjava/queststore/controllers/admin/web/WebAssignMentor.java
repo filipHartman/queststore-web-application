@@ -54,10 +54,10 @@ public class WebAssignMentor extends AbstractHandler {
         String className = data.get("className");
 
         User editedUser = getChosenUser(users, userName);
-        CodecoolClass choosenClass = getChosenClass(classes, className);
+        CodecoolClass chosenClass = getChosenClass(classes, className);
 
-        if((editedUser != null) && (choosenClass != null)){
-            operationSucceeded = new SQLiteCodecoolClassDAO().addUserToCodecoolClass(editedUser, choosenClass);
+        if((editedUser != null) && (chosenClass != null)){
+            operationSucceeded = new SQLiteCodecoolClassDAO().addUserToCodecoolClass(editedUser, chosenClass);
         }
         return operationSucceeded;
     }
