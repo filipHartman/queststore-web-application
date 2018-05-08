@@ -3,11 +3,9 @@ package com.codecool.idontspeakjava.queststore.controllers.codecooler.web;
 import com.codecool.idontspeakjava.queststore.controllers.AbstractHandler;
 import com.sun.net.httpserver.HttpExchange;
 
-public class WebBuyArtifact extends AbstractHandler{
-
+public class WebBuyTeamArtifact extends AbstractHandler{
     @Override
-    public void handle(HttpExchange exchange){
+    public void handle(HttpExchange httpExchange){
 
     }
-
 }
