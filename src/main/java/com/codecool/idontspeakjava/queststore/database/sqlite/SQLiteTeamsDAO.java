@@ -17,7 +17,7 @@ public class SQLiteTeamsDAO extends AbstractDAO implements com.codecool.idontspe
     public static final Logger log = LoggerFactory.getLogger(SQLiteTeamsDAO.class);
 
     @Override
-    public void createTeam(Team team) {
+    public boolean createTeam(Team team) {
         String query = "INSERT INTO teams(name) VALUES(?)";
 
         try {
@@ -29,7 +29,9 @@ public class SQLiteTeamsDAO extends AbstractDAO implements com.codecool.idontspe
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
 
     @Override

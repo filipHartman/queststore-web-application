@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface TeamsDAO {
-    void createTeam(Team team);
+    boolean createTeam(Team team);
 
     Team getTeam(String name);
 
