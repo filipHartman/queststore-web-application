@@ -27,10 +27,10 @@ public class WebManageTeam extends AbstractHandler{
                 new WebCreateTeam().handle(httpExchange);
                 break;
             case "join-team":
-//                new WebGetQuest().handle(httpExchange);
+                new WebJoinTeam().handle(httpExchange);
                 break;
             case "leave-team":
-//                new WebSeeWallet().handle(httpExchange);
+                new WebLeaveTeam().handle(httpExchange);
                 break;
             default:
                 sendTemplateResponse(httpExchange, "team_home");
