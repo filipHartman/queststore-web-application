@@ -29,12 +29,11 @@ public class WebCreateLevel extends AbstractHandler {
     }
 
     private boolean parseFormDataToLevelObject(HttpExchange httpExchange){
-        boolean operationSucceeded = false;
         Map<String, String> data = readFormData(httpExchange);
 
         String name = data.get("name");
         Long threshold = Long.parseLong(data.get("threshold"));
-        operationSucceeded = new SQLiteExperienceLevelDAO().createExperienceLevel(new ExperienceLevel(name, threshold));
+        boolean operationSucceeded = new SQLiteExperienceLevelDAO().createExperienceLevel(new ExperienceLevel(name, threshold));
 
         return operationSucceeded;
     }
