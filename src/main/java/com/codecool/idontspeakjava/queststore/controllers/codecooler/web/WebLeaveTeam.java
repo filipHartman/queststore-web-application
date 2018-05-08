@@ -1,4 +1,11 @@
 package com.codecool.idontspeakjava.queststore.controllers.codecooler.web;
 
-public class WebLeaveTeam {
+import com.codecool.idontspeakjava.queststore.controllers.AbstractHandler;
+import com.sun.net.httpserver.HttpExchange;
+
+public class WebLeaveTeam extends AbstractHandler{
+    @Override
+    public void handle(HttpExchange httpExchange) {
+
+    }
 }
