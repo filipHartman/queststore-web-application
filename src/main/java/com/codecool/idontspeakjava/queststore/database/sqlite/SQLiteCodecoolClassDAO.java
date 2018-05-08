@@ -169,7 +169,7 @@ public class SQLiteCodecoolClassDAO extends AbstractDAO implements CodecoolClass
 
 
     @Override
-    public void removeUserFromCodecoolClass(User user) {
+    public boolean removeUserFromCodecoolClass(User user) {
         String query = String.format("DELETE FROM users_in_classes WHERE user_id = ?", user.getId());
         try {
             PreparedStatement preparedStatement = getConnection().prepareStatement(query);
@@ -178,7 +178,9 @@ public class SQLiteCodecoolClassDAO extends AbstractDAO implements CodecoolClass
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
 
     @Override

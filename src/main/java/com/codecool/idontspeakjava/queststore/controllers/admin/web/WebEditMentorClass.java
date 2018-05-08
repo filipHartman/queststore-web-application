@@ -7,6 +7,7 @@ import com.codecool.idontspeakjava.queststore.database.sqlite.SQLiteUserDAO;
 import com.codecool.idontspeakjava.queststore.models.CodecoolClass;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
 import com.codecool.idontspeakjava.queststore.models.User;
+import com.codecool.idontspeakjava.queststore.services.PasswordService;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
@@ -15,12 +16,12 @@ import java.util.Map;
 
 public class WebEditMentorClass extends AbstractHandler {
 
+    List<User> userCollection = new SQLiteUserDAO().getUsersByPermission(Permissions.Mentor);
+    List<CodecoolClass> classCollection = new SQLiteCodecoolClassDAO().getAllCodecoolClasses();
+
     public void handle(HttpExchange httpExchange) {
 
         String method = httpExchange.getRequestMethod();
-
-        List<User> userCollection = new SQLiteUserDAO().getUsersByPermission(Permissions.Mentor);
-        List <CodecoolClass> classCollection = new SQLiteCodecoolClassDAO().getAllCodecoolClasses();
 
         String form = HTMLGenerator.getRadioForm(userCollection,
                 classCollection,
@@ -36,16 +37,23 @@ public class WebEditMentorClass extends AbstractHandler {
         }
 
         if (method.equals("POST")) {
-            Map<String, String> data = readFormData(httpExchange);
-            String name = data.get("name");
-            String className = data.get("className");
-            User editedUser = getChosenUser(userCollection, name);
-            CodecoolClass choosenClass = getChosenClass(classCollection, className);
-            new SQLiteCodecoolClassDAO().removeUserFromCodecoolClass(editedUser);
-            new SQLiteCodecoolClassDAO().addUserToCodecoolClass(editedUser, choosenClass);
-            redirectToLocation(httpExchange, "admin_home");
+            if(editMentor(httpExchange)) {
+                redirectToLocation(httpExchange, "/alert/success");
+            }else {
+                redirectToLocation(httpExchange, "/alert/fail");
+            }
 
         }
+
+    }
+
+    private boolean editMentor(HttpExchange httpExchange) {
+        Map<String, String> data = readFormData(httpExchange);
+        String name = data.get("name");
+        String className = data.get("className");
+        User editedUser = getChosenUser(userCollection, name);
+        CodecoolClass choosenClass = getChosenClass(classCollection, className);
+        return (new SQLiteCodecoolClassDAO().removeUserFromCodecoolClass(editedUser) && new SQLiteCodecoolClassDAO().addUserToCodecoolClass(editedUser, choosenClass));
 
     }
 }
