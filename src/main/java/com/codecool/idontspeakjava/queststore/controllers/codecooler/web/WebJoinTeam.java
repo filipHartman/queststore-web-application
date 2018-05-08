@@ -7,6 +7,7 @@ import com.codecool.idontspeakjava.queststore.models.Team;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.util.List;
+import java.util.Map;
 
 public class WebJoinTeam extends AbstractHandler {
     @Override
@@ -23,5 +24,20 @@ public class WebJoinTeam extends AbstractHandler {
             sendTemplateResponseWithForm(httpExchange,"team_home", form);
         }
 
+        if(method.equals("POST")) {
+            if(joinToTeam(httpExchange)){
+                redirectToLocation(httpExchange, "/alert/success");
+            } else {
+                redirectToLocation(httpExchange, "/alert/fail");
+            }
+        }
+
+    }
+
+    private boolean joinToTeam(HttpExchange httpExchange) {
+        boolean operationSucceeded = false;
+        Map<String, String> data = readFormData(httpExchange);
+        String choosenTeam = data.get("team");
+        return operationSucceeded;
     }
 }
