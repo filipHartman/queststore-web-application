@@ -2,9 +2,12 @@ package com.codecool.idontspeakjava.queststore.controllers.helpers;
 
 import com.codecool.idontspeakjava.queststore.models.ArtifactCategory;
 import com.codecool.idontspeakjava.queststore.models.QuestCategory;
+import com.codecool.idontspeakjava.queststore.models.User;
+import com.codecool.idontspeakjava.queststore.models.Wallet;
 import j2html.tags.Tag;
 
 import java.util.List;
+import java.util.Map;
 
 import static j2html.TagCreator.*;
 
@@ -237,6 +240,5 @@ public class HTMLGenerator {
                 ).with(getLegend(legend))
         ).withClass("form-style").render();
     }
-
 
 }
