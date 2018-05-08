@@ -34,9 +34,8 @@ public class WebCreateLevel extends AbstractHandler {
 
         String name = data.get("name");
         Long threshold = Long.parseLong(data.get("threshold"));
-        if(threshold >= 0) {
-            operationSucceeded = new SQLiteExperienceLevelDAO().createExperienceLevel(new ExperienceLevel(name, threshold));
-        }
+        operationSucceeded = new SQLiteExperienceLevelDAO().createExperienceLevel(new ExperienceLevel(name, threshold));
+
         return operationSucceeded;
     }
 }
