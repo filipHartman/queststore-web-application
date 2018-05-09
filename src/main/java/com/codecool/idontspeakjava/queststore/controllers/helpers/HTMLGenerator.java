@@ -2,9 +2,12 @@ package com.codecool.idontspeakjava.queststore.controllers.helpers;
 
 import com.codecool.idontspeakjava.queststore.models.ArtifactCategory;
 import com.codecool.idontspeakjava.queststore.models.QuestCategory;
+import com.codecool.idontspeakjava.queststore.models.User;
+import com.codecool.idontspeakjava.queststore.models.Wallet;
 import j2html.tags.Tag;
 
 import java.util.List;
+import java.util.Map;
 
 import static j2html.TagCreator.*;
 
@@ -61,6 +64,14 @@ public class HTMLGenerator {
 
     public static Tag getInput(String message){
         return input().withType("text").withClass("input-field").withName(message).isRequired();
+    }
+
+    public static Tag getNumberImput(String message) {
+        return input().withType("number")
+                .withName(message)
+                .withClass("input-field")
+                .attr("min", 0)
+                .isRequired();
     }
 
     public static Tag getRadioInput(String name, String value) {
@@ -179,7 +190,7 @@ public class HTMLGenerator {
 
                                 label().with(span("Description")).with(getInput("description")),
 
-                                label().with(span("Reward")).with(getInput("reward").withType("number")),
+                                label().with(span("Reward")).with(getNumberImput("reward")),
 
                                 label().with(span("Choose category")).withClass("subtitle"),
                                 label().with(span("Basic")).with(getRadioInput("category", QuestCategory.Basic.toString())),
@@ -199,7 +210,7 @@ public class HTMLGenerator {
 
                                 label().with(span("Description")).with(getInput("description")),
 
-                                label().with(span("Price")).with(getInput("price").withType("number")),
+                                label().with(span("Price")).with(getNumberImput("price")),
 
                                 label().with(span("Choose category")).withClass("subtitle"),
                                 label().with(span("Basic")).with(getRadioInput("category", ArtifactCategory.Basic.toString())),
@@ -230,6 +241,7 @@ public class HTMLGenerator {
         ).withClass("form-style").render();
     }
 
+
     public static String generateFormToBuyArtifactWithTeam(List <?> collection, String legend, String name ){
         return div(
                 fieldset(label().with(span("Choose artifact")).withClass("subtitle"),
@@ -244,6 +256,4 @@ public class HTMLGenerator {
         ).withClass("form-style").render();
 
     }
-
-
 }
