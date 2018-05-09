@@ -18,6 +18,7 @@ public class SQLiteTeamsDAO extends AbstractDAO implements com.codecool.idontspe
 
     @Override
     public boolean createTeam(Team team) {
+        boolean isOperationSuccessful = false;
         String query = "INSERT INTO teams(name) VALUES(?)";
 
         try {
@@ -26,12 +27,12 @@ public class SQLiteTeamsDAO extends AbstractDAO implements com.codecool.idontspe
                 preparedStatement.setString(1, team.getName());
                 preparedStatement.executeUpdate();
                 team.setId(getTeam(team.getName()).getId());
+                isOperationSuccessful = true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
-        return true;
+        return isOperationSuccessful;
     }
 
     @Override
