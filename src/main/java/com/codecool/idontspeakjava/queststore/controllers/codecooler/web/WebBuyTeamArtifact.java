@@ -23,7 +23,6 @@ public class WebBuyTeamArtifact extends AbstractHandler {
         List<Artifact> allArtifacts = new SQLiteArtifactsDAO().getArtifacts(ArtifactCategory.Magic);
 
         Team team;
-        try {
             if (new SQLiteTeamsDAO().checkIfUserIsInTeam(user)) {
                 team = new SQLiteTeamsDAO().getUserTeam(user);
 
@@ -31,12 +30,6 @@ public class WebBuyTeamArtifact extends AbstractHandler {
                 redirectToLocation(exchange, "/alert/fail");
                 return;
             }
-
-        } catch (SQLException e) {
-            redirectToLocation(exchange, "/alert/fail");
-            e.printStackTrace();
-            return;
-        }
 
         if (method.equals("GET")) {
             String form = HTMLGenerator.generateFormToBuyArtifactWithTeam(allArtifacts, "Buy artifact for team", "Enter contribution:");
