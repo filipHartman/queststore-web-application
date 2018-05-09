@@ -241,4 +241,19 @@ public class HTMLGenerator {
         ).withClass("form-style").render();
     }
 
+
+    public static String generateFormToBuyArtifactWithTeam(List <?> collection, String legend, String name ){
+        return div(
+                fieldset(label().with(span("Choose artifact")).withClass("subtitle"),
+                        form(each(collection, item ->
+                                        label().with(getRadioInput("artifact", item.toString()))
+                                                .with(span(item.toString()))
+                                ),
+                                label().with(span("Contribution")).withClass("subtitle"),
+                                label().with(span(name)).with(getInput(name).withType("contribution"))
+                        ).with(getButton("Submit")).withMethod("post")
+                ).with(getLegend(legend))
+        ).withClass("form-style").render();
+
+    }
 }
