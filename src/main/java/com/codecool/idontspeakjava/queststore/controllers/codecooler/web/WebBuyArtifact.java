@@ -18,14 +18,13 @@ public class WebBuyArtifact extends AbstractHandler{
     @Override
     public void handle(HttpExchange exchange){
         String method = exchange.getRequestMethod();
-//        User codecooler = getUserBySession(exchange);
 
         if(method.equals("GET")){
             String form = HTMLGenerator.getRadioForm(getArtifactsInfo(), "Choose artifact", "artifact");
             sendTemplateResponseWithForm(exchange, "student_home", form);
         }
         if (method.equals("POST")) {
-            List <Artifact> artifacts = new SQLiteArtifactsDAO().getAllArtifacts();
+            List <Artifact> artifacts = artifactsDAO.getAllArtifacts();
             Artifact artifact = getArtifactByName(getArtifactName(exchange), artifacts);
 
             if(buyArtifact(exchange, artifact)){
