@@ -17,7 +17,8 @@ public class SQLiteTeamsDAO extends AbstractDAO implements com.codecool.idontspe
     public static final Logger log = LoggerFactory.getLogger(SQLiteTeamsDAO.class);
 
     @Override
-    public void createTeam(Team team) {
+    public boolean createTeam(Team team) {
+        boolean isOperationSuccessful = false;
         String query = "INSERT INTO teams(name) VALUES(?)";
 
         try {
@@ -26,10 +27,12 @@ public class SQLiteTeamsDAO extends AbstractDAO implements com.codecool.idontspe
                 preparedStatement.setString(1, team.getName());
                 preparedStatement.executeUpdate();
                 team.setId(getTeam(team.getName()).getId());
+                isOperationSuccessful = true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return isOperationSuccessful;
     }
 
     @Override
@@ -112,7 +115,7 @@ public class SQLiteTeamsDAO extends AbstractDAO implements com.codecool.idontspe
     }
 
     @Override
-    public void addUserToTeam(User user, Team team) {
+    public boolean addUserToTeam(User user, Team team) {
         String query = "INSERT INTO users_in_teams(team_id, user_id) VALUES(?, ?)";
         try {
             if (checkIfTeamExists(team.getName()) && !checkIfUserIsInTeam(user)) {
@@ -124,7 +127,9 @@ public class SQLiteTeamsDAO extends AbstractDAO implements com.codecool.idontspe
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
 
     @Override
@@ -149,7 +154,7 @@ public class SQLiteTeamsDAO extends AbstractDAO implements com.codecool.idontspe
     }
 
     @Override
-    public void removeUserFromTeam(User user) {
+    public boolean removeUserFromTeam(User user) {
         String query = "DELETE FROM users_in_teams WHERE user_id = ?";
 
         try {
@@ -159,7 +164,9 @@ public class SQLiteTeamsDAO extends AbstractDAO implements com.codecool.idontspe
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
 
     @Override
@@ -190,15 +197,20 @@ public class SQLiteTeamsDAO extends AbstractDAO implements com.codecool.idontspe
     }
 
     @Override
-    public boolean checkIfUserIsInTeam(User user) throws SQLException {
-        String query = "SELECT * FROM users_in_teams WHERE user_id = ? ";
+    public boolean checkIfUserIsInTeam(User user) {
+        try{
+            String query = "SELECT * FROM users_in_teams WHERE user_id = ? ";
 
-        PreparedStatement preparedStatement = getConnection().prepareStatement(query);
-        preparedStatement.setInt(1, user.getId());
+            PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+            preparedStatement.setInt(1, user.getId());
 
-        ResultSet resultSet = preparedStatement.executeQuery();
+            ResultSet resultSet = preparedStatement.executeQuery();
 
-        return resultSet.next();
+            return resultSet.next();
+        } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+        }
     }
 
     @Override

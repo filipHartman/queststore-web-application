@@ -4,6 +4,7 @@ import com.codecool.idontspeakjava.queststore.controllers.AlertController;
 import com.codecool.idontspeakjava.queststore.controllers.Static;
 import com.codecool.idontspeakjava.queststore.controllers.admin.web.WebAdminController;
 import com.codecool.idontspeakjava.queststore.controllers.codecooler.web.WebCodecoolerController;
+import com.codecool.idontspeakjava.queststore.controllers.codecooler.web.WebManageTeam;
 import com.codecool.idontspeakjava.queststore.controllers.login.*;
 
 import com.codecool.idontspeakjava.queststore.controllers.mentor.web.WebMentorController;
@@ -29,6 +30,7 @@ public class Main {
         server.createContext("/admin", new WebAdminController());
         server.createContext("/mentor", new WebMentorController());
         server.createContext("/student", new WebCodecoolerController());
+        server.createContext("/team", new WebManageTeam());
         server.createContext("/logout", new WebLogoutController());
 
         server.setExecutor(null);
