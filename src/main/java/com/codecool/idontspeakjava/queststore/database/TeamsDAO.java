@@ -19,17 +19,17 @@ public interface TeamsDAO {
 
     void deleteTeam(Team team);
 
-    void addUserToTeam(User user, Team team);
+    boolean addUserToTeam(User user, Team team);
 
     Team getUserTeam(User user);
 
-    void removeUserFromTeam(User user);
+    boolean removeUserFromTeam(User user);
 
     boolean checkIfTeamExists(int id) throws SQLException;
 
     boolean checkIfTeamExists(String name) throws SQLException;
 
-    boolean checkIfUserIsInTeam(User user) throws SQLException;
+    boolean checkIfUserIsInTeam(User user);
 
     int getTeamIDByName(String name);
 }
