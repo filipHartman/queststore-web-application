@@ -13,9 +13,8 @@ public class WebCreateTeam extends AbstractHandler {
     public void handle(HttpExchange httpExchange) {
         String method = httpExchange.getRequestMethod();
 
-        String form = HTMLGenerator.generateFromWith1Field("Create team", "Team name" );
-
         if(method.equals("GET")) {
+            String form = HTMLGenerator.generateFromWith1Field("Create team", "Team name" );
             sendTemplateResponseWithForm(httpExchange, "team_home", form);
         }
 
