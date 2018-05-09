@@ -13,7 +13,7 @@ public class WebCreateClass extends AbstractHandler {
     public void handle(HttpExchange httpExchange) {
         String method = httpExchange.getRequestMethod();
 
-        String form = HTMLGenerator.generateFromWith1Field("Create codecool class", "Codecool class name" );
+        String form = HTMLGenerator.generateFromWithOneField("Create class", "name");
 
         if(method.equals("GET")) {
             sendTemplateResponseWithForm(httpExchange, "admin_home", form);
@@ -30,7 +30,6 @@ public class WebCreateClass extends AbstractHandler {
 
     private boolean createClass(HttpExchange httpExchange){
         Map<String, String> data = readFormData(httpExchange);
-
         String name = data.get("name");
         return new SQLiteCodecoolClassDAO().createCodecoolClass(new CodecoolClass(name));
     }

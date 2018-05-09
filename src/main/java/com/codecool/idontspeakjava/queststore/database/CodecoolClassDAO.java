@@ -21,7 +21,7 @@ public interface CodecoolClassDAO {
 
     CodecoolClass getUserCodecoolClass(User user);
 
-    void removeUserFromCodecoolClass(User user);
+    boolean removeUserFromCodecoolClass(User user);
 
     boolean checkIfClassExists(int id) throws SQLException;
 

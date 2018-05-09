@@ -31,7 +31,6 @@ public class WebRemoveMentor extends AbstractHandler {
                 redirectToLocation(httpExchange, "/alert/success");
             }else {
                 redirectToLocation(httpExchange, "/alert/fail");
-
             }
         }
     }

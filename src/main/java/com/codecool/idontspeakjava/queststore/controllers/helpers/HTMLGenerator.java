@@ -30,16 +30,15 @@ public class HTMLGenerator {
 
     }
 
-    public static String generateFromWith1Field(String methodName, String label) {
+    public static String generateFromWithOneField(String methodName, String label) {
         return div(
-                fieldset()
-
-                .with(form()
-                        .with(getLegend(methodName))
-                        .withMethod("post").with(
-                        label().with(span(label)).with(getInput("name"))),
-                        getButton("Submit"))
-                .withClass("form-style"))
+                fieldset(
+                        form().withMethod("post").with(
+                                label().with(span(label)).with(getInput(label)),
+                                getButton("Submit")
+                        )
+                ).with(getLegend(methodName))
+        ).withClass("form-style")
                 .render();
     }
 
