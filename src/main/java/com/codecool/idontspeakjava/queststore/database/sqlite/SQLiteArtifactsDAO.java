@@ -3,6 +3,8 @@ package com.codecool.idontspeakjava.queststore.database.sqlite;
 import com.codecool.idontspeakjava.queststore.database.AbstractDAO;
 import com.codecool.idontspeakjava.queststore.models.Artifact;
 import com.codecool.idontspeakjava.queststore.models.ArtifactCategory;
+import com.codecool.idontspeakjava.queststore.models.Order;
+import com.codecool.idontspeakjava.queststore.models.TeamOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -153,5 +155,18 @@ public class SQLiteArtifactsDAO extends AbstractDAO implements com.codecool.idon
                 .executeQuery(query);
 
         return resultSet.next();
+    }
+
+    public List<String> getInfoAboutArtifacts(List<Order> orders) {
+        List<String> ordersToPrint = new ArrayList<>();
+
+        for (Order o : orders) {
+            String orderInfo = getArtifact(o.getArtifactID()).getTitle() + ", ";
+            orderInfo += o.isUsed() ? "Used" : "Not used";
+            orderInfo += ", ";
+            orderInfo += o instanceof TeamOrder ? "Magic" : "Basic";
+            ordersToPrint.add(orderInfo);
+        }
+        return ordersToPrint;
     }
 }
