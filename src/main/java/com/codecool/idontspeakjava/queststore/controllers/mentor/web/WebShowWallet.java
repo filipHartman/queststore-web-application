@@ -59,22 +59,8 @@ public class WebShowWallet extends AbstractHandler {
 
     private List<String> getUserOrders(User user){
         List<Order> orders = new SQLiteOrdersDAO().getAllOrdersByUser(user);
-        return createInfoAboutOrders(orders);
+        return new SQLiteArtifactsDAO().getInfoAboutArtifacts(orders);
 
-    }
-
-    private List<String> createInfoAboutOrders(List<Order> orders) {
-        SQLiteArtifactsDAO dao = new SQLiteArtifactsDAO();
-        List<String> ordersToPrint = new ArrayList<>();
-
-        for (Order o : orders) {
-            String orderInfo = dao.getArtifact(o.getArtifactID()).getTitle() + ", ";
-            orderInfo += o.isUsed() ? "Used" : "Not used";
-            orderInfo += ", ";
-            orderInfo += o instanceof TeamOrder ? "Magic" : "Basic";
-            ordersToPrint.add(orderInfo);
-        }
-        return ordersToPrint;
     }
 
 }

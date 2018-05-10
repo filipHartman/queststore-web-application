@@ -3,6 +3,8 @@ package com.codecool.idontspeakjava.queststore.database.sqlite;
 import com.codecool.idontspeakjava.queststore.database.AbstractDAO;
 import com.codecool.idontspeakjava.queststore.models.Artifact;
 import com.codecool.idontspeakjava.queststore.models.ArtifactCategory;
+import com.codecool.idontspeakjava.queststore.models.Order;
+import com.codecool.idontspeakjava.queststore.models.TeamOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,10 +69,45 @@ public class SQLiteArtifactsDAO extends AbstractDAO implements com.codecool.idon
         return artifact;
     }
 
+    public List<Artifact> getAllArtifacts(ArtifactCategory artifactCategory) {
+        //language=SQL
+        String query = "SELECT * FROM artifacts WHERE category=?";
+        List<Artifact> artifacts = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = getConnection().prepareStatement(query);
+            preparedStatement.setString(1, String.valueOf(artifactCategory));
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                artifacts.add(getArtifact(resultSet.getInt("id")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return artifacts;
+    }
+
     @Override
     public List<Artifact> getAllArtifacts() {
         //language=SQL
         String query = "SELECT * FROM artifacts";
+        List<Artifact> artifacts = new ArrayList<>();
+        try {
+            ResultSet resultSet = getConnection().createStatement().executeQuery(query);
+            while (resultSet.next()) {
+                artifacts.add(getArtifact(resultSet.getInt("id")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return artifacts;
+    }
+
+    @Override
+    public List<Artifact> getArtifacts(ArtifactCategory category) {
+        String query = "SELECT * FROM artifacts WHERE category='" + category.toString() +"'";
         List<Artifact> artifacts = new ArrayList<>();
         try {
             ResultSet resultSet = getConnection().createStatement().executeQuery(query);
@@ -134,5 +171,18 @@ public class SQLiteArtifactsDAO extends AbstractDAO implements com.codecool.idon
                 .executeQuery(query);
 
         return resultSet.next();
+    }
+
+    public List<String> getInfoAboutArtifacts(List<Order> orders) {
+        List<String> ordersToPrint = new ArrayList<>();
+
+        for (Order o : orders) {
+            String orderInfo = getArtifact(o.getArtifactID()).getTitle() + ", ";
+            orderInfo += o.isUsed() ? "Used" : "Not used";
+            orderInfo += ", ";
+            orderInfo += o instanceof TeamOrder ? "Magic" : "Basic";
+            ordersToPrint.add(orderInfo);
+        }
+        return ordersToPrint;
     }
 }
