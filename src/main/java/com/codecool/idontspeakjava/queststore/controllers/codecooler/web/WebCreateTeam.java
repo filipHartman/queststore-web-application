@@ -14,7 +14,7 @@ public class WebCreateTeam extends AbstractHandler {
         String method = httpExchange.getRequestMethod();
 
         if(method.equals("GET")) {
-            String form = HTMLGenerator.generateFromWith1Field("Create team", "Team name" );
+            String form = HTMLGenerator.generateFromWithOneField("Create team", "name" );
             sendTemplateResponseWithForm(httpExchange, "team_home", form);
         }
 
