@@ -49,9 +49,24 @@ public abstract class AbstractHandler implements HttpHandler {
         }
     }
 
+    private JtwigModel setUserDataInForm(HttpExchange httpExchange, JtwigModel model){
+        User user = getUserBySession(httpExchange);
+        if(user != null) {
+            model.with("name", user.getFullName());
+            model.with("email", user.getEmail());
+        }
+
+        return model;
+
+    }
+
     public void sendTemplateResponse(HttpExchange exchange, String templateName) {
         JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.twig", templateName));
         JtwigModel model = JtwigModel.newModel();
+        if(!templateName.equalsIgnoreCase("login") & !templateName.equalsIgnoreCase("logout")){
+            model = setUserDataInForm(exchange, model);
+        }
+
         String response = template.render(model);
         sendResponse(exchange, response);
     }
@@ -59,7 +74,8 @@ public abstract class AbstractHandler implements HttpHandler {
 
     public void sendTemplateResponseWithForm(HttpExchange exchange, String templateName, String form){
         JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.twig", templateName));
-        JtwigModel model = JtwigModel.newModel();
+        JtwigModel model = setUserDataInForm(exchange, JtwigModel.newModel());
+
         model.with("form", form);
         String response = template.render(model);
         sendResponse(exchange, response);
@@ -68,7 +84,7 @@ public abstract class AbstractHandler implements HttpHandler {
 
     public void sendTemplateResponseWithForm(HttpExchange exchange, String templateName, String form, String form2){
         JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.twig", templateName));
-        JtwigModel model = JtwigModel.newModel();
+        JtwigModel model = setUserDataInForm(exchange, JtwigModel.newModel());
         model.with("form", form);
         model.with("form2", form2);
         String response = template.render(model);
@@ -127,9 +143,10 @@ public abstract class AbstractHandler implements HttpHandler {
     }
 
     public String getAction(HttpExchange httpExchange){
-        int actionIndex = 2;
+//        int actionIndex = 2;
         String uri = httpExchange.getRequestURI().toString();
         String[] uriParts = uri.split("/");
+        int actionIndex = uriParts.length - 1;
 
         return uriParts[actionIndex];
     }
