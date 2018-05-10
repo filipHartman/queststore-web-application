@@ -100,7 +100,7 @@ public abstract class AbstractHandler implements HttpHandler {
             key = keyValue[0];
 
             try {
-                value = new URLDecoder().decode(keyValue[1], "UTF-8");
+                value = URLDecoder.decode(keyValue[1], "UTF-8");
                 inputs.put(key, value);
 
             } catch (UnsupportedEncodingException e) {
@@ -128,7 +128,6 @@ public abstract class AbstractHandler implements HttpHandler {
 
     public String getAction(HttpExchange httpExchange){
         int actionIndex = 2;
-
         String uri = httpExchange.getRequestURI().toString();
         String[] uriParts = uri.split("/");
 
@@ -204,7 +203,10 @@ public abstract class AbstractHandler implements HttpHandler {
 
     }
 
-    public String getHomeLocationFromSid(String sid) {
+    public String getHomeLocationFromSid(HttpExchange exchange) {
+        String cookieStr = exchange.getRequestHeaders().getFirst("Cookie");
+        String sid = getSidFromCookieStr(cookieStr);
+
         String location;
         int userId = getSessionIdContainer().getUserId(sid);
         Optional<User> user = Optional.ofNullable(new SQLiteUserDAO().getUserById(userId));
@@ -219,10 +221,21 @@ public abstract class AbstractHandler implements HttpHandler {
             case Root:
                 location = "/admin";
                 break;
+            case Team:
+                location = "/team";
+                break;
             default:
                 location = "/";
         }
         return location;
+    }
+
+    protected void setUserPermission(HttpExchange httpExchange, Permissions permissions){
+        User codecooler = getUserBySession(httpExchange);
+        if(codecooler != null) {
+            codecooler.setPermission(permissions);
+            new SQLiteUserDAO().updateUser(codecooler);
+        }
     }
 
 }

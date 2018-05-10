@@ -33,6 +33,10 @@ public class WebCodecoolerController extends AbstractHandler{
             case "see-wallet":
                 new WebSeeWallet().handle(httpExchange);
                 break;
+            case "team":
+                setUserPermission(httpExchange, Permissions.Team);
+                new WebManageTeam().handle(httpExchange);
+                break;
             default:
                 sendTemplateResponse(httpExchange, "student_home");
                 break;

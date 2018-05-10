@@ -8,6 +8,7 @@ public class AlertController extends AbstractHandler {
     @Override
     public void handle(HttpExchange exchange) {
         String cookieStr = exchange.getRequestHeaders().getFirst("Cookie");
+
         if (cookieStr == null) {
             redirectToLocation(exchange, "/");
             return;
@@ -22,7 +23,7 @@ public class AlertController extends AbstractHandler {
 
         String action = getAction(exchange);
         String method = exchange.getRequestMethod();
-        String templateName = getTemplateNameFromHomeLocation(getHomeLocationFromSid(sid));
+        String templateName = getTemplateNameFromHomeLocation(getHomeLocationFromSid(exchange));
 
         if (method.equals("GET") && action.equals("success")) {
             String message = "Operation successful!";
