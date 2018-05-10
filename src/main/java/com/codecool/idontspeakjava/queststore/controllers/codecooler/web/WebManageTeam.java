@@ -4,15 +4,14 @@ import com.codecool.idontspeakjava.queststore.controllers.AbstractHandler;
 import com.codecool.idontspeakjava.queststore.models.Permissions;
 import com.sun.net.httpserver.HttpExchange;
 
-import java.io.IOException;
-
 public class WebManageTeam extends AbstractHandler{
 
     @Override
     public void handle(HttpExchange httpExchange){
-        if (checkPermission(httpExchange, Permissions.Student)) {
+        if (checkPermission(httpExchange, Permissions.Team)) {
             try {
                 redirectToActionHandler(httpExchange, getAction(httpExchange));
+
             } catch (IndexOutOfBoundsException e) {
                 sendTemplateResponse(httpExchange, "team_home");
             }
@@ -32,9 +31,14 @@ public class WebManageTeam extends AbstractHandler{
             case "leave-team":
                 new WebLeaveTeam().handle(httpExchange);
                 break;
+            case "go-back":
+                setUserPermission(httpExchange, Permissions.Student);
+                new WebCodecoolerController().handle(httpExchange);
+                break;
             default:
                 sendTemplateResponse(httpExchange, "team_home");
                 break;
         }
     }
+
 }
