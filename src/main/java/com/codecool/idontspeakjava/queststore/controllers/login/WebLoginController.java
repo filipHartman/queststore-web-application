@@ -46,7 +46,7 @@ public class WebLoginController extends AbstractHandler {
             sendTemplateResponse(exchange, "login");
 
         } if (method.equals("GET") && isLoggedIn(sid)) {
-            redirectToLocation(exchange, getHomeLocationFromSid(sid));
+            redirectToLocation(exchange, getHomeLocationFromSid(exchange));
 
         } else if (method.equals("POST")) {
 
@@ -57,7 +57,7 @@ public class WebLoginController extends AbstractHandler {
             Optional<User> user = Optional.ofNullable(processCredentialsAndReturnUserInstance(email));
             if (user.isPresent() && checkIfUserProvideCorrectPassword(user.get(), candidatePassword)) {
                 getSessionIdContainer().add(sid, user.get().getId());
-                redirectToLocation(exchange, getHomeLocationFromSid(sid));
+                redirectToLocation(exchange, getHomeLocationFromSid(exchange));
 
             } else {
                 redirectToLocation(exchange,"/");
